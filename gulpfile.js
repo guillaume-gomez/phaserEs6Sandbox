@@ -18,10 +18,12 @@ var browserSync = require('browser-sync');
 var PHASER_PATH = './node_modules/phaser/build/';
 var BUILD_PATH = './build';
 var SCRIPTS_PATH = BUILD_PATH + '/scripts';
-var SOURCE_PATH = './src';
+var SOURCE_PATH = './src/first-game';
 var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
+
+var examplesName = ["first-game", "flappy-bird"];
 
 var keepFiles = false;
 
@@ -98,14 +100,14 @@ function copyPhaser() {
  * two different tasks (build and fastBuild) can use the same logic
  * but have different task dependencies.
  */
-function build() {
+function build(output_file, entry_file, paths) {
 
-    var sourcemapPath = SCRIPTS_PATH + '/' + OUTPUT_FILE + '.map';
+    var sourcemapPath = SCRIPTS_PATH + '/' + output_file + '.map';
     logBuildMode();
 
     return browserify({
-            paths: [path.join(__dirname, 'src')],
-            entries: ENTRY_FILE,
+            paths: [path.join(__dirname, paths)],
+            entries: entry_file,
             debug: true,
             transform: [
                 [
@@ -121,11 +123,21 @@ function build() {
             this.emit('end');
         })
         .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
-        .pipe(source(OUTPUT_FILE))
+        .pipe(source(output_file))
         .pipe(buffer())
         .pipe(gulpif(isProduction(), uglify()))
         .pipe(gulp.dest(SCRIPTS_PATH));
 
+}
+
+function buildAllExamples() {
+    examplesName.forEach(function(name) {
+        var output_file = name + ".js";
+        var source_path = "./src/" + name;
+        var entry_file = source_path + "/index.js";
+        var paths = "src/" + name;
+        build(output_file, entry_file, paths, output_file);
+    });
 }
 
 /**
@@ -157,7 +169,7 @@ function serve() {
 gulp.task('cleanBuild', cleanBuild);
 gulp.task('copyStatic', ['cleanBuild'], copyStatic);
 gulp.task('copyPhaser', ['copyStatic'], copyPhaser);
-gulp.task('build', ['copyPhaser'], build);
+gulp.task('build', ['copyPhaser'], buildAllExamples);
 gulp.task('fastBuild', build);
 gulp.task('serve', ['build'], serve);
 gulp.task('watch-js', ['fastBuild'], browserSync.reload); // Rebuilds and reloads the project when executed.
