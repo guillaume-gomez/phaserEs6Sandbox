@@ -6,28 +6,20 @@ class Bird extends Phaser.Sprite {
     this.height = this.height / 6.5;
     this.y = game.height / 2 - this.height / 2;
 
+    this.game = game;
+
     //Enable physics on the player
     game.physics.arcade.enable(this);
     //no rebound after colission
     this.body.bounce.x = this.body.bounce.y = 0;
     //rotation in the center
     this.anchor.setTo(0.5, 0.5);
-    this.rotation = -Math.PI / 8;
     this.birdInJump = false;
 
 
     // On ajoute l'animation qui va permettre à l'oiseau de flotter dans les airs
     this.tweenFlap = game.add.tween(this);
     this.tweenFlap.to({ y: this.y + 20}, 400, Phaser.Easing.Quadratic.InOut, true, 0, 10000000000, true);
-
-    this.tweenJump = game.add.tween(this);
-    this.tweenJump.to({rotation: -Math.PI / 8}, 70, Phaser.Easing.Quadratic.In, true, 0, 0, true);
-    this.tweenJump.stop();
-
-    this.tweenFall = game.add.tween(this);
-    this.tweenFall.to({rotation: Math.PI / 2}, 300, Phaser.Easing.Quadratic.In, true, 200, 0, true);
-    this.tweenFall.stop();
-
     // On ajoute l'animation du battement des ailes, animation contenu dans le JSON
     this.animations.add('fly');
     // On fait démarrer l'animation, avec 8 images par seconde et répétée en boucle
@@ -54,10 +46,12 @@ class Bird extends Phaser.Sprite {
       this.birdInJump = true;
       this.body.velocity.y = -600;
 
-      if(this.tweenFall.isRunning) {
+      if(this.tweenFall != null) {
         this.tweenFall.stop();
       }
-      this.tweenJump.start();
+      this.rotation = -Math.PI / 8;
+      this.tweenJump = this.game.add.tween(this);
+      this.tweenJump.to({rotation: -Math.PI / 8}, 70, Phaser.Easing.Quadratic.In, true, 0, 0, true);
       this.animations.play('fly');
       this.animations.frame = 0;
     }
@@ -67,15 +61,16 @@ class Bird extends Phaser.Sprite {
     if(this.body.velocity.y > 0 && this.birdInJump) {
       this.birdInJump = false;
 
-      if(this.tweenJump.isRunning){
+      if(this.tweenJump != null){
         this.tweenJump.stop();
       }
-      this.tweenFall.start();
+      this.tweenFall = this.game.add.tween(this);
+      this.tweenFall.to({rotation: Math.PI / 2}, 300, Phaser.Easing.Quadratic.In, true, 200, 0, true);
+
       this.tweenFall.onStart.add(function() {
-        // On stop l'animation des battements d'ailes
         this.animations.stop('fly');
         this.animations.frame = 1;
-      });
+      }.bind(this));
     }
   }
 }
