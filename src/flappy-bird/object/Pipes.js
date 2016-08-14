@@ -17,10 +17,11 @@ class Pipes {
     this.pipesToCheckForAdd = new Array();
   }
 
-  update(game, ground) {
+  update(game, ground, scoreManager) {
     if(this.pipesToCheckForAdd.length != 0 && this.pipesToCheckForAdd[0].x + this.pipesToCheckForAdd[0].width / 2 < game.world.width / 2) {
       this.pipesToCheckForAdd.splice(0, 1);
       this.addGroupPipes(game, ground);
+      scoreManager.updateScore();
     }
   }
 

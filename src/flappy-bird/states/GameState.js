@@ -1,5 +1,6 @@
 import Bird from 'object/Bird';
 import Pipes from 'object/Pipes';
+import ScoreManager from 'object/ScoreManager';
 
 class GameState extends Phaser.State {
 
@@ -19,6 +20,8 @@ class GameState extends Phaser.State {
     this.bird =  new Bird(this.game, 200, 0, 'bird');
     this.game.add.existing(this.bird);
     this.game.input.onTap.add(this.start, this);
+
+    this.scoreManager = new ScoreManager(this.game);
   }
 
   preload() {
@@ -35,7 +38,7 @@ class GameState extends Phaser.State {
 
   update() {
     this.colissionDetection();
-    this.pipeManager.update(this.game, this.ground);
+    this.pipeManager.update(this.game, this.ground, this.scoreManager);
     if(this.ground.x + this.ground.width / 2 <= 0) {
       this.ground.x = 0;
     }
