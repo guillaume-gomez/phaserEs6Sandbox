@@ -1,5 +1,6 @@
 import Terrain from 'objects/Terrain';
 import Player from 'objects/Player';
+import ScoreText from 'objects/ScoreText'
 
 class GameState extends Phaser.State {
 
@@ -31,6 +32,10 @@ class GameState extends Phaser.State {
 
     //Enable cursor keys so we can create some controls
     this.cursors = this.game.input.keyboard.createCursorKeys();
+    const scoreFont = "100px Arial";
+    this.scoreText = new ScoreText(this.game, this.game.world.centerX, 100, "0", {font: scoreFont, fill: "#fff"});
+    this.game.add.existing(this.scoreText);
+
   }
 
   preload() {
@@ -47,6 +52,7 @@ class GameState extends Phaser.State {
         this.game.gameOver();
     }
     this.player.handleMove(this.cursors);
+    this.scoreText.render(this.game.score);
   }
 }
 

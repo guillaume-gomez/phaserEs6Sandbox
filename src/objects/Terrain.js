@@ -35,7 +35,9 @@ class Terrain {
   addPlatform(y){
     //If no y position is supplied, render it just outside of the screen
     if(typeof(y) == "undefined"){
-        y = -this.game.tileHeight;
+      y = -this.game.tileHeight;
+      //increase the score
+      this.game.incrementScore();
     }
     //Work out how many tiles we need to fit across the whole screen
     var tilesNeeded = Math.ceil(this.game.world.width / this.game.tileWidth);
