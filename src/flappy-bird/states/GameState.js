@@ -19,8 +19,6 @@ class GameState extends Phaser.State {
     this.game.input.onTap.add(this.start, this);
 
     this.pipeManager = new Pipes(this.game);
-    const fn = () => { this.pipeManager.addGroupPipes(this.game, this.ground) };
-    setTimeout(fn, 1500);
   }
 
   preload() {
@@ -46,13 +44,15 @@ class GameState extends Phaser.State {
       this.ground.x = 0;
     }
     this.bird.update();
-
+    //this.pipeManager.update(this.game, this.ground);
   }
 
   start() {
     this.bird.onStart();
     this.game.input.onTap.removeAll();
     this.game.input.onDown.add(this.bird.jump, this.bird);
+    const fn = () => { this.pipeManager.addGroupPipes(this.game, this.ground) };
+    setTimeout(fn, 1500);
 
   }
 
