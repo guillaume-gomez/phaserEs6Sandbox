@@ -16,6 +16,21 @@ class Bird extends Phaser.Sprite {
     this.anchor.setTo(0.5, 0.5);
     this.birdInJump = false;
 
+    // this.body.setPolygon(
+    //               39, 129,
+    //               127, 42,
+    //               188, 0,
+    //               365, 0,
+    //               425, 105,
+    //               436, 176,
+    //               463, 182,
+    //               495, 219,
+    //               430, 315,
+    //               285, 345,
+    //               152, 341,
+    //               6, 228
+    // );
+    this.birdRotatePolygon = 0;
 
     // On ajoute l'animation qui va permettre à l'oiseau de flotter dans les airs
     this.tweenFlap = game.add.tween(this);
@@ -35,6 +50,10 @@ class Bird extends Phaser.Sprite {
     this.body.velocity.y = -600;
     // On note que l'oiseau est dans l'action jump
     this.birdInJump = true;
+
+    this.rotation = -Math.PI / 8;
+    this.body.rotation = -Math.PI / 8;
+    this.birdRotatePolygon = -Math.PI / 8;
 
     this.tweenFlap.stop();
     this.animations.stop('fly');
@@ -71,6 +90,9 @@ class Bird extends Phaser.Sprite {
         this.animations.stop('fly');
         this.animations.frame = 1;
       }.bind(this));
+
+      this.body.rotation = (this.rotation - this.birdRotatePolygon);
+      this.birdRotatePolygon += this.rotation - this.birdRotatePolygon;
     }
   }
 }
