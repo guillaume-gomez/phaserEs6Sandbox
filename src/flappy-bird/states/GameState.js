@@ -8,6 +8,8 @@ class GameState extends Phaser.State {
     this.background.width = this.game.width;
     this.background.height = this.game.height;
 
+    this.pipeManager = new Pipes(this.game);
+
     this.ground = this.game.add.sprite(0, 0, 'ground');
     this.ground.width = this.game.width * 2;
     this.ground.y = this.game.height - this.ground.height;
@@ -17,18 +19,10 @@ class GameState extends Phaser.State {
     this.bird =  new Bird(this.game, 200, 0, 'bird');
     this.game.add.existing(this.bird);
     this.game.input.onTap.add(this.start, this);
-
-    this.pipeManager = new Pipes(this.game);
   }
 
   preload() {
-    this.game.stage.scale = Phaser.ScaleManager.SHOW_ALL;
-    //this.game.stage.scale.setShowAll();
-    window.addEventListener('resize', function () {
-        this.game.scale.refresh();
-    });
-    this.game.scale.refresh();
-
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.load.atlasJSONHash('bird', 'res/bird.png', 'res/bird.json');
     // background
     this.game.load.image('background', 'res/background.png');
@@ -40,11 +34,11 @@ class GameState extends Phaser.State {
   }
 
   update() {
+    this.pipeManager.update(this.game, this.ground);
     if(this.ground.x + this.ground.width / 2 <= 0) {
       this.ground.x = 0;
     }
     this.bird.update();
-    //this.pipeManager.update(this.game, this.ground);
   }
 
   start() {
