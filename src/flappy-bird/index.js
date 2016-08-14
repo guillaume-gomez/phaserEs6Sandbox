@@ -8,5 +8,9 @@ class FlappyBird extends Phaser.Game {
     this.state.add('GameState', GameState, false);
     this.state.start('GameState');
   }
+
+  restart() {
+    this.state.start('GameState');
+  }
 }
 new FlappyBird();
