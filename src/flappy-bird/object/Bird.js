@@ -23,7 +23,26 @@ class Bird extends Phaser.Sprite {
     this.animations.add('fly');
     // On fait démarrer l'animation, avec 8 images par seconde et répétée en boucle
     this.animations.play('fly', 8, true);
+  }
 
+  onStart() {
+    // Gravité de l'oiseau
+    this.body.gravity.y = 2000;
+    // Premier saut
+    this.body.velocity.y = -600;
+    // On note que l'oiseau est dans l'action jump
+    this.birdInJump = true;
+
+    this.tweenFlap.stop();
+    this.animations.stop('fly');
+    this.animations.play('fly', 15, true);
+  }
+
+  jump() {
+    if(this.y + this.height >= 0) {
+      this.birdInJump = true;
+      this.body.velocity.y = -600;
+    }
   }
 }
 
