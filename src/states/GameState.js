@@ -6,6 +6,8 @@ class GameState extends Phaser.State {
     //Get the dimensions of the tile we are using
     this.game.tileWidth = this.game.cache.getImage('tile').width;
     this.game.tileHeight = this.game.cache.getImage('tile').height;
+    //The spacing for the initial platforms
+    this.game.spacing = 300;
     //Set the background colour to blue
     this.game.stage.backgroundColor = '479cde';
 
@@ -18,6 +20,8 @@ class GameState extends Phaser.State {
     this.platforms.createMultiple(250, 'tile');
 
     let terrain = new Terrain(this.game, this.platforms);
+    //Create the inital on screen platforms
+    terrain.initPlatforms();
     this.game.time.events.loop(2000, terrain.addPlatform, this);
   }
 
