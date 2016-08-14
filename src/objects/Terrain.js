@@ -3,8 +3,20 @@ class Terrain {
   constructor(game, platforms) {
     this.game = game;
     this.platforms = platforms;
+    //binding
     this.addPlatform = this.addPlatform.bind(this);
+    this.initPlatforms = this.initPlatforms.bind(this);
   }
+
+  initPlatforms() {
+    let bottom = this.game.world.height - this.game.tileHeight;
+    let top = this.game.tileHeight;
+    //Keep creating platforms until they reach (near) the top of the screen
+    for(var y = bottom; y > top - this.game.tileHeight; y = y - this.game.spacing){
+        this.addPlatform(y);
+    }
+  }
+
 
   addTile(x, y){
     //Get a tile that is not currently on screen
