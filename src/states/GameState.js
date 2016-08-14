@@ -1,12 +1,11 @@
-import RainbowText from 'objects/RainbowText';
+import Terrain from 'objects/Terrain';
 
 class GameState extends Phaser.State {
 
   create() {
     //Get the dimensions of the tile we are using
-    this.tileWidth = this.game.cache.getImage('tile').width;
-    this.tileHeight = this.game.cache.getImage('tile').height;
-
+    this.game.tileWidth = this.game.cache.getImage('tile').width;
+    this.game.tileHeight = this.game.cache.getImage('tile').height;
     //Set the background colour to blue
     this.game.stage.backgroundColor = '479cde';
 
@@ -17,6 +16,9 @@ class GameState extends Phaser.State {
     this.platforms = this.game.add.group();
     this.platforms.enableBody = true;
     this.platforms.createMultiple(250, 'tile');
+
+    let terrain = new Terrain(this.game, this.platforms);
+    this.game.time.events.loop(2000, terrain.addPlatform, this);
   }
 
   preload() {
