@@ -1,4 +1,5 @@
 import Bird from 'object/Bird';
+import Pipes from 'object/Pipes';
 
 class GameState extends Phaser.State {
 
@@ -16,6 +17,10 @@ class GameState extends Phaser.State {
     this.bird =  new Bird(this.game, 200, 0, 'bird');
     this.game.add.existing(this.bird);
     this.game.input.onTap.add(this.start, this);
+
+    this.pipeManager = new Pipes(this.game);
+    const fn = () => { this.pipeManager.addGroupPipes(this.game, this.ground) };
+    setTimeout(fn, 1500);
   }
 
   preload() {
