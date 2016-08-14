@@ -1,4 +1,5 @@
 import Terrain from 'objects/Terrain';
+import Player from 'objects/Player';
 
 class GameState extends Phaser.State {
 
@@ -14,6 +15,10 @@ class GameState extends Phaser.State {
     //Enable the Arcade physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    //add new player
+    this.player = new Player(this.game, this.game.world.centerX, this.game.world.height - (this.spacing * 2 + (3 * this.tileHeight)), 'player');
+    this.game.add.existing(this.player);
+
     //Add a platforms group to hold all of our tiles, and create a bunch of them
     this.platforms = this.game.add.group();
     this.platforms.enableBody = true;
@@ -22,7 +27,7 @@ class GameState extends Phaser.State {
     let terrain = new Terrain(this.game, this.platforms);
     //Create the inital on screen platforms
     terrain.initPlatforms();
-    this.game.time.events.loop(2000, terrain.addPlatform, this);
+    //this.game.time.events.loop(2000, terrain.addPlatform, this);
   }
 
   preload() {
@@ -31,9 +36,14 @@ class GameState extends Phaser.State {
   }
 
   update() {
-
+    //Make the sprite collide with the ground layer
+    this.game.physics.arcade.collide(this.player, this.platforms);
+    //Check if the player is touching the bottom
+    //console.log(this.player.body.position)
+    if(this.player.body.position.y >= this.game.world.height - this.player.body.height){
+        this.gameOver();
+    }
   }
-
 }
 
 export default GameState;
