@@ -17,6 +17,35 @@ class Pipes {
     this.pipesToCheckForAdd = new Array();
   }
 
+  destroyElement() {
+    this.pipes.forEach(pipe=> {
+      if(pipe.inCamera) {
+        pipe.alive = false;
+      }
+    });
+
+    this.pipesEndBottom.forEach(pipe=> {
+      if(pipe.inCamera) {
+        pipe.alive = false;
+      }
+    });
+
+    this.pipesEndTop.forEach(pipe=> {
+      if(pipe.inCamera) {
+        pipe.alive = false;
+      }
+    });
+  }
+
+  update(game, ground) {
+    // Quand le premier tuyau se trouve au milieu du terrain
+    if(this.pipesToCheckForAdd.length != 0 && this.pipesToCheckForAdd[0].x + this.pipesToCheckForAdd[0].width / 2 < game.world.width / 2) {
+      this.pipesToCheckForAdd.splice(0, 1);
+      // On ajoute un nouveau tuyau
+      this.addGroupPipes(game, ground);
+    }
+  }
+
   addGroupPipes(game, ground) {
     const nbPiecesOfPipes = 12;
     const hole = Math.round(Math.random() * (nbPiecesOfPipes - 7)) + 3;
@@ -25,6 +54,16 @@ class Pipes {
       if (i > hole + 1 || i < hole - 1) {
         this.addPieceOfPipe(game.world.width, game.world.height - ground.height - i * game.world.height / nbPiecesOfPipes, i, hole);
       }
+  }
+
+  getFirstAvailable(collection) {
+    let available = collection.getFirstDead();
+     if(!available) {
+      available = collection.children.find(item =>{
+        return item.x < 0;
+      });
+    }
+    return available;
   }
 
   addPieceOfPipe(x, y, i, hole, nbPipe) {
@@ -36,11 +75,11 @@ class Pipes {
 
       if(i == hole + 2) {
         // On prend le premier élément "mort" du groupe pipesEndTop
-        pipeEnd = this.pipesEndTop.getFirstDead();
+        pipeEnd = this.getFirstAvailable(this.pipesEndTop);
         yPipe = y + yDiff;
       } else {
         // On prend le premier élément "mort" du groupe pipesEndBottom
-        pipeEnd = this.pipesEndBottom.getFirstDead();
+        pipeEnd = this.getFirstAvailable(this.pipesEndBottom);
         yPipe = y - yDiff;
       }
       // On change la position du bout de tuyau
@@ -53,9 +92,8 @@ class Pipes {
     }
 
     // On prend le premier élément "mort" du groupe pipes
-    let pipe = this.pipes.getFirstDead();
+    let pipe = this.getFirstAvailable(this.pipes);
     // On change la position du bout de tuyau
-    if(!pipe) debugger
     pipe.reset(x, y);
     // On change la vitesse pour qu'il se déplace en même temps que le sol
     pipe.body.velocity.x = -250;
