@@ -27,7 +27,10 @@ class GameState extends Phaser.State {
     let terrain = new Terrain(this.game, this.platforms);
     //Create the inital on screen platforms
     terrain.initPlatforms();
-    //this.game.time.events.loop(2000, terrain.addPlatform, this);
+    this.game.time.events.loop(2000, terrain.addPlatform, this);
+
+    //Enable cursor keys so we can create some controls
+    this.cursors = this.game.input.keyboard.createCursorKeys();
   }
 
   preload() {
@@ -43,6 +46,7 @@ class GameState extends Phaser.State {
     if(this.player.body.position.y >= this.game.world.height - this.player.body.height){
         this.game.gameOver();
     }
+    this.player.handleMove(this.cursors);
   }
 }
 
