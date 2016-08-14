@@ -30,6 +30,10 @@ class GameState extends Phaser.State {
     // background
     this.game.load.image('background', 'res/background.png');
     this.game.load.image('ground', 'res/ground.png');
+    //pipe
+    this.game.load.image('pipe', 'res/pipe.png');
+    this.game.load.image('pipeEndTop', 'res/pipe-end-top.png');
+    this.game.load.image('pipeEndBottom', 'res/pipe-end-bottom.png');
   }
 
   update() {
