@@ -58,6 +58,10 @@ class GameState extends Phaser.State {
     this.game.physics.arcade.collide(this.bird, this.pipeManager.pipesEndBottom, this.game.restart, null, this.game);
   }
 
+  // render() {
+  //   this.game.debug.body(this.bird);
+  // }
+
 }
 
 export default GameState;
