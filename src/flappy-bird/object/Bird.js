@@ -13,6 +13,17 @@ class Bird extends Phaser.Sprite {
     //rotation in the center
     this.anchor.setTo(0.5, 0.5);
     this.birdInJump = false;
+
+
+    // On ajoute l'animation qui va permettre à l'oiseau de flotter dans les airs
+    this.tweenFlap = game.add.tween(this);
+    this.tweenFlap.to({ y: this.y + 20}, 400, Phaser.Easing.Quadratic.InOut, true, 0, 10000000000, true);
+
+    // On ajoute l'animation du battement des ailes, animation contenu dans le JSON
+    this.animations.add('fly');
+    // On fait démarrer l'animation, avec 8 images par seconde et répétée en boucle
+    this.animations.play('fly', 8, true);
+
   }
 }
 

@@ -9,7 +9,6 @@ class GameState extends Phaser.State {
 
     this.bird =  new Bird(this.game, 200, 0, 'bird');
     this.game.add.existing(this.bird);
-
   }
 
   preload() {
