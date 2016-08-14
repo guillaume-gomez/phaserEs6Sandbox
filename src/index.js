@@ -8,8 +8,7 @@ constructor() {
     let layer;
     let player;
     let cursors;
-    super(649, 480, Phaser.AUTO, 'content', null);
-    //this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    super(450, 800, Phaser.AUTO, 'content', null);
     this.state.add('GameState', GameState, false);
     this.state.start('GameState');
   }
