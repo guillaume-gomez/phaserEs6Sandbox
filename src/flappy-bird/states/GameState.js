@@ -9,13 +9,13 @@ class GameState extends Phaser.State {
 
     this.bird =  new Bird(this.game, 200, 0, 'bird');
     this.game.add.existing(this.bird);
-    this.game.input.onTap.add(this.bird.onStart, this.bird);
+    this.game.input.onTap.add(this.start, this);
   }
 
   preload() {
     this.game.stage.scale = Phaser.ScaleManager.SHOW_ALL;
     //this.game.stage.scale.setShowAll();
-    window.addEventListener('resize', function () { 
+    window.addEventListener('resize', function () {
         this.game.scale.refresh();
     });
     this.game.scale.refresh();
@@ -26,10 +26,11 @@ class GameState extends Phaser.State {
   }
 
   update() {
-
+    this.bird.update();
   }
 
-  onStart() {
+  start() {
+    this.bird.onStart();
     this.game.input.onTap.removeAll();
     this.game.input.onDown.add(this.bird.jump, this.bird);
 
