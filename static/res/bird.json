@@ -1,0 +1,34 @@
+{"frames": [
+  {
+    "filename": "fly01",
+    "frame": {"x":10,"y":10,"w":496,"h":351},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":496,"h":351},
+    "sourceSize": {"w":496,"h":351}
+  },
+  {
+    "filename": "fly02",
+    "frame": {"x":526,"y":10,"w":496,"h":351},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":496,"h":351},
+    "sourceSize": {"w":496,"h":351}
+  },
+  {
+    "filename": "fly03",
+    "frame": {"x":1042,"y":10,"w":496,"h":351},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":496,"h":351},
+    "sourceSize": {"w":496,"h":351}
+  },
+  {
+    "filename": "fly04",
+    "frame": {"x":526,"y":10,"w":496,"h":351},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":496,"h":351},
+    "sourceSize": {"w":496,"h":351}
+  }
+]}
