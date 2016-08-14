@@ -14,6 +14,10 @@ constructor() {
     this.state.start('GameState');
   }
 
+  gameOver(){
+    this.state.start('GameState');
+  }
+
 }
 
 new Game();

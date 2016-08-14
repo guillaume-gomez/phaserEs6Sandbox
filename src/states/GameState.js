@@ -41,7 +41,7 @@ class GameState extends Phaser.State {
     //Check if the player is touching the bottom
     //console.log(this.player.body.position)
     if(this.player.body.position.y >= this.game.world.height - this.player.body.height){
-        this.gameOver();
+        this.game.gameOver();
     }
   }
 }
