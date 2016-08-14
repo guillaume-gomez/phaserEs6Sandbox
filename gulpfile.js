@@ -18,7 +18,7 @@ var browserSync = require('browser-sync');
 var PHASER_PATH = './node_modules/phaser/build/';
 var BUILD_PATH = './build';
 var SCRIPTS_PATH = BUILD_PATH + '/scripts';
-var SOURCE_PATH = './src/first-game';
+var SOURCE_PATH = './src';
 var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
@@ -38,7 +38,6 @@ function isProduction() {
  * Logs the current build mode on the console.
  */
 function logBuildMode() {
-    
     if (isProduction()) {
         gutil.log(gutil.colors.green('Running production build...'));
     } else {
@@ -170,7 +169,7 @@ gulp.task('cleanBuild', cleanBuild);
 gulp.task('copyStatic', ['cleanBuild'], copyStatic);
 gulp.task('copyPhaser', ['copyStatic'], copyPhaser);
 gulp.task('build', ['copyPhaser'], buildAllExamples);
-gulp.task('fastBuild', build);
+gulp.task('fastBuild', buildAllExamples);
 gulp.task('serve', ['build'], serve);
 gulp.task('watch-js', ['fastBuild'], browserSync.reload); // Rebuilds and reloads the project when executed.
 gulp.task('watch-static', ['copyPhaser'], browserSync.reload);
