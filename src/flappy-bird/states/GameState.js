@@ -34,6 +34,7 @@ class GameState extends Phaser.State {
   }
 
   update() {
+    this.colissionDetection();
     this.pipeManager.update(this.game, this.ground);
     if(this.ground.x + this.ground.width / 2 <= 0) {
       this.ground.x = 0;
@@ -48,6 +49,13 @@ class GameState extends Phaser.State {
     const fn = () => { this.pipeManager.addGroupPipes(this.game, this.ground) };
     setTimeout(fn, 1500);
 
+  }
+
+  colissionDetection() {
+    this.game.physics.arcade.collide(this.bird, this.ground, this.game.restart, null, this.game);
+    this.game.physics.arcade.collide(this.bird, this.pipeManager.pipes, this.game.restart, null, this.game);
+    this.game.physics.arcade.collide(this.bird, this.pipeManager.pipesEndTop, this.game.restart, null, this.game);
+    this.game.physics.arcade.collide(this.bird, this.pipeManager.pipesEndBottom, this.game.restart, null, this.game);
   }
 
 }
