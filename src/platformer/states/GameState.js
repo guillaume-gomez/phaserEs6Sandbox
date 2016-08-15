@@ -57,6 +57,52 @@ class GameState extends Phaser.State {
           }
       }
     }
+    this.jump = false;
+    this.left = this.right = false;
+
+    const fnJumpUp = () => {this.jump = false};
+    const fnJumpDown = () => {this.jump = true};
+    this.buttonjump = this.game.add.button(400, 175, 'up', null, this, 0, 1, 0, 1);
+    this.buttonjump.fixedToCamera = true;
+    this.buttonjump.events.onInputOver.add(fnJumpDown);
+    this.buttonjump.events.onInputOut.add(fnJumpUp);
+    this.buttonjump.events.onInputDown.add(fnJumpDown);
+    this.buttonjump.events.onInputUp.add(fnJumpUp);
+
+    const fnLeftUp = () => {this.left = false};
+    const fnLeftDown = () => {this.left = true};
+    this.buttonleft = this.game.add.button(50, 175, 'left', null, this, 0, 1, 0, 1);
+    this.buttonleft.fixedToCamera = true;
+    this.buttonleft.events.onInputOver.add(fnLeftDown);
+    this.buttonleft.events.onInputOut.add(fnLeftUp);
+    this.buttonleft.events.onInputDown.add(fnLeftDown);
+    this.buttonleft.events.onInputUp.add(fnLeftUp);
+
+    const fnRightUp = () => {this.right = false};
+    const fnRightDown = () => {this.right = true};
+    this.buttonright = this.game.add.button(100, 175, 'right', null, this, 0, 1, 0, 1);
+    this.buttonright.fixedToCamera = true;
+    this.buttonright.events.onInputOver.add(fnRightDown);
+    this.buttonright.events.onInputOut.add(fnRightUp);
+    this.buttonright.events.onInputDown.add(fnRightDown);
+    this.buttonright.events.onInputUp.add(fnRightUp);
+
+  }
+
+  move() {
+    if (this.right) {
+      this.player.body.velocity.x = 200;
+    }
+    else if(this.left) {
+      this.player.body.velocity.x = -200;
+    }
+    else {
+      this.player.body.velocity.x = 0;
+    }
+    // Make the player jump if he is touching the ground
+    if (this.jump) {
+      this.player.body.velocity.y = -250;
+    }
   }
 
   update() {
@@ -68,19 +114,26 @@ class GameState extends Phaser.State {
 
     // Call the 'restart' function when the player touches the enemy
     this.game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
+    this.move();
     // Move the player when an arrow key is pressed
     if (this.cursor.left.isDown) {
-        this.player.body.velocity.x = -200;
+      this.left = true;
     }
-    else if (this.cursor.right.isDown) {
-        this.player.body.velocity.x = 200;
+    if (this.cursor.right.isDown) {
+        this.right = true;
     }
-    else {
-        this.player.body.velocity.x = 0;
+    if (this.cursor.left.isUp) {
+      this.left = false;
+    }
+    if (this.cursor.right.isUp) {
+        this.right = false;
     }
     // Make the player jump if he is touching the ground
     if (this.cursor.up.isDown && this.player.body.touching.down) {
-      this.player.body.velocity.y = -250;
+      this.jump = true
+    }
+    else if(this.cursor.up.isUp){
+      this.jump = false;
     }
   }
 
@@ -89,6 +142,10 @@ class GameState extends Phaser.State {
     this.game.load.image('wall', ASSETS_FOLDER + 'wall.png');
     this.game.load.image('coin', ASSETS_FOLDER + 'coin.png');
     this.game.load.image('lava', ASSETS_FOLDER + 'lava.png');
+
+    this.game.load.image('left', ASSETS_FOLDER + 'left.png');
+    this.game.load.image('right', ASSETS_FOLDER + 'right.png');
+    this.game.load.image('up', ASSETS_FOLDER + 'up.png');
   }
 
   takeCoin(player, coin) {
