@@ -2,6 +2,7 @@ import GameState from 'states/GameState';
 import Boot from "states/Boot";
 import Preloader from "states/Preloader";
 import MainMenu from "states/MainMenu";
+import HowTo from "states/Howto";
 
 import { WIDTH, HEIGHT} from "Constants";
 
@@ -13,6 +14,7 @@ class Game extends Phaser.Game {
     this.state.add('Boot', Boot, false);
     this.state.add('Preloader', Preloader, false);
     this.state.add('MainMenu', MainMenu, false);
+    this.state.add('HowTo', HowTo, false);
     this.state.start('Boot');
   }
 }
