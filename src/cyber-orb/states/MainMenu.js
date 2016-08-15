@@ -12,7 +12,7 @@ class MainMenu extends Phaser.State {
   }
 
   startGame() {
-    this.game.state.start('Howto');
+    this.game.state.start('HowTo');
   }
 }
 
