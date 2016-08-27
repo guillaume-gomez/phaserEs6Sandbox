@@ -9,6 +9,8 @@ class GameState extends Phaser.State {
     this.map.createLayer('Ground');
     this.car = new Car(this.game, 200, 200, 'car');
     this.game.add.existing(this.car);
+    this.game.physics.enable(this.car);
+    this.game.camera.follow(this.car);
   }
 
   update() {
