@@ -1,4 +1,4 @@
-const ASSETS_FOLDER = "res/platformer/"
+const ASSETS_FOLDER = "res/platformer/";
 
 class GameState extends Phaser.State {
 
@@ -61,7 +61,7 @@ class GameState extends Phaser.State {
     this.left = this.right = false;
 
     const fnJumpUp = () => {this.jump = false};
-    const fnJumpDown = () => {this.jump = true};
+    const fnJumpDown = () => {if (this.player.body.touching.down) this.jump = true};
     this.buttonjump = this.game.add.button(400, 175, 'up', null, this, 0, 1, 0, 1);
     this.buttonjump.fixedToCamera = true;
     this.buttonjump.events.onInputOver.add(fnJumpDown);
@@ -86,7 +86,6 @@ class GameState extends Phaser.State {
     this.buttonright.events.onInputOut.add(fnRightUp);
     this.buttonright.events.onInputDown.add(fnRightDown);
     this.buttonright.events.onInputUp.add(fnRightUp);
-
   }
 
   move() {
@@ -101,7 +100,8 @@ class GameState extends Phaser.State {
     }
     // Make the player jump if he is touching the ground
     if (this.jump) {
-      this.player.body.velocity.y = -250;
+        this.player.body.velocity.y = -250;
+        this.jump = false;
     }
   }
 
@@ -123,7 +123,7 @@ class GameState extends Phaser.State {
         this.right = true;
     }
     if (this.cursor.left.isUp) {
-      this.left = false;
+        this.left = false;
     }
     if (this.cursor.right.isUp) {
         this.right = false;
@@ -154,6 +154,10 @@ class GameState extends Phaser.State {
 
   restart() {
     this.game.state.start('Game');
+  }
+
+  render() {
+    //this.game.debug.spriteInfo(this.player, 32, 32);
   }
 }
 
