@@ -6,7 +6,8 @@ class GameState extends Phaser.State {
   create() {
     this.map = this.game.add.tilemap('Map1');
     this.map.addTilesetImage('Desert', 'Tileset');
-    this.map.createLayer('Ground');
+    let layer = this.map.createLayer('Ground');
+    layer.resizeWorld();
     this.car = new Car(this.game, 200, 200, 'car');
     this.game.add.existing(this.car);
     this.game.physics.enable(this.car);
