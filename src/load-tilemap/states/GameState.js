@@ -1,11 +1,14 @@
+import Car from 'object/Car';
 const PATH = "res/load-tilemap";
 
 class GameState extends Phaser.State {
 
   create() {
-    let map = this.game.add.tilemap('Map1');
-    map.addTilesetImage('Desert', 'Tileset');
-    map.createLayer('Ground');
+    this.map = this.game.add.tilemap('Map1');
+    this.map.addTilesetImage('Desert', 'Tileset');
+    this.map.createLayer('Ground');
+    this.car = new Car(this.game, 200, 200, 'car');
+    this.game.add.existing(this.car);
   }
 
   update() {
