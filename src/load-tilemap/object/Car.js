@@ -7,9 +7,6 @@ class Car extends Phaser.Sprite {
 
     this.cursors = game.input.keyboard.createCursorKeys();
     this.angle = OFFSET;
-
-    //Enable physics on the player
-    //game.physics.arcade.enable(this);
   }
 
   update() {
