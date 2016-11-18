@@ -1,3 +1,5 @@
+import Player from 'objects/Player';
+
 const PATH = "res/p2-physics/";
 
 class GameState extends Phaser.State {
@@ -29,24 +31,19 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
-    // player = game.add.sprite(100, 200, 'dude');
-    // player.animations.add('left', [0, 1, 2, 3], 10, true);
-    // player.animations.add('turn', [4], 20, true);
-    // player.animations.add('right', [5, 6, 7, 8], 10, true);
-
-    //this.game.physics.p2.enable(player);
+    this.player = new Player(this.game, 40, 40, 'dude');
+    //this.game.add.existing(this.player);
     
-    //player.body.fixedRotation = true;
-    // player.body.setMaterial(characterMaterial);
+    
+    //this.game.camera.follow(this.player);
 
-    //this.game.camera.follow(player);
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-    //this.cursors = game.input.keyboard.createCursorKeys();
-    //this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   }
 
   update() {
-   
+    this.player.handleMove(this.cursors, this.game);
   }
 
   preload() {
@@ -59,6 +56,8 @@ class GameState extends Phaser.State {
 
   render() {
     //NOTHING TO DO RIGHT NOW
+    this.game.debug.spriteBounds(this.player);
+    //this.game.debug.spriteCorners(this.player, true, true);
   }
 }
 
