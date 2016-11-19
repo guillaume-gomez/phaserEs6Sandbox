@@ -15,7 +15,7 @@ class Player extends Phaser.Sprite {
     //this.body.setMaterial(characterMaterial);
   }
 
-  handleMove(cursors, game) {
+  handleMove(cursors, jumpButton, game) {
     if (cursors.left.isDown)
     {
         this.body.moveLeft(200);
@@ -57,11 +57,11 @@ class Player extends Phaser.Sprite {
         }
     }
     
-    // if (jumpButton.isDown && game.time.now > this.jumpTimer && checkIfCanJump(game))
-    // {
-    //     this.body.moveUp(300);
-    //     this.jumpTimer = game.time.now + 750;
-    // }
+    if (jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump(game))
+    {
+      this.body.moveUp(300);
+      this.jumpTimer = game.time.now + 750;
+    }
   }
 
 
@@ -73,10 +73,10 @@ class Player extends Phaser.Sprite {
       {
           const c = game.physics.p2.world.narrowphase.contactEquations[i];
 
-          if (c.bodyA === player.body.data || c.bodyB === player.body.data)
+          if (c.bodyA === this.body.data || c.bodyB === this.body.data)
           {
               let d = p2.vec2.dot(c.normalA, yAxis); // Normal dot Y-axis
-              if (c.bodyA === player.body.data) d *= -1;
+              if (c.bodyA === this.body.data) d *= -1;
               if (d > 0.5) result = true;
           }
       }

@@ -6,7 +6,6 @@ class GameState extends Phaser.State {
 
   create() {
     this.game.physics.startSystem(Phaser.Physics.P2JS);
-
     this.game.stage.backgroundColor = '#2d2d2d';
 
     let map = this.game.add.tilemap('map');
@@ -31,11 +30,11 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
-    this.player = new Player(this.game, 40, 40, 'dude');
-    //this.game.add.existing(this.player);
+    this.player = new Player(this.game, 100, 200, 'dude');
+    this.game.add.existing(this.player);
     
     
-    //this.game.camera.follow(this.player);
+    this.game.camera.follow(this.player);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -43,7 +42,7 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.player.handleMove(this.cursors, this.game);
+    this.player.handleMove(this.cursors, this.jumpButton, this.game);
   }
 
   preload() {
@@ -56,102 +55,7 @@ class GameState extends Phaser.State {
 
   render() {
     //NOTHING TO DO RIGHT NOW
-    this.game.debug.spriteBounds(this.player);
-    //this.game.debug.spriteCorners(this.player, true, true);
   }
 }
 
 export default GameState;
-
-/*
-
-var player;
-var facing = 'left';
-var jumpTimer = 0;
-var cursors;
-var jumpButton;
-
-var map;
-var layer;
-
-function create() {
-
-    
-
-}
-
-function update() {
-
-    if (cursors.left.isDown)
-    {
-        player.body.moveLeft(200);
-
-        if (facing != 'left')
-        {
-            player.animations.play('left');
-            facing = 'left';
-        }
-    }
-    else if (cursors.right.isDown)
-    {
-        player.body.moveRight(200);
-
-        if (facing != 'right')
-        {
-            player.animations.play('right');
-            facing = 'right';
-        }
-    }
-    else
-    {
-        player.body.velocity.x = 0;
-
-        if (facing != 'idle')
-        {
-            player.animations.stop();
-
-            if (facing == 'left')
-            {
-                player.frame = 0;
-            }
-            else
-            {
-                player.frame = 5;
-            }
-
-            facing = 'idle';
-        }
-    }
-    
-    if (jumpButton.isDown && game.time.now > jumpTimer && checkIfCanJump())
-    {
-        player.body.moveUp(300);
-        jumpTimer = game.time.now + 750;
-    }
-
-}
-
-function checkIfCanJump() {
-
-    var yAxis = p2.vec2.fromValues(0, 1);
-    var result = false;
-
-    for (var i = 0; i < game.physics.p2.world.narrowphase.contactEquations.length; i++)
-    {
-        var c = game.physics.p2.world.narrowphase.contactEquations[i];
-
-        if (c.bodyA === player.body.data || c.bodyB === player.body.data)
-        {
-            var d = p2.vec2.dot(c.normalA, yAxis); // Normal dot Y-axis
-            if (c.bodyA === player.body.data) d *= -1;
-            if (d > 0.5) result = true;
-        }
-    }
-    
-    return result;
-
-}
-
-function render() {
-
-}*/
