@@ -1,6 +1,6 @@
 import GameState from 'states/GameState';
 
-class LoadTilemap extends Phaser.Game {
+class P2Physics extends Phaser.Game {
 
   constructor() {
     super(800, 600, Phaser.AUTO, 'content', null);
@@ -10,4 +10,4 @@ class LoadTilemap extends Phaser.Game {
   }
 }
 
-new LoadTilemap();
+new P2Physics();
