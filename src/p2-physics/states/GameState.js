@@ -30,10 +30,21 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
+
     this.player = new Player(this.game, 100, 200, 'dude');
     this.game.add.existing(this.player);
-    
-    
+
+    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial', this.player.body);
+    this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+
+    this.box = this.game.add.sprite(500, 400, 'block');
+    this.game.physics.p2.enable(this.box);
+    this.box.body.mass = 6;
+    this.box.body.setMaterial(this.boxMaterial);
+
+    this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+
     this.game.camera.follow(this.player);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -50,6 +61,7 @@ class GameState extends Phaser.State {
     this.game.load.image('ground_1x1', PATH + 'ground_1x1.png');
     this.game.load.image('walls_1x2', PATH + 'walls_1x2.png');
     this.game.load.image('tiles2', PATH +'tiles2.png');
+    this.game.load.image('block', PATH + 'block.png');
     this.game.load.spritesheet('dude', PATH + 'dude.png', 32, 48);
   }
 
