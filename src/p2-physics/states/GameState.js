@@ -34,15 +34,16 @@ class GameState extends Phaser.State {
     this.player = new Player(this.game, 100, 200, 'dude');
     this.game.add.existing(this.player);
 
+    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
     this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial', this.player.body);
     this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
 
-    this.box = this.game.add.sprite(300, 645 - 95, 'block');
+    this.box = this.game.add.sprite(500, 400, 'block');
     this.game.physics.p2.enable(this.box);
     this.box.body.mass = 6;
     this.box.body.setMaterial(this.boxMaterial);
 
-    this.game.physics.p2.setWorldMaterial(worldMaterial, true, true, true, true);
+    this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
 
     this.game.camera.follow(this.player);
 
