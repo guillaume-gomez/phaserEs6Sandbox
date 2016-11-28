@@ -1,4 +1,5 @@
 import Player from 'objects/Player';
+import Box from 'objects/Box';
 
 const PATH = "res/p2-physics/";
 
@@ -30,20 +31,16 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
+    
+    this.box = new Box(this.game, 500, 400, 'block');
+    this.game.add.existing(this.box);
 
     this.player = new Player(this.game, 100, 200, 'dude');
     this.game.add.existing(this.player);
 
-    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-    this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial', this.player.body);
-    this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-
-    this.box = this.game.add.sprite(500, 400, 'block');
-    this.game.physics.p2.enable(this.box);
-    this.box.body.mass = 6;
-    this.box.body.setMaterial(this.boxMaterial);
-
     this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    //other materials are defined in each objects
 
     this.game.camera.follow(this.player);
 

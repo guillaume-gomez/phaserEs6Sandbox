@@ -10,7 +10,7 @@ class Player extends Phaser.Sprite {
     this.animations.add('right', [5, 6, 7, 8], 10, true);
 
     game.physics.p2.enable(this);
-    
+    const spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', this.body);
     this.body.fixedRotation = true;
     //this.body.setMaterial(characterMaterial);
   }
