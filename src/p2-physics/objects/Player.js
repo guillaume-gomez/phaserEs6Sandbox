@@ -1,6 +1,6 @@
 class Player extends Phaser.Sprite {
 
-  constructor(game, x, y, key, frame) {
+  constructor(game, x, y, key, frame, material) {
     super(game, x, y, key, frame);
     this.facing = "left";
     this.jumpTimer = 0;
@@ -10,9 +10,8 @@ class Player extends Phaser.Sprite {
     this.animations.add('right', [5, 6, 7, 8], 10, true);
 
     game.physics.p2.enable(this);
-    const spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', this.body);
     this.body.fixedRotation = true;
-    //this.body.setMaterial(characterMaterial);
+    this.body.setMaterial(material);
   }
 
   handleMove(cursors, jumpButton, game) {
@@ -84,6 +83,7 @@ class Player extends Phaser.Sprite {
       return result;
 
   }
+
 }
 
 export default Player;

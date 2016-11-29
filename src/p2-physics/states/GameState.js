@@ -31,15 +31,14 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
-    
-    this.box = new Box(this.game, 500, 400, 'block');
+    this.createMaterials();
+    this.box = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box);
 
-    this.player = new Player(this.game, 100, 200, 'dude');
+    this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
     this.game.add.existing(this.player);
 
-    this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
-    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    //this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
     //other materials are defined in each objects
 
     this.game.camera.follow(this.player);
@@ -65,6 +64,13 @@ class GameState extends Phaser.State {
   render() {
     //NOTHING TO DO RIGHT NOW
   }
+
+  createMaterials() {
+    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial');
+    this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+  }
+
 }
 
 export default GameState;
