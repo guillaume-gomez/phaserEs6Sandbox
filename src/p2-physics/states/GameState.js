@@ -35,7 +35,6 @@ class GameState extends Phaser.State {
     this.box = new Box(this.game, 500, 400-95, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box);
 
-    //this.bodyDebug = new BodyDebug(this.game.this.box.body);
     this.box2 = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box2);
 
@@ -67,7 +66,7 @@ class GameState extends Phaser.State {
 
   render() {
     //NOTHING TO DO RIGHT NOW
-    this.game.debug.body(this.box, true, true);
+    //this.bodyDebug = new Phaser.Physics.P2.BodyDebug(this.game, this.box);
   }
 
   createMaterials() {
