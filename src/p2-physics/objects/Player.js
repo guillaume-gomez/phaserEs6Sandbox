@@ -56,7 +56,7 @@ class Player extends Phaser.Sprite {
         }
     }
     
-    if (jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump(game))
+    if ((jumpButton.isDown || cursors.up.isDown) && game.time.now > this.jumpTimer && this.checkIfCanJump(game))
     {
       this.body.moveUp(300);
       this.jumpTimer = game.time.now + 750;
