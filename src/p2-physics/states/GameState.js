@@ -32,8 +32,12 @@ class GameState extends Phaser.State {
     this.game.physics.p2.gravity.y = 300;
 
     this.createMaterials();
-    this.box = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
+    this.box = new Box(this.game, 500, 400-95, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box);
+
+    //this.bodyDebug = new BodyDebug(this.game.this.box.body);
+    this.box2 = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
+    this.game.add.existing(this.box2);
 
     this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
     this.game.add.existing(this.player);
@@ -63,6 +67,7 @@ class GameState extends Phaser.State {
 
   render() {
     //NOTHING TO DO RIGHT NOW
+    this.game.debug.body(this.box, true, true);
   }
 
   createMaterials() {
