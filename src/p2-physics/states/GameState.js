@@ -39,7 +39,7 @@ class GameState extends Phaser.State {
     this.box2 = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box2);
 
-    this.rope = new Rope(this.game, 400, 110, 'chain', 10, 400, 64);
+    this.rope = new Rope(this.game, 400, 32, 'chain', 10);
     this.game.add.existing(this.rope);
 
     this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
@@ -70,8 +70,7 @@ class GameState extends Phaser.State {
   }
 
   render() {
-    //NOTHING TO DO RIGHT NOW
-    this.game.debug.spriteInfo(this.player, 32, 32);
+    //this.game.debug.spriteInfo(this.player, 32, 32);
     //this.bodyDebug = new Phaser.Physics.P2.BodyDebug(this.game, this.box);
   }
 

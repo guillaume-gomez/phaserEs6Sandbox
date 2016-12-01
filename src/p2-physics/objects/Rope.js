@@ -1,7 +1,7 @@
-class Rope extends Phaser.Sprite {
+class Rope extends Phaser.Group {
 
-  constructor(game, x, y, key, length, xAnchor, yAnchor, frame) {
-    super(game, x, y, key, frame);
+  constructor(game, xAnchor, yAnchor, key, length, frame) {
+    super(game, xAnchor, yAnchor, key, frame);
     let lastRect;
     const heightBody = 20;        //  Height for the physics body - your image height is 8px
     const widthBody = 16;         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
@@ -16,11 +16,11 @@ class Rope extends Phaser.Sprite {
       if (i % 2 === 0)
       {
         //  Add sprite (and switch frame every 2nd time)
-        newRect = game.add.sprite(x, y, key, 1);
+        newRect = this.create(x, y, key, 1);
       }
       else
       {
-        newRect = game.add.sprite(x, y, key, 0);
+        newRect = this.create(x, y, key, 0);
         lastRect.bringToTop();
       }
 
