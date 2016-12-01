@@ -1,5 +1,6 @@
 import Player from 'objects/Player';
 import Box from 'objects/Box';
+import Rope from 'objects/Rope';
 
 const PATH = "res/p2-physics/";
 
@@ -38,6 +39,9 @@ class GameState extends Phaser.State {
     this.box2 = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
     this.game.add.existing(this.box2);
 
+    this.rope = new Rope(this.game, 400, 110, 'chain', 10, 400, 64);
+    this.game.add.existing(this.rope);
+
     this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
     this.game.add.existing(this.player);
 
@@ -62,10 +66,12 @@ class GameState extends Phaser.State {
     this.game.load.image('tiles2', PATH +'tiles2.png');
     this.game.load.image('block', PATH + 'block.png');
     this.game.load.spritesheet('dude', PATH + 'dude.png', 32, 48);
+    this.game.load.spritesheet('chain', PATH + 'chain.png', 16, 26);
   }
 
   render() {
     //NOTHING TO DO RIGHT NOW
+    this.game.debug.spriteInfo(this.player, 32, 32);
     //this.bodyDebug = new Phaser.Physics.P2.BodyDebug(this.game, this.box);
   }
 
