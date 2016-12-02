@@ -45,6 +45,12 @@ class GameState extends Phaser.State {
     this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
     this.game.add.existing(this.player);
 
+    this.music = this.game.add.audio('sfx');
+    this.music.allowMultiple = false;
+    this.music.addMarker('charm', 0, 2.7);
+    this.music.play('charm');
+
+
     //this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
     //other materials are defined in each objects
 
