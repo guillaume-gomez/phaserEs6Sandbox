@@ -48,6 +48,7 @@ class GameState extends Phaser.State {
     this.music = this.game.add.audio('sfx');
     this.music.allowMultiple = false;
     this.music.addMarker('charm', 0, 2.7);
+    this.music.addMarker('curse', 4, 2.9);
     this.music.play('charm');
 
 
@@ -59,6 +60,14 @@ class GameState extends Phaser.State {
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+    this.player.body.onBeginContact.add(this.playerHit, this);
+
+  }
+
+  playerHit(body, bodyB, shapeA, shapeB, equation) {
+    if(body && body.sprite) {
+        this.music.play('curse');
+    }
   }
 
   update() {
