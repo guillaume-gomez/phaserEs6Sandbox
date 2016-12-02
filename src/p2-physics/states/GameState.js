@@ -67,6 +67,7 @@ class GameState extends Phaser.State {
     this.game.load.image('block', PATH + 'block.png');
     this.game.load.spritesheet('dude', PATH + 'dude.png', 32, 48);
     this.game.load.spritesheet('chain', PATH + 'chain.png', 16, 26);
+    this.game.load.audio('sfx', [ PATH + 'magical_horror_audiosprite.mp3', PATH + 'magical_horror_audiosprite.ogg' ]);
   }
 
   render() {
