@@ -23,7 +23,7 @@ var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
 
-var examplesName = ["first-game", "flappy-bird", "cyber-orb", "platformer", "load-tilemap", "p2-physics"];
+var examplesName = ["first-game", "flappy-bird", "cyber-orb", "platformer", "load-tilemap", "p2-physics", "map-generator"];
 
 var keepFiles = false;
 
