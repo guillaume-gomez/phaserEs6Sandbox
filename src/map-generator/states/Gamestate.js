@@ -10,6 +10,7 @@ class GameState extends Phaser.State {
   }
 
   preload() {
+    this.game.load.image('Character', PATH + 'character.png');
   }
 }
 
