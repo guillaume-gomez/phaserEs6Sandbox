@@ -6,10 +6,10 @@ class GameState extends Phaser.State {
 
   create() {
     this.game.stage.backgroundColor = "#4488AA";
-    this.character = new Character(this.game, 200, 200, 'Character', 0);
+    this.character = new Character(this.game, 50, 200, 'Character', 0);
     this.room = new Room(this.game,200,200);
-    this.game.add.existing(this.character);
     this.game.add.existing(this.room);
+    this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
   }
 
