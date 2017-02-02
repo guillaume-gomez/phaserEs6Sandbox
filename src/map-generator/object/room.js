@@ -1,4 +1,4 @@
-const Color ='#ff00ff';
+const Color = "473B3B";
 
 class Room extends Phaser.Sprite {
 
@@ -7,7 +7,7 @@ class Room extends Phaser.Sprite {
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
     bmd.ctx.rect(0,0,width,height);
-    bmd.ctx.fillStyle = '#ff0000';
+    bmd.ctx.fillStyle = Color;
     bmd.ctx.fill();
 
     super(game,width,height, bmd);
