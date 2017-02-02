@@ -7,6 +7,9 @@ class Character extends Phaser.Sprite {
   }
 
   update() {
+    this.body.velocity.x = 0;
+    this.body.velocity.y = 0;
+    
     if (this.cursors.left.isDown)
     {
         this.body.velocity.x = -200;
