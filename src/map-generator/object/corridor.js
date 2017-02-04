@@ -1,8 +1,9 @@
-const Color = "#473B3B";
+const Color = "#47FF3B";
+const Directions = ["vertical", "horizontal"];
 
 class Corridor extends Phaser.Sprite {
 
-  constructor(game, x,y, width, height) {
+  constructor(game, x,y, width, height, direction = "vertical") {
     let bmd = game.add.bitmapData(width,height);
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
@@ -20,7 +21,6 @@ class Corridor extends Phaser.Sprite {
         if (this.y > room.y + room.height) return false; // a is below b
         return true; // boxes overlap
     }
-
 }
 
 export default Corridor;

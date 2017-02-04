@@ -1,5 +1,7 @@
 import Room from './Room';
+import Corridor from './Corridor';
 
+const CorridorHeight = 50;
 const MaxRoom = 10;
 const MinRoomSize = 50;
 const MaxRoomSize = 200;
@@ -37,6 +39,17 @@ class Dungeon extends Phaser.Group {
   createRoom(room) {
     this.add(room);
   }
+
+  horizontalCorridor(game, x1, x2, y) {
+    const corridor = new Corridor(game, x1, y, (x2 - x1), CorridorHeight);
+    this.add(corridor);
+  }
+
+  VerticalCorridor(game, y1, y2, x) {
+    const corridor = new Corridor(game, x, y1, CorridorHeight, (y2 - y1));
+    this.add(corridor);
+  }
+
 
 }
 
