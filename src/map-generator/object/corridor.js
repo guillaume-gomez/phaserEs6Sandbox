@@ -4,7 +4,6 @@ const Directions = ["vertical", "horizontal"];
 class Corridor extends Phaser.Sprite {
 
   constructor(game, x,y, width, height, direction = "vertical") {
-    this.center = {x: x + (width/2) y: y+ (height/2)};
     let bmd = game.add.bitmapData(width,height);
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
@@ -13,6 +12,7 @@ class Corridor extends Phaser.Sprite {
     bmd.ctx.fill();
 
     super(game,x,y, bmd);
+    this.center = { x: x + (width/2), y: y+ (height/2)};
   }
 
     overlapRoom(room) {

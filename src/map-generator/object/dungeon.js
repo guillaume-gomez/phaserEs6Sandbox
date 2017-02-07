@@ -32,6 +32,19 @@ class Dungeon extends Phaser.Group {
       if (!failed) {
         // local function to carve out new room
         this.createRoom(newRoom);
+        const newCenter = newRoom.center;
+
+        if(this.children.length != 0) {
+          const prevCenter = this.children[this.children.length -1].center;
+          const rng = Math.random() * 2;
+          if(rng >= 1) {
+            this.horizontalCorridor(game,prevCenter.x, newCenter.x, prevCenter.y);
+            this.verticalCorridor(game, prevCenter.y, newCenter.y, newCenter.x);
+          } else {
+            this.verticalCorridor(game, prevCenter.y, newCenter.y, prevCenter.x);
+            this.horizontalCorridor(game,prevCenter.x, newCenter.x, newCenter.y);
+          }
+        }
       }
     }
   }
@@ -45,7 +58,7 @@ class Dungeon extends Phaser.Group {
     this.add(corridor);
   }
 
-  VerticalCorridor(game, y1, y2, x) {
+  verticalCorridor(game, y1, y2, x) {
     const corridor = new Corridor(game, x, y1, CorridorHeight, (y2 - y1));
     this.add(corridor);
   }
