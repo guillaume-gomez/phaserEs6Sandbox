@@ -3,6 +3,7 @@ const Color = "#473B3B";
 class Room extends Phaser.Sprite {
 
   constructor(game, x,y, width, height) {
+    this.center = {x: x + (width/2) y: y+ (height/2)};
     let bmd = game.add.bitmapData(width,height);
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
