@@ -2,6 +2,7 @@ import Room from './Room';
 import Corridor from './Corridor';
 
 const CorridorHeight = 50;
+const CorridorWidth = 50;
 const MaxRoom = 2;
 const MinRoomSize = 100;
 const MaxRoomSize = 100;
@@ -34,14 +35,15 @@ class Dungeon extends Phaser.Group {
         this.createRoom(newRoom);
         const newCenter = newRoom.center;
         if(this.rooms().length > 1) {
-          const prevCenter = this.findLastRoom(newRoom).center;
+          const prevRoom = this.findLastRoom(newRoom);
+          const prevCenter = prevRoom.center;
           const rng = Math.random() * 2;
           if(rng >= 1) {
-            this.horizontalCorridor(game,prevCenter.x, newCenter.x, prevCenter.y);
-            this.verticalCorridor(game, prevCenter.y, newCenter.y, newCenter.x);
+            this.horizontalCorridor(game, prevRoom, newRoom);
+            this.verticalCorridor(game, prevRoom, newRoom, false);
           } else {
-            this.verticalCorridor(game, prevCenter.y, newCenter.y, prevCenter.x);
-            this.horizontalCorridor(game,prevCenter.x, newCenter.x, newCenter.y);
+            this.verticalCorridor(game, prevRoom, newRoom);
+            this.horizontalCorridor(game, prevRoom, newRoom, false);
           }
         }
       }
@@ -63,19 +65,21 @@ class Dungeon extends Phaser.Group {
     this.add(room);
   }
 
-  horizontalCorridor(game, x1, x2, y) {
+  horizontalCorridor(game, prevRoom, newRoom, first = true) {
+    const x1 = Math.min(prevRoom.center.x, newRoom.center.x);
+    const x2 = Math.max(prevRoom.center.x, newRoom.center.x);
+    const y = first ? prevRoom.center.y : newRoom.center.y;
     const width = Math.max(Math.abs(x2-x1), 10);
-    const originX = Math.min(x1,x2)
-    console.log(width)
-    console.log(x1)
-    const corridor = new Corridor(game, originX, y, width, CorridorHeight);
+    const corridor = new Corridor(game, x1, y - CorridorHeight/2, width, CorridorHeight);
     this.add(corridor);
   }
 
-  verticalCorridor(game, y1, y2, x) {
+  verticalCorridor(game, prevRoom, newRoom, first = true) {
+    const y1 = Math.min(prevRoom.center.y, newRoom.center.y);
+    const y2 = Math.max(prevRoom.center.y, newRoom.center.y);
+    const x = first ? prevRoom.center.x : newRoom.center.x;
     const height = Math.max(Math.abs(y2 - y1), 10);
-    const originY = Math.min(y1,y2)
-    const corridor = new Corridor(game, x, originY, CorridorHeight, height);
+    const corridor = new Corridor(game, x - CorridorWidth/2, y1, CorridorWidth, height);
     this.add(corridor);
   }
 
