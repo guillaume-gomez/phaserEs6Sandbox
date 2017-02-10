@@ -6,6 +6,7 @@ class GameState extends Phaser.State {
 
   create() {
     this.game.stage.backgroundColor = "#4488AA";
+    this.game.world.setBounds(0, 0, 2000, 2000);
     this.character = new Character(this.game, 50, 200, 'Character', 0);
     this.dungeon = new Dungeon(this.game);
     this.game.add.existing(this.character);
