@@ -2,15 +2,15 @@ class Character extends Phaser.Sprite {
 
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame);
-    game.physics.enable(this);
-    this.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(this);
+    this.scale.setTo(0.25, 0.25);
     this.cursors = game.input.keyboard.createCursorKeys();
   }
 
   update() {
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
-    
+
     if (this.cursors.left.isDown)
     {
         this.body.velocity.x = -200;
