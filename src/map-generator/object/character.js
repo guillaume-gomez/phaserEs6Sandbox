@@ -3,6 +3,7 @@ class Character extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame);
     game.physics.enable(this);
+    this.scale.setTo(0.5, 0.5);
     this.cursors = game.input.keyboard.createCursorKeys();
   }
 
