@@ -16,3 +16,12 @@ export function overlap(box1, box2) {
     if (box1.y > box2.y + box2.height) return false; // a is below b
     return true; // boxes overlap
 }
+
+export function overlapWithDifference(box1, box2) {
+  let output = {};
+  output.x = Math.max(box1.x, box2.x);
+  output.y = Math.max(box1.y, box2.y);
+  output.width = Math.min(box1.right, box2.right) - output.x;
+  output.height = Math.min(box1.bottom, box2.bottom) - output.y;
+  return [overlap(box1, box2), output];
+}
