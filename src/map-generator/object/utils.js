@@ -8,3 +8,11 @@ export function isInside(compared, comparator) {
          rectCompared.x2 < rectComparator.x2  &&
          rectCompared.y2 < rectComparator.y2
 }
+
+export function overlap(box1, box2) {
+    if (box1.x + box1.width < box2.x) return false; // a is left of b
+    if (box1.x > box2.x + box2.width) return false; // a is right of b
+    if (box1.y + box1.height < box2.y) return false; // a is above b
+    if (box1.y > box2.y + box2.height) return false; // a is below b
+    return true; // boxes overlap
+}
