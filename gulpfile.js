@@ -34,6 +34,14 @@ function isProduction() {
     return argv.production;
 }
 
+function exampleTocompile() {
+    console.log("--------------------------")
+    if(argv.project !== undefined) {
+        console.log(examplesName)
+        examplesName = [argv.project];
+    }
+}
+
 /**
  * Logs the current build mode on the console.
  */
@@ -130,6 +138,7 @@ function build(output_file, entry_file, paths) {
 }
 
 function buildAllExamples() {
+    exampleTocompile();
     examplesName.forEach(function(name) {
         var output_file = name + ".js";
         var source_path = "./src/" + name;
