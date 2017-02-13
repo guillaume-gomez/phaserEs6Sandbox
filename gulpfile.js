@@ -36,9 +36,9 @@ function isProduction() {
 
 function exampleTocompile() {
     console.log("--------------------------")
-    if(argv.project !== undefined) {
-        console.log(examplesName)
+    if(argv.project !== undefined && examplesName.indexOf(argv.project) !== -1) {
         examplesName = [argv.project];
+        console.log(examplesName)
     }
 }
 
