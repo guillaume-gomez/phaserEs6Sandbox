@@ -23,7 +23,7 @@ var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
 
-var examplesName = ["first-game", "flappy-bird", "cyber-orb", "platformer", "load-tilemap"];
+var examplesName = ["first-game", "flappy-bird", "cyber-orb", "platformer", "load-tilemap", "p2-physics", "map-generator"];
 
 var keepFiles = false;
 
@@ -32,6 +32,14 @@ var keepFiles = false;
  */
 function isProduction() {
     return argv.production;
+}
+
+function exampleTocompile() {
+    console.log("--------------------------")
+    if(argv.project !== undefined && examplesName.indexOf(argv.project) !== -1) {
+        examplesName = [argv.project];
+        console.log(examplesName)
+    }
 }
 
 /**
@@ -130,6 +138,7 @@ function build(output_file, entry_file, paths) {
 }
 
 function buildAllExamples() {
+    exampleTocompile();
     examplesName.forEach(function(name) {
         var output_file = name + ".js";
         var source_path = "./src/" + name;

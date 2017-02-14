@@ -2,7 +2,7 @@ import GameState from 'states/GameState';
 import Boot from "states/Boot";
 import Preloader from "states/Preloader";
 import MainMenu from "states/MainMenu";
-import HowTo from "states/Howto";
+import HowTo from "states/HowTo";
 
 import { WIDTH, HEIGHT} from "Constants";
 
