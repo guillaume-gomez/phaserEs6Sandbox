@@ -1,4 +1,4 @@
-const Color = "#47FF3B";
+const Color = "#473B3B";
 const Directions = ["vertical", "horizontal"];
 
 class Corridor extends Phaser.Sprite {
