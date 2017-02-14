@@ -33,7 +33,7 @@ var LoadTilemap = function (_Phaser$Game) {
   function LoadTilemap() {
     _classCallCheck(this, LoadTilemap);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoadTilemap).call(this, 800, 600, Phaser.AUTO, 'content', null));
+    var _this = _possibleConstructorReturn(this, (LoadTilemap.__proto__ || Object.getPrototypeOf(LoadTilemap)).call(this, 800, 600, Phaser.AUTO, 'content', null));
 
     _this.transparent = true;
     _this.state.add('GameState', _GameState2.default, false);
@@ -89,7 +89,7 @@ var Car = function (_Phaser$Sprite) {
   function Car(game, x, y, key, frame) {
     _classCallCheck(this, Car);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Car).call(this, game, x, y, key, frame));
+    var _this = _possibleConstructorReturn(this, (Car.__proto__ || Object.getPrototypeOf(Car)).call(this, game, x, y, key, frame));
 
     _this.game = game;
 
@@ -173,7 +173,7 @@ var GameState = function (_Phaser$State) {
   function GameState() {
     _classCallCheck(this, GameState);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).apply(this, arguments));
   }
 
   _createClass(GameState, [{

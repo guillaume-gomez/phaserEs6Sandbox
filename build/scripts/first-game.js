@@ -43,7 +43,7 @@ var Game = function (_Phaser$Game) {
   function Game() {
     _classCallCheck(this, Game);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Game).call(this, 450, 800, Phaser.AUTO, 'content', null));
+    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, 450, 800, Phaser.AUTO, 'content', null));
 
     _this.score = 0;
     _this.state.add('GameState', _GameState2.default, false);
@@ -111,7 +111,7 @@ var Player = function (_Phaser$Sprite) {
     _classCallCheck(this, Player);
 
     //Set the players anchor point to be in the middle horizontally
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Player).call(this, game, x, y, key, frame));
+    var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, game, x, y, key, frame));
 
     _this.anchor.setTo(0.5, 1.0);
 
@@ -193,7 +193,7 @@ var ScoreText = function (_Phaser$Text) {
   function ScoreText(game, x, y, text, style) {
     _classCallCheck(this, ScoreText);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScoreText).call(this, game, x, y, text, style));
+    var _this = _possibleConstructorReturn(this, (ScoreText.__proto__ || Object.getPrototypeOf(ScoreText)).call(this, game, x, y, text, style));
 
     _this.anchor.setTo(0.5, 0.5);
     _this.align = 'center';
@@ -358,7 +358,7 @@ var GameState = function (_Phaser$State) {
   function GameState() {
     _classCallCheck(this, GameState);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).apply(this, arguments));
   }
 
   _createClass(GameState, [{

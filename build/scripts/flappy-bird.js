@@ -43,7 +43,7 @@ var FlappyBird = function (_Phaser$Game) {
   function FlappyBird() {
     _classCallCheck(this, FlappyBird);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FlappyBird).call(this, 640, 960, Phaser.AUTO, 'content', null));
+    var _this = _possibleConstructorReturn(this, (FlappyBird.__proto__ || Object.getPrototypeOf(FlappyBird)).call(this, 640, 960, Phaser.AUTO, 'content', null));
 
     _this.transparent = true;
     _this.state.add('GameState', _GameState2.default, false);
@@ -104,7 +104,7 @@ var Bird = function (_Phaser$Sprite) {
   function Bird(game, x, y, key, frame) {
     _classCallCheck(this, Bird);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Bird).call(this, game, x, y, key, frame));
+    var _this = _possibleConstructorReturn(this, (Bird.__proto__ || Object.getPrototypeOf(Bird)).call(this, game, x, y, key, frame));
 
     _this.width = _this.width / 6.5;
     _this.height = _this.height / 6.5;
@@ -427,7 +427,7 @@ var GameState = function (_Phaser$State) {
   function GameState() {
     _classCallCheck(this, GameState);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).apply(this, arguments));
   }
 
   _createClass(GameState, [{
