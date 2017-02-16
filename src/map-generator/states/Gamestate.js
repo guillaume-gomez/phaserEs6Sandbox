@@ -27,6 +27,7 @@ class GameState extends Phaser.State {
 
   preload() {
     this.game.load.image('Character', PATH + '/character.png');
+    this.game.load.image('Wall', PATH + '/wall.png');
   }
 }
 
