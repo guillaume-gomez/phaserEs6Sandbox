@@ -6,7 +6,7 @@ const CorridorHeight = 64;
 const CorridorWidth = 64;
 const MaxRoom = 2;
 const MinRoomSize = 6 * 16;
-const MaxRoomSize = 20 * 16;
+const MaxRoomSize = 8 * 16;
 
 const MapWidth = 1500;
 const MapHeight = 800;
@@ -121,9 +121,9 @@ class Dungeon extends Phaser.Group {
     }
 
     this.walls().forEach(wall => {
-      game.physics.arcade.collide(wall, this.walls(), destroyFunction);
-      game.physics.arcade.collide(wall, this.rooms(), destroyFunction);
       game.physics.arcade.collide(wall, this.corridorSprites(), destroyFunction);
+      game.physics.arcade.collide(wall, this.rooms(), destroyFunction);
+      //game.physics.arcade.collide(wall, this.walls(), destroyFunction);
     });
   }
 
