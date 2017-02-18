@@ -1,12 +1,12 @@
 import Room from './room';
 import Corridor from './corridor';
-import {isInside} from "./utils";
+import {isInside, modGrid} from "./utils";
 
-const CorridorHeight = 50;
-const CorridorWidth = 50;
+const CorridorHeight = 64;
+const CorridorWidth = 64;
 const MaxRoom = 2;
-const MinRoomSize = 150;
-const MaxRoomSize = 100;
+const MinRoomSize = 6 * 16;
+const MaxRoomSize = 20 * 16;
 
 const MapWidth = 1500;
 const MapHeight = 800;
@@ -16,10 +16,10 @@ class Dungeon extends Phaser.Group {
   constructor(game, parent, name, addToStage, enableBody, physicsBodyType) {
     super(game, parent, name, false, true, Phaser.Physics.ARCADE);
     for(let i = 0; i < MaxRoom; i++) {
-      const width = MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1);
-      const height = MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1);
-      const x = Math.random() * (MapWidth - width - 1) + 1;
-      const y = Math.random() * (MapHeight - height - 1) + 1;
+      const width = modGrid(16, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
+      const height = modGrid(16, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
+      const x = modGrid(16, Math.random() * (MapWidth - width - 1) + 1);
+      const y = modGrid(16, Math.random() * (MapHeight - height - 1) + 1);
 
       let newRoom = new Room(game, game.world, x, y, width, height);
       let failed = false;
@@ -46,8 +46,7 @@ class Dungeon extends Phaser.Group {
         }
       }
     }
-
-    //this.removeUselessWalls(game);
+    this.removeUselessWalls(game);
   }
 
   rooms(newRoom = null) {
