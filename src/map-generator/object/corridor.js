@@ -23,11 +23,17 @@ class Corridor extends Phaser.Group {
 
   addVerticalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
-     for(let i = y; i < y + height; i += WallSize) {
-      let leftWall = this.addWall(game, x - WallSize, i);
-      let rightWall = this.addWall(game, x + width, i);
+    for(let i = y; i < y + height; i += WallSize) {
+      const leftWall = this.addWall(game, x - WallSize, i);
+      const rightWall = this.addWall(game, x + width, i);
       this.add(leftWall);
       this.add(rightWall);
+    }
+    for(let j = x - WallSize; j < x + width; j += WallSize ) {
+      const topWall = this.addWall(game, j, y - WallSize);
+      const bottomWall = this.addWall(game, j, y + height);
+      this.add(topWall);
+      this.add(bottomWall);
     }
     this.add(corridorSprite);
   }
@@ -35,10 +41,16 @@ class Corridor extends Phaser.Group {
   addHorizontalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
     for(let i = x; i < x + width; i += WallSize) {
-      let upWall = this.addWall(game, i, y - WallSize);
-      let bottomWall = this.addWall(game, i, y + height);
+      const upWall = this.addWall(game, i, y - WallSize);
+      const bottomWall = this.addWall(game, i, y + height);
       this.add(upWall);
       this.add(bottomWall);
+    }
+    for(let j = y - WallSize; j < y + height; j += WallSize) {
+      const leftWall = this.addWall(game, x - WallSize, j);
+      const rightWall = this.addWall(game, x + width, j);
+      this.add(leftWall);
+      this.add(rightWall);
     }
     this.add(corridorSprite);
   }
