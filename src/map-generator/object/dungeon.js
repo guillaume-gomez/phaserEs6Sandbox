@@ -1,5 +1,5 @@
 import Room from './Room';
-import Corridor from './Corridor';
+import CorridorSprite from './CorridorSprite';
 import {isInside} from "./utils";
 
 const CorridorHeight = 50;
@@ -70,7 +70,7 @@ class Dungeon extends Phaser.Group {
     const x2 = Math.max(prevRoom.center.x, newRoom.center.x);
     const y = first ? prevRoom.center.y : newRoom.center.y;
     const width = x2 - x1;
-    const corridor = new Corridor(game, x1, y - CorridorHeight/2, width, CorridorHeight);
+    const corridor = new CorridorSprite(game, x1, y - CorridorHeight/2, width, CorridorHeight);
     this.add(corridor);
   }
 
@@ -79,7 +79,7 @@ class Dungeon extends Phaser.Group {
     const y2 = Math.max(prevRoom.center.y, newRoom.center.y);
     const x = first ? prevRoom.center.x : newRoom.center.x;
     const height = y2 - y1;
-    const corridor = new Corridor(game, x - CorridorWidth/2, y1, CorridorWidth, height);
+    const corridor = new CorridorSprite(game, x - CorridorWidth/2, y1, CorridorWidth, height);
     this.add(corridor);
   }
 

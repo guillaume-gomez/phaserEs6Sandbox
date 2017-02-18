@@ -16,18 +16,6 @@ class CorridorSprite extends Phaser.Sprite {
     this.name = "corridor";
   }
 
-  addWalls() {
-    if(direction === "vertical") {
-      
-    } else {
-
-    }
-  }
-
-  addVerticalWall() {
-    
-  }
-
   overlapRoom(room) {
       if (this.x + this.width < room.x) return false; // a is left of b
       if (this.x > room.x + room.width) return false; // a is right of b
@@ -37,4 +25,4 @@ class CorridorSprite extends Phaser.Sprite {
   }
 }
 
-export default Corridor;
+export default CorridorSprite;
