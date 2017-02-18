@@ -51,7 +51,7 @@ class Corridor extends Phaser.Group {
   }
 
   //remove useless return in anonymous function
-  getCorridorSprite() {
+  corridorSprite() {
     const corridorSprite = this.children.find(child => {return child.name === "corridorSprite"; });
     if(!corridorSprite) {
       //to avoid undefined attribute
