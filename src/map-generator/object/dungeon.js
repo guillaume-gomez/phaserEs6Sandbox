@@ -4,7 +4,7 @@ import {isInside} from "./utils";
 
 const CorridorHeight = 50;
 const CorridorWidth = 50;
-const MaxRoom = 10;
+const MaxRoom = 2;
 const MinRoomSize = 150;
 const MaxRoomSize = 100;
 
@@ -21,7 +21,7 @@ class Dungeon extends Phaser.Group {
       const x = Math.random() * (MapWidth - width - 1) + 1;
       const y = Math.random() * (MapHeight - height - 1) + 1;
 
-      let newRoom = new Room(game, x, y, width, height);
+      let newRoom = new Room(game, game.world, x, y, width, height);
       let failed = false;
       this.children.some(child => {
          failed = newRoom.overlapRoom(child);
@@ -33,10 +33,8 @@ class Dungeon extends Phaser.Group {
       if (!failed) {
         // local function to carve out new room
         this.createRoom(newRoom);
-        const newCenter = newRoom.center;
         if(this.rooms().length > 1) {
           const prevRoom = this.findLastRoom(newRoom);
-          const prevCenter = prevRoom.center;
           const rng = Math.random() * 2;
           if(rng >= 1) {
             this.horizontalCorridor(game, prevRoom, newRoom);
@@ -48,6 +46,8 @@ class Dungeon extends Phaser.Group {
         }
       }
     }
+
+    //this.removeUselessWalls(game);
   }
 
   rooms(newRoom = null) {
@@ -66,18 +66,18 @@ class Dungeon extends Phaser.Group {
   }
 
   horizontalCorridor(game, prevRoom, newRoom, first = true) {
-    const x1 = Math.min(prevRoom.center.x, newRoom.center.x);
-    const x2 = Math.max(prevRoom.center.x, newRoom.center.x);
-    const y = first ? prevRoom.center.y : newRoom.center.y;
+    const x1 = Math.min(prevRoom.borders().center.x, newRoom.borders().center.x);
+    const x2 = Math.max(prevRoom.borders().center.x, newRoom.borders().center.x);
+    const y = first ? prevRoom.borders().center.y : newRoom.borders().center.y;
     const width = x2 - x1;
     const corridor = new Corridor(game, game.world, x1, y - CorridorHeight/2, width, CorridorHeight, "horizontal");
     this.add(corridor);
   }
 
   verticalCorridor(game, prevRoom, newRoom, first = true) {
-    const y1 = Math.min(prevRoom.center.y, newRoom.center.y);
-    const y2 = Math.max(prevRoom.center.y, newRoom.center.y);
-    const x = first ? prevRoom.center.x : newRoom.center.x;
+    const y1 = Math.min(prevRoom.borders().center.y, newRoom.borders().center.y);
+    const y2 = Math.max(prevRoom.borders().center.y, newRoom.borders().center.y);
+    const x = first ? prevRoom.borders().center.x : newRoom.borders().center.x;
     const height = y2 - y1;
     const corridor = new Corridor(game, game.world, x - CorridorWidth/2, y1, CorridorWidth, height, "vertical");
     this.add(corridor);
