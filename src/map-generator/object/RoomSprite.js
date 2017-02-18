@@ -13,7 +13,6 @@ class RoomSprite extends Phaser.Sprite {
     super(game,x,y, bmd);
     this.center = {x: x + (width/2), y: y+ (height/2)};
     this.name = "RoomSprite";
-    this.alpha = 0.2;
   }
 
   overlapRoom(room) {

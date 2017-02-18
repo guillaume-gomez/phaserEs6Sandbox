@@ -1,4 +1,4 @@
-const Color = "#470000";
+const Color = "#473B3B";
 class CorridorSprite extends Phaser.Sprite {
 
   constructor(game, x,y, width, height) {
@@ -12,7 +12,6 @@ class CorridorSprite extends Phaser.Sprite {
     super(game,x,y, bmd);
     this.center = { x: x + (width/2), y: y+ (height/2)};
     this.name = "corridorSprite";
-    this.alpha = 0.2;
   }
 
   overlapRoom(room) {
