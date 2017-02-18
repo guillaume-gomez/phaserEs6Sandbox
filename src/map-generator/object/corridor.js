@@ -29,7 +29,7 @@ class Corridor extends Phaser.Group {
       this.add(leftWall);
       this.add(rightWall);
     }
-    for(let j = x - WallSize; j < x + width; j += WallSize ) {
+    for(let j = x - WallSize; j < x + width + WallSize; j += WallSize ) {
       const topWall = this.addWall(game, j, y - WallSize);
       const bottomWall = this.addWall(game, j, y + height);
       this.add(topWall);
@@ -46,7 +46,7 @@ class Corridor extends Phaser.Group {
       this.add(upWall);
       this.add(bottomWall);
     }
-    for(let j = y - WallSize; j < y + height; j += WallSize) {
+    for(let j = y - WallSize; j < y + height + WallSize; j += WallSize) {
       const leftWall = this.addWall(game, x - WallSize, j);
       const rightWall = this.addWall(game, x + width, j);
       this.add(leftWall);
