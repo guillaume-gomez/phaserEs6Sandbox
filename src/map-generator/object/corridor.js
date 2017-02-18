@@ -1,4 +1,4 @@
-import CorridorSprite from './CorridorSprite';
+import CorridorSprite from './corridorSprite';
 
 const Directions = ["vertical", "horizontal"];
 const WallSize = 16;

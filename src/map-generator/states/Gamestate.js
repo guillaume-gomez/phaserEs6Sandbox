@@ -1,5 +1,5 @@
 const PATH = "res/map-generator";
-import Character from 'object/Character';
+import Character from 'object/character';
 import Dungeon from 'object/dungeon';
 
 import {isInside} from "object/utils";

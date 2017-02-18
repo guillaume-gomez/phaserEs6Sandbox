@@ -1,5 +1,5 @@
-import Room from './Room';
-import Corridor from './Corridor';
+import Room from './room';
+import Corridor from './corridor';
 import {isInside} from "./utils";
 
 const CorridorHeight = 50;
