@@ -1,4 +1,5 @@
 import CorridorSprite from './CorridorSprite';
+
 const Directions = ["vertical", "horizontal"];
 const WallSize = 16;
 
@@ -50,9 +51,8 @@ class Corridor extends Phaser.Group {
     return wall;
   }
 
-  //remove useless return in anonymous function
   corridorSprite() {
-    const corridorSprite = this.children.find(child => {return child.name === "corridorSprite"; });
+    const corridorSprite = this.children.find(child => child.name === "corridorSprite");
     if(!corridorSprite) {
       //to avoid undefined attribute
       return {x: -1, y: -1, width:-1, height:-1};
@@ -61,7 +61,7 @@ class Corridor extends Phaser.Group {
   }
 
   walls() {
-    return this.children.filter(child => {return child.name == "colissionWall"; });
+    return this.children.filter(child => child.name == "colissionWall");
   }
 
 
