@@ -91,7 +91,7 @@ class Dungeon extends Phaser.Group {
     let collide = false;
     this.children.forEach(child => {
       if(child.name === "corridor") {
-        if(isInside(character, child.children[0])) {
+        if(isInside(character, child.getCorridorSprite())) {
           collide = true;
         }
       } else {

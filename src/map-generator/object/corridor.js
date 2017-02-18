@@ -29,12 +29,14 @@ class Corridor extends Phaser.Group {
     this.add(corridorSprite);
   }
 
-  overlapRoom(room) {
-      if (this.x + this.width < room.x) return false; // a is left of b
-      if (this.x > room.x + room.width) return false; // a is right of b
-      if (this.y + this.height < room.y) return false; // a is above b
-      if (this.y > room.y + room.height) return false; // a is below b
-      return true; // boxes overlap
+
+  getCorridorSprite() {
+    const corridorSprite = this.children.find(child => {return child.name === "corridorSprite"; });
+    if(!corridorSprite) {
+      //to avoid undefined attribute
+      return {x: -1, y: -1, width:-1, height:-1};
+    }
+    return corridorSprite;
   }
 }
 
