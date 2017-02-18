@@ -1,5 +1,6 @@
 import CorridorSprite from './CorridorSprite';
 const Directions = ["vertical", "horizontal"];
+const WallSize = 16;
 
 class Corridor extends Phaser.Group {
 
@@ -21,11 +22,23 @@ class Corridor extends Phaser.Group {
 
   addVerticalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
+     for(let i = y; i < y + height; i += WallSize) {
+      const upWall = game.add.sprite(x - WallSize, i, 'Wall');
+      const bottomWall = game.add.sprite(x + width, i, 'Wall');
+      this.add(upWall);
+      this.add(bottomWall);
+    }
     this.add(corridorSprite);
   }
 
   addHorizontalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
+    for(let i = x; i < x + width; i += WallSize) {
+      const upWall = game.add.sprite(i, y - WallSize, 'Wall');
+      const bottomWall = game.add.sprite(i, y + height, 'Wall');
+      this.add(upWall);
+      this.add(bottomWall);
+    }
     this.add(corridorSprite);
   }
 
