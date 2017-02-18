@@ -11,7 +11,7 @@ class GameState extends Phaser.State {
     this.game.world.setBounds(0, 0, 2000, 2000);
     this.character = new Character(this.game, 50, 200, 'Character', 0);
     this.dungeon = new Dungeon(this.game);
-    const roomPosition = this.dungeon.getInitialRoom().center;
+    const roomPosition = this.dungeon.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
