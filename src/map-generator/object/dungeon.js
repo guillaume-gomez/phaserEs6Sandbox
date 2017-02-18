@@ -2,14 +2,14 @@ import Room from './room';
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
 
-const CorridorHeight = 64;
-const CorridorWidth = 64;
-const MaxRoom = 2;
-const MinRoomSize = 6 * 16;
-const MaxRoomSize = 8 * 16;
+const CorridorHeight = 64 - 16;
+const CorridorWidth = 64 - 16;
+const MaxRoom = 10;
+const MinRoomSize = 2 * 32;
+const MaxRoomSize = 6 * 32;
 
-const MapWidth = 1500;
-const MapHeight = 800;
+const MapWidth = 3000;
+const MapHeight = 1000;
 
 class Dungeon extends Phaser.Group {
 
