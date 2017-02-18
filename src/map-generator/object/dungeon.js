@@ -103,6 +103,31 @@ class Dungeon extends Phaser.Group {
     return collide;
   }
 
+  walls() {
+    const arrayMultipleDim = this.children.map(child => child.walls());
+    return [].concat.apply([], arrayMultipleDim);
+  }
+
+  corridors() {
+    return this.children.filter(child => child.name === "corridor");
+  }
+
+  corridorSprites() {
+    return this.corridors().map(child => child.corridorSprite());
+  }
+
+  removeUselessWalls(game) {
+    const destroyFunction = (wall, other) => {
+      wall.kill();
+    }
+
+    this.walls().forEach(wall => {
+      game.physics.arcade.collide(wall, this.walls(), destroyFunction);
+      game.physics.arcade.collide(wall, this.rooms(), destroyFunction);
+      game.physics.arcade.collide(wall, this.corridorSprites(), destroyFunction);
+    });
+  }
+
 
 }
 
