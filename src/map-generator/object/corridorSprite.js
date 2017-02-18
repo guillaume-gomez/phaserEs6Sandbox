@@ -1,9 +1,7 @@
-const Color = "#473B3B";
-const Directions = ["vertical", "horizontal"];
-
+const Color = "#470000";
 class CorridorSprite extends Phaser.Sprite {
 
-  constructor(game, x,y, width, height, direction = "vertical") {
+  constructor(game, x,y, width, height) {
     let bmd = game.add.bitmapData(width,height);
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
@@ -13,7 +11,7 @@ class CorridorSprite extends Phaser.Sprite {
 
     super(game,x,y, bmd);
     this.center = { x: x + (width/2), y: y+ (height/2)};
-    this.name = "corridor";
+    this.name = "corridorSprite";
   }
 
   overlapRoom(room) {
