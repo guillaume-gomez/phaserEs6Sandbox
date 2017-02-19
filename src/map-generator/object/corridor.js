@@ -1,7 +1,7 @@
 import CorridorSprite from './corridorSprite';
+import {WallSize} from './constants';
 
 const Directions = ["vertical", "horizontal"];
-const WallSize = 16;
 
 class Corridor extends Phaser.Group {
 
