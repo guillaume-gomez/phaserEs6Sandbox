@@ -28,6 +28,5 @@ export function overlapWithDifference(box1, box2) {
 
 export function modGrid(modValue, value) {
   const offset = value % modValue;
-  console.log(value + (modValue - offset));
   return value + (modValue - offset);
 }
