@@ -3,8 +3,8 @@ import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
 import {WallSize} from './constants';
 
-const CorridorHeight = 64 - WallSize;
-const CorridorWidth = 64 - WallSize;
+const CorridorHeight = 80 - WallSize;
+const CorridorWidth = 80 - WallSize;
 const MaxRoom = 10;
 const MinRoomSize = 2 * WallSize * 2;
 const MaxRoomSize = 6 * WallSize * 2;
@@ -121,11 +121,28 @@ class Dungeon extends Phaser.Group {
       wall.kill();
     }
 
-    this.walls().forEach(wall => {
-      game.physics.arcade.collide(wall, this.corridorSprites(), destroyFunction);
-      game.physics.arcade.collide(wall, this.rooms(), destroyFunction);
+    this.rooms().forEach(room => {
+      this.corridors().forEach(corridor => {
+        game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
+        game.physics.arcade.collide(room.walls(), corridor.walls(), destroyFunction);
+      })
+      this.rooms().forEach(room2 => {
+        if(room !== room2) {
+          game.physics.arcade.collide(room.walls(), room2.roomSprite(), destroyFunction);
+        }
+      })
       //game.physics.arcade.collide(wall, this.walls(), destroyFunction);
     });
+
+     this.corridors().forEach(corridor => {
+        this.corridors().forEach(corridor2 => {
+          //const filtered = this.corridorSprites().filter(cor => corridor.corridorSprite() !== cor);
+          //console.log(filtered.length, this.corridorSprites().length)
+          if(corridor !== corridor2) {
+            //game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+          }
+        });
+     });
   }
 
 
