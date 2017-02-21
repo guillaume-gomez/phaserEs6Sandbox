@@ -123,15 +123,9 @@ class Dungeon extends Phaser.Group {
 
     this.rooms().forEach(room => {
       this.corridors().forEach(corridor => {
-        game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
+        //game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
         game.physics.arcade.collide(room.walls(), corridor.walls(), destroyFunction);
       })
-      this.rooms().forEach(room2 => {
-        if(room !== room2) {
-          game.physics.arcade.collide(room.walls(), room2.roomSprite(), destroyFunction);
-        }
-      })
-      //game.physics.arcade.collide(wall, this.walls(), destroyFunction);
     });
 
      this.corridors().forEach(corridor => {

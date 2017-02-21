@@ -18,7 +18,7 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.game.physics.arcade.collide(this.character, this.dungeon.walls());
+    //this.game.physics.arcade.collide(this.character, this.dungeon.walls());
     // if(!this.dungeon.collide(this.character)) {
     //   this.character.x = this.character.oldPosition.x
     //   this.character.y = this.character.oldPosition.y
