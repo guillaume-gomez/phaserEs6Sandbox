@@ -1,4 +1,4 @@
-import Cell from 'objects/Cell';
+import Cell from './Cell';
 
 class Grid extends Phaser.Group {
 
@@ -6,6 +6,7 @@ class Grid extends Phaser.Group {
     super(game);
     this.nbRow = nbRow;
     this.nbColumn = nbColumn;
+    this.opacity = 0.1
     for(let y = 0; y < nbColumn; ++y) {
       for(let x = 0; x < nbRow; ++x) {
         this.add( new Cell(game, x * cellSize + xOrigin, y * cellSize + yOrigin, cellSize, cellSize, cellColor, gridColor) );

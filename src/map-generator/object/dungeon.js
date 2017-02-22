@@ -123,8 +123,8 @@ class Dungeon extends Phaser.Group {
 
     this.rooms().forEach(room => {
       this.corridors().forEach(corridor => {
-        //game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
-        game.physics.arcade.collide(room.walls(), corridor.walls(), destroyFunction);
+        game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
+        //game.physics.arcade.collide(room.walls(), corridor.walls(), destroyFunction);
       })
     });
 
@@ -133,7 +133,7 @@ class Dungeon extends Phaser.Group {
           //const filtered = this.corridorSprites().filter(cor => corridor.corridorSprite() !== cor);
           //console.log(filtered.length, this.corridorSprites().length)
           if(corridor !== corridor2) {
-            //game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+            game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
           }
         });
      });
