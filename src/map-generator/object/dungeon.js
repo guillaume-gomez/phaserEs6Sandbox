@@ -17,6 +17,7 @@ class Dungeon extends Phaser.Group {
   constructor(game, parent, name, addToStage, enableBody, physicsBodyType) {
     super(game, parent, name, false, true, Phaser.Physics.ARCADE);
     for(let i = 0; i < MaxRoom; i++) {
+      //FIX ME  the computation does not work well
       const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
       const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
       const x = modGrid(WallSize, Math.random() * (MapWidth - width - 1) + 1);
@@ -116,22 +117,25 @@ class Dungeon extends Phaser.Group {
     return this.corridors().map(child => child.corridorSprite());
   }
 
+  roomsSprites() {
+    return this.rooms().map(child => child.roomSprite());
+  }
+
   removeUselessWalls(game) {
     const destroyFunction = (wall, other) => {
       wall.kill();
     }
 
     this.rooms().forEach(room => {
-      this.corridors().forEach(corridor => {
-        game.physics.arcade.collide(corridor.walls(), room.roomSprite(), destroyFunction);
-        //game.physics.arcade.collide(room.walls(), corridor.walls(), destroyFunction);
-      })
+      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyFunction);
+    });
+
+    this.corridors().forEach(corridor => {
+      game.physics.arcade.collide(corridor.walls(), this.roomsSprites(), destroyFunction);
     });
 
      this.corridors().forEach(corridor => {
         this.corridors().forEach(corridor2 => {
-          //const filtered = this.corridorSprites().filter(cor => corridor.corridorSprite() !== cor);
-          //console.log(filtered.length, this.corridorSprites().length)
           if(corridor !== corridor2) {
             game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
           }
