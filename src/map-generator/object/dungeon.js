@@ -3,11 +3,11 @@ import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
 import {WallSize} from './constants';
 
-const CorridorHeight = 80 - WallSize;
-const CorridorWidth = 80 - WallSize;
+const CorridorHeight = 4 * WallSize;
+const CorridorWidth = 4 * WallSize;
 const MaxRoom = 10;
-const MinRoomSize = 2 * WallSize * 2;
-const MaxRoomSize = 6 * WallSize * 2;
+const MinRoomSize = 5 * WallSize;
+const MaxRoomSize = 5 * WallSize;
 
 const MapWidth = 3000;
 const MapHeight = 1000;
