@@ -23,37 +23,37 @@ class Corridor extends Phaser.Group {
 
   addVerticalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
-    this.add(corridorSprite);
     for(let i = y; i < y + height; i += WallSize) {
-      const leftWall = this.addWall(game, x, i);
-      const rightWall = this.addWall(game, x + width - WallSize, i);
+      const leftWall = this.addWall(game, x - WallSize, i);
+      const rightWall = this.addWall(game, x + width, i);
       this.add(leftWall);
       this.add(rightWall);
     }
-    for(let j = x; j < x + width; j += WallSize ) {
-      const topWall = this.addWall(game, j, y);
-      const bottomWall = this.addWall(game, j, y + height - WallSize);
+    for(let j = x - WallSize; j < x + width + WallSize; j += WallSize ) {
+      const topWall = this.addWall(game, j, y - WallSize);
+      const bottomWall = this.addWall(game, j, y + height);
       this.add(topWall);
       this.add(bottomWall);
     }
+    this.add(corridorSprite);
   }
 
   addHorizontalWall(game, x, y, width, height) {
     const corridorSprite = new CorridorSprite(game, x, y, width, height);
-    this.add(corridorSprite);
     for(let i = x; i < x + width; i += WallSize) {
-      const upWall = this.addWall(game, i, y);
-      const bottomWall = this.addWall(game, i, y + height - WallSize);
+      const upWall = this.addWall(game, i, y - WallSize);
+      const bottomWall = this.addWall(game, i, y + height);
       this.add(upWall);
       this.add(bottomWall);
     }
-    for(let j = y; j < y + height; j += WallSize) {
-      const leftWall = this.addWall(game, x, j);
-      const rightWall = this.addWall(game, x + width - WallSize, j);
+    for(let j = y - WallSize; j < y + height + WallSize; j += WallSize) {
+      const leftWall = this.addWall(game, x - WallSize, j);
+      const rightWall = this.addWall(game, x + width, j);
       this.add(leftWall);
       this.add(rightWall);
     }
-  }
+    this.add(corridorSprite);
+}
 
   addWall(game, x, y) {
     let wall = game.add.sprite(x, y, 'Wall');

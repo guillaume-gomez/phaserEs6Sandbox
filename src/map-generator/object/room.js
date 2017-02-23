@@ -11,15 +11,15 @@ class Room extends Phaser.Group {
   createRoom(game, x, y, width, height) {
     const room = new RoomSprite(game, x, y, width, height);
     this.add(room);
-    for(let i = x; i < x + width; i += WallSize) {
-      const upWall = this.addWall(game, i, y);
-      const downWall = this.addWall(game, i, y + height - WallSize);
+    for(let i = x; i < x + width + WallSize; i += WallSize) {
+      const upWall = this.addWall(game, i, y - WallSize);
+      const downWall = this.addWall(game, i, y + height);
       this.add(upWall);
       this.add(downWall);
     }
     for(let j = y; j < y + height; j += WallSize) {
-      const leftWall = this.addWall(game, x, j);
-      const rightWall = this.addWall(game, x + width - WallSize, j);
+      const leftWall = this.addWall(game, x - WallSize, j);
+      const rightWall = this.addWall(game, x + width, j);
       this.add(leftWall);
       this.add(rightWall);
     }
