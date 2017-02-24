@@ -1,27 +1,54 @@
-const Color = "#473B3B";
+import {WallSize} from './constants';
+import RoomSprite from './roomSprite';
 
-class Room extends Phaser.Sprite {
+class Room extends Phaser.Group {
 
-  constructor(game, x,y, width, height) {
-    let bmd = game.add.bitmapData(width,height);
-    // draw to the canvas context like normal
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0,0,width,height);
-    bmd.ctx.fillStyle = Color;
-    bmd.ctx.fill();
-
-    super(game,x,y, bmd);
-    this.center = {x: x + (width/2), y: y+ (height/2)};
-    this.name = "room";
+  constructor(game, parent, x, y, width, height) {
+    super(game, parent, "room", true, true, Phaser.Physics.ARCADE);
+    this.createRoom(game, x, y, width, height);
   }
 
-    overlapRoom(room) {
-        if (this.x + this.width < room.x) return false; // a is left of b
-        if (this.x > room.x + room.width) return false; // a is right of b
-        if (this.y + this.height < room.y) return false; // a is above b
-        if (this.y > room.y + room.height) return false; // a is below b
-        return true; // boxes overlap
+  createRoom(game, x, y, width, height) {
+    const room = new RoomSprite(game, x, y, width, height);
+    this.add(room);
+    for(let i = x; i < x + width + WallSize; i += WallSize) {
+      const upWall = this.addWall(game, i, y - WallSize);
+      const downWall = this.addWall(game, i, y + height);
+      this.add(upWall);
+      this.add(downWall);
     }
+    for(let j = y; j < y + height; j += WallSize) {
+      const leftWall = this.addWall(game, x - WallSize, j);
+      const rightWall = this.addWall(game, x + width, j);
+      this.add(leftWall);
+      this.add(rightWall);
+    }
+  }
+
+  addWall(game, x, y) {
+    let wall = game.add.sprite(x, y, 'Wall');
+    wall.name = "RoomWall";
+    //wall.alpha = 0.2;
+    game.physics.enable(wall, Phaser.Physics.ARCADE);
+    wall.body.immovable = true;
+    return wall;
+  }
+
+  borders() {
+    return this.roomSprite();
+  }
+
+  walls() {
+    return this.children.filter(child => child.name === "RoomWall");
+  }
+
+  roomSprite() {
+    return this.children.find(child => child.name === "RoomSprite");
+  }
+
+  overlapRoom(room) {
+    this.roomSprite().overlapRoom(room);
+  }
 
 }
 

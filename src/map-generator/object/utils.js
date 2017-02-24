@@ -25,3 +25,8 @@ export function overlapWithDifference(box1, box2) {
   output.height = Math.min(box1.bottom, box2.bottom) - output.y;
   return [overlap(box1, box2), output];
 }
+
+export function modGrid(modValue, value) {
+  const offset = value % modValue;
+  return value + (modValue - offset);
+}

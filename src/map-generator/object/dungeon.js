@@ -1,27 +1,29 @@
-import Room from './Room';
-import Corridor from './Corridor';
-import {isInside} from "./utils";
+import Room from './room';
+import Corridor from './corridor';
+import {isInside, modGrid} from "./utils";
+import {WallSize} from './constants';
 
-const CorridorHeight = 50;
-const CorridorWidth = 50;
+const CorridorHeight = 4 * WallSize;
+const CorridorWidth = 4 * WallSize;
 const MaxRoom = 10;
-const MinRoomSize = 150;
-const MaxRoomSize = 100;
+const MinRoomSize = 5 * WallSize;
+const MaxRoomSize = 5 * WallSize;
 
-const MapWidth = 1500;
-const MapHeight = 800;
+const MapWidth = 3000;
+const MapHeight = 1000;
 
 class Dungeon extends Phaser.Group {
 
   constructor(game, parent, name, addToStage, enableBody, physicsBodyType) {
     super(game, parent, name, false, true, Phaser.Physics.ARCADE);
     for(let i = 0; i < MaxRoom; i++) {
-      const width = MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1);
-      const height = MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1);
-      const x = Math.random() * (MapWidth - width - 1) + 1;
-      const y = Math.random() * (MapHeight - height - 1) + 1;
+      //FIX ME  the computation does not work well
+      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
+      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
+      const x = modGrid(WallSize, Math.random() * (MapWidth - width - 1) + 1);
+      const y = modGrid(WallSize, Math.random() * (MapHeight - height - 1) + 1);
 
-      let newRoom = new Room(game, x, y, width, height);
+      let newRoom = new Room(game, game.world, x, y, width, height);
       let failed = false;
       this.children.some(child => {
          failed = newRoom.overlapRoom(child);
@@ -33,10 +35,8 @@ class Dungeon extends Phaser.Group {
       if (!failed) {
         // local function to carve out new room
         this.createRoom(newRoom);
-        const newCenter = newRoom.center;
         if(this.rooms().length > 1) {
           const prevRoom = this.findLastRoom(newRoom);
-          const prevCenter = prevRoom.center;
           const rng = Math.random() * 2;
           if(rng >= 1) {
             this.horizontalCorridor(game, prevRoom, newRoom);
@@ -48,6 +48,7 @@ class Dungeon extends Phaser.Group {
         }
       }
     }
+    this.removeUselessWalls(game);
   }
 
   rooms(newRoom = null) {
@@ -66,20 +67,20 @@ class Dungeon extends Phaser.Group {
   }
 
   horizontalCorridor(game, prevRoom, newRoom, first = true) {
-    const x1 = Math.min(prevRoom.center.x, newRoom.center.x);
-    const x2 = Math.max(prevRoom.center.x, newRoom.center.x);
-    const y = first ? prevRoom.center.y : newRoom.center.y;
+    const x1 = Math.min(prevRoom.borders().center.x, newRoom.borders().center.x);
+    const x2 = Math.max(prevRoom.borders().center.x, newRoom.borders().center.x);
+    const y = first ? prevRoom.borders().center.y : newRoom.borders().center.y;
     const width = x2 - x1;
-    const corridor = new Corridor(game, x1, y - CorridorHeight/2, width, CorridorHeight);
+    const corridor = new Corridor(game, game.world, x1, y - CorridorHeight/2, width, CorridorHeight, "horizontal");
     this.add(corridor);
   }
 
   verticalCorridor(game, prevRoom, newRoom, first = true) {
-    const y1 = Math.min(prevRoom.center.y, newRoom.center.y);
-    const y2 = Math.max(prevRoom.center.y, newRoom.center.y);
-    const x = first ? prevRoom.center.x : newRoom.center.x;
+    const y1 = Math.min(prevRoom.borders().center.y, newRoom.borders().center.y);
+    const y2 = Math.max(prevRoom.borders().center.y, newRoom.borders().center.y);
+    const x = first ? prevRoom.borders().center.x : newRoom.borders().center.x;
     const height = y2 - y1;
-    const corridor = new Corridor(game, x - CorridorWidth/2, y1, CorridorWidth, height);
+    const corridor = new Corridor(game, game.world, x - CorridorWidth/2, y1, CorridorWidth, height, "vertical");
     this.add(corridor);
   }
 
@@ -90,11 +91,56 @@ class Dungeon extends Phaser.Group {
   collide(character) {
     let collide = false;
     this.children.forEach(child => {
-      if(isInside(character, child)) {
-        collide = true;
+      if(child.name === "corridor") {
+        if(isInside(character, child.corridorSprite())) {
+          collide = true;
+        }
+      } else {
+        if(isInside(character, child)) {
+          collide = true;
+        }
       }
     });
     return collide;
+  }
+
+  walls() {
+    const arrayMultipleDim = this.children.map(child => child.walls());
+    return [].concat.apply([], arrayMultipleDim);
+  }
+
+  corridors() {
+    return this.children.filter(child => child.name === "corridor");
+  }
+
+  corridorSprites() {
+    return this.corridors().map(child => child.corridorSprite());
+  }
+
+  roomsSprites() {
+    return this.rooms().map(child => child.roomSprite());
+  }
+
+  removeUselessWalls(game) {
+    const destroyFunction = (wall, other) => {
+      wall.kill();
+    }
+
+    this.rooms().forEach(room => {
+      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyFunction);
+    });
+
+    this.corridors().forEach(corridor => {
+      game.physics.arcade.collide(corridor.walls(), this.roomsSprites(), destroyFunction);
+    });
+
+     this.corridors().forEach(corridor => {
+        this.corridors().forEach(corridor2 => {
+          if(corridor !== corridor2) {
+            game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+          }
+        });
+     });
   }
 
 
