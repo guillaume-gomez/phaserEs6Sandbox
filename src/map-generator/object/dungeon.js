@@ -9,7 +9,7 @@ const MaxRoom = 10;
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
 
-const MapWidth = 3000;
+const MapWidth = 1000;
 const MapHeight = 1000;
 
 class Dungeon extends Phaser.Group {
@@ -48,6 +48,7 @@ class Dungeon extends Phaser.Group {
         }
       }
     }
+    this.exportDebug();
     this.removeUselessWalls(game);
   }
 
@@ -141,6 +142,13 @@ class Dungeon extends Phaser.Group {
           }
         });
      });
+  }
+
+  exportDebug() {
+    const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.width, h: m.height};});
+    const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.width, h: m.height};});
+    console.log(JSON.stringify(roomArray));
+    console.log(JSON.stringify(corridorArray));
   }
 
 
