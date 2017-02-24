@@ -28,7 +28,7 @@ class Room extends Phaser.Group {
   addWall(game, x, y) {
     let wall = game.add.sprite(x, y, 'Wall');
     wall.name = "RoomWall";
-    wall.alpha = 0.2;
+    //wall.alpha = 0.2;
     game.physics.enable(wall, Phaser.Physics.ARCADE);
     wall.body.immovable = true;
     return wall;
