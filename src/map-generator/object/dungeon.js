@@ -9,7 +9,7 @@ const MaxRoom = 10;
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
 
-const MapWidth = 3000;
+const MapWidth = 1000;
 const MapHeight = 1000;
 
 class Dungeon extends Phaser.Group {
