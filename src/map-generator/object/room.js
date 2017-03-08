@@ -1,17 +1,10 @@
 import {WallSize} from './constants';
 import RoomSprite from './roomSprite';
 
-const types = ["nothing", "carpet"];
-
 class Room extends Phaser.Group {
 
-  constructor(game, parent, x, y, width, height, typeOfRoom = "nothing") {
+  constructor(game, parent, x, y, width, height) {
     super(game, parent, "room", true, true, Phaser.Physics.ARCADE);
-    if(!types.includes(typeOfRoom)) {
-      console.error(`In room class : ${typeOfRoom} does exist among ${types}`);
-      return  null;
-    }
-    this.typeOfRoom = typeOfRoom;
     this.createRoom(game, x, y, width, height);
   }
 
@@ -42,11 +35,7 @@ class Room extends Phaser.Group {
   }
 
   addAdditionalSprite() {
-    if(this.typeOfRoom === "carpet") {
-      //20 is the size of carpet, must be a constant
-      this.add.sprite(x + width/2 - 20, y - height /2 - 20, 'Carpet');
-    }
-    //for instance nothing to do for others case
+    // NOTHING TO DO HERE
   }
 
   borders() {
