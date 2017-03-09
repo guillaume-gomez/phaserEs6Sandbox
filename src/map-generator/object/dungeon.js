@@ -1,4 +1,5 @@
 import Room from './room';
+import RoomWithCarpet from './roomWithCarpet';
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
 import {WallSize, WorldWitdth, WorldHeight } from './constants';
@@ -21,7 +22,7 @@ class Dungeon extends Phaser.Group {
       const x = modGrid(WallSize, Math.random() * (WorldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (WorldHeight - height - 1) + 1);
 
-      let newRoom = new Room(game, game.world, x, y, width, height);
+      let newRoom = new RoomWithCarpet(game, game.world, x, y, width, height);
       let failed = false;
       this.children.some(child => {
          failed = newRoom.overlapRoom(child);
@@ -48,6 +49,8 @@ class Dungeon extends Phaser.Group {
     }
     this.exportDebug();
     this.removeUselessWalls(game);
+
+    this.addAdditionalSprite(game);
   }
 
 
@@ -152,6 +155,12 @@ class Dungeon extends Phaser.Group {
           }
         });
      });
+  }
+
+  addAdditionalSprite(game) {
+    this.rooms().forEach(room => {
+      room.addAdditionalSprite(game);
+    });
   }
 
   exportDebug() {
