@@ -7,6 +7,7 @@ import {WallSize, WorldWitdth, WorldHeight } from './constants';
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
 const MaxRoom = 10;
+//each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
 
@@ -17,8 +18,10 @@ class Dungeon extends Phaser.Group {
     for(let i = 0; i < MaxRoom; i++) {
       //FIX ME  the computation does not work well
       // TODO OFFSET WALLSIZE
-      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
-      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize + 1));
+      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
+      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
+      console.log(width)
+      console.log(height)
       const x = modGrid(WallSize, Math.random() * (WorldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (WorldHeight - height - 1) + 1);
 
