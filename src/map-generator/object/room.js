@@ -6,6 +6,8 @@ class Room extends Phaser.Group {
   constructor(game, parent, x, y, width, height) {
     super(game, parent, "room", true, true, Phaser.Physics.ARCADE);
     this.createRoom(game, x, y, width, height);
+    this.originalX = x;
+    this.originalY = y;
   }
 
   createRoom(game, x, y, width, height) {
@@ -34,7 +36,7 @@ class Room extends Phaser.Group {
     return wall;
   }
 
-  addAdditionalSprite() {
+  addAdditionalSprite(game) {
     // NOTHING TO DO HERE
   }
 
