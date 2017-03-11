@@ -6,7 +6,7 @@ import {WallSize, WorldWitdth, WorldHeight } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 10;
+const MaxRoom = 2;
 //each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
@@ -52,7 +52,7 @@ class Dungeon extends Phaser.Group {
     }
     this.exportDebug();
     this.removeUselessWalls(game);
-
+    this.sortDepth();
     this.addAdditionalSprite(game);
   }
 
@@ -164,6 +164,22 @@ class Dungeon extends Phaser.Group {
     this.rooms().forEach(room => {
       room.addAdditionalSprite(game);
     });
+  }
+
+
+  sortDepth() {
+    const compare = (a,b) => {
+      if(a.name === "room" && b.name === "room" || a.name === "corridor" &&  b.name === "corridor") {
+        return 0;
+      }
+      else if (a.name === "room" && b.name == "corridor") {
+        return 1;
+      }
+      else if (a.name === "corridor" && b.name == "room") {
+        return -1;
+      }
+    };
+    this.children.sort(compare);
   }
 
   exportDebug() {
