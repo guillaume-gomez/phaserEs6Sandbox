@@ -26,6 +26,7 @@ class GameState extends Phaser.State {
     this.game.load.image('Character', PATH + '/character.png');
     this.game.load.image('Wall', PATH + '/wall.png');
     this.game.load.image('Carpet', PATH + '/carpet.png');
+    this.game.load.image('Corner', PATH + '/corner.png');
   }
 }
 
