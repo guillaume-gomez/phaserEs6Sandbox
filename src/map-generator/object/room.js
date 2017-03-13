@@ -1,6 +1,8 @@
 import {WallSize} from './constants';
 import RoomSprite from './roomSprite';
 
+import { Wall } from "./keyUtils";
+
 class Room extends Phaser.Group {
 
   constructor(game, parent, x, y, width, height) {
@@ -28,7 +30,7 @@ class Room extends Phaser.Group {
   }
 
   addWall(game, x, y) {
-    let wall = game.add.sprite(x, y, 'Wall');
+    let wall = game.add.sprite(x, y, Wall);
     wall.name = "RoomWall";
     //wall.alpha = 0.2;
     game.physics.enable(wall, Phaser.Physics.ARCADE);

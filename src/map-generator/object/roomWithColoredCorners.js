@@ -3,6 +3,8 @@ import RoomSprite from './roomSprite';
 
 import {CornerWidth, CornerHeight, WallSize} from "./constants";
 
+import { Corner } from "./keyUtils";
+
 class RoomWithColoredCorners extends Room {
 
   addAdditionalSprite(game) {
@@ -16,7 +18,7 @@ class RoomWithColoredCorners extends Room {
   }
 
   addCorner(game, x, y) {
-    const corner = game.add.sprite(x, y, 'Corner');
+    const corner = game.add.sprite(x, y, Corner);
     this.add(corner);
   }
 }
