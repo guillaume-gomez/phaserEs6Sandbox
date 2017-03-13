@@ -1,6 +1,9 @@
 const PATH = "res/map-generator";
 import Character from 'object/character';
 import Dungeon from 'object/dungeon';
+import Room from 'object/room';
+import RoomWithCarpet from 'object/roomWithCarpet';
+import RoomWithColoredCorners from "object/roomWithColoredCorners";
 
 import { WorldWitdth, WorldHeight } from "object/constants";
 import {isInside} from "object/utils";
@@ -11,7 +14,7 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Character(this.game, 50, 200, 'Character', 0);
-    this.dungeon = new Dungeon(this.game);
+    this.dungeon = new Dungeon(this.game, this.game.world, [Room, RoomWithCarpet, RoomWithColoredCorners]);
     const roomPosition = this.dungeon.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);

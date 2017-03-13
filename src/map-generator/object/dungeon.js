@@ -1,6 +1,3 @@
-import Room from './room';
-import RoomWithCarpet from './roomWithCarpet';
-import RoomWithColoredCorners from "./RoomWithColoredCorners";
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
 import {WallSize, WorldWitdth, WorldHeight } from './constants';
@@ -14,8 +11,8 @@ const MaxRoomSize = 5 * WallSize;
 
 class Dungeon extends Phaser.Group {
 
-  constructor(game, parent, name, addToStage, enableBody, physicsBodyType) {
-    super(game, parent, name, false, true, Phaser.Physics.ARCADE);
+  constructor(game, parent, arrayOfRoom) {
+    super(game, parent, "dungeon", false, true, Phaser.Physics.ARCADE);
     for(let i = 0; i < MaxRoom; i++) {
       //FIX ME  the computation does not work well
       // TODO OFFSET WALLSIZE
@@ -26,7 +23,8 @@ class Dungeon extends Phaser.Group {
       const x = modGrid(WallSize, Math.random() * (WorldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (WorldHeight - height - 1) + 1);
 
-      let newRoom = new RoomWithColoredCorners(game, game.world, x, y, width, height);
+      const indexChosen = Math.trunc(Math.random() * arrayOfRoom.length);
+      let newRoom = Reflect.construct(arrayOfRoom[indexChosen],[game, game.world, x, y, width, height]);
       let failed = false;
       this.children.some(child => {
          failed = newRoom.overlapRoom(child);
