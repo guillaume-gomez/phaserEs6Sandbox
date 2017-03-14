@@ -1,9 +1,9 @@
 import Room from "./room";
 import RoomSprite from './roomSprite';
 
-import {CornerWidth, CornerHeight, WallSize} from "./constants";
+import {CornerWidth, CornerHeight, WallSize} from "../constants/constants";
 
-import { Corner } from "./keyUtils";
+import { Corner } from "../constants/keyUtils";
 
 class RoomWithColoredCorners extends Room {
 

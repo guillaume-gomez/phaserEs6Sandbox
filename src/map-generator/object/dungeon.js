@@ -1,6 +1,6 @@
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
-import {WallSize, WorldWitdth, WorldHeight } from './constants';
+import {WallSize, WorldWitdth, WorldHeight } from '../constants/constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;

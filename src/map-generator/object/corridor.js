@@ -1,7 +1,7 @@
 import CorridorSprite from './corridorSprite';
-import {WallSize} from './constants';
+import {WallSize} from '../constants/constants';
 
-import { Wall } from "./keyUtils";
+import { Wall } from "../constants/keyUtils";
 
 const Directions = ["vertical", "horizontal"];
 

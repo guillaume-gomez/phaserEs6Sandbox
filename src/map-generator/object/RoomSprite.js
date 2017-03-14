@@ -1,4 +1,4 @@
-import {Color} from "./constants.js";
+import {Color} from "../constants/constants.js";
 
 class RoomSprite extends Phaser.Sprite {
 

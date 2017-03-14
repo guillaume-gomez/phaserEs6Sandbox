@@ -5,8 +5,8 @@ import Room from 'object/room';
 import RoomWithCarpet from 'object/roomWithCarpet';
 import RoomWithColoredCorners from "object/roomWithColoredCorners";
 
-import { WorldWitdth, WorldHeight } from "object/constants";
-import { Character, Wall, Carpet, Corner } from "object/keyUtils";
+import { WorldWitdth, WorldHeight } from "constants/constants";
+import { Character, Wall, Carpet, Corner } from "constants/keyUtils";
 import {isInside} from "object/utils";
 
 class GameState extends Phaser.State {

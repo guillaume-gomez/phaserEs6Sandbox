@@ -1,7 +1,7 @@
-import {WallSize} from './constants';
+import {WallSize} from '../constants/constants';
 import RoomSprite from './roomSprite';
 
-import { Wall } from "./keyUtils";
+import { Wall } from "../constants/keyUtils";
 
 class Room extends Phaser.Group {
 

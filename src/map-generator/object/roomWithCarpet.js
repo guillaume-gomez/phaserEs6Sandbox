@@ -1,9 +1,9 @@
 import Room from "./room";
 import RoomSprite from './roomSprite';
 
-import {CarpetWidth, CarpetHeight, WallSize} from "./constants";
+import {CarpetWidth, CarpetHeight, WallSize} from "../constants/constants";
 
-import { Carpet } from "./keyUtils";
+import { Carpet } from "../constants/keyUtils";
 
 class RoomWithCarpet extends Room {
 
