@@ -1,13 +1,12 @@
 const PATH = "res/map-generator";
 import Hero from 'object/character';
-import Dungeon from 'object/dungeon';
-import Room from 'object/room';
+import Dungeon from 'lib/dungeon';
+import Room from 'lib/room';
 import RoomWithCarpet from 'object/roomWithCarpet';
 import RoomWithColoredCorners from "object/roomWithColoredCorners";
 
 import { WorldWitdth, WorldHeight } from "constants/constants";
 import { Character, Wall, Carpet, Corner } from "constants/keyUtils";
-import {isInside} from "object/utils";
 
 class GameState extends Phaser.State {
 

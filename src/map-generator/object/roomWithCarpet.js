@@ -1,5 +1,4 @@
-import Room from "./room";
-import RoomSprite from './roomSprite';
+import Room from "../lib/room";
 
 import {CarpetWidth, CarpetHeight, WallSize} from "../constants/constants";
 
