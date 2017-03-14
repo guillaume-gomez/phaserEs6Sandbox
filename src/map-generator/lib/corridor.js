@@ -1,5 +1,5 @@
 import CorridorSprite from './corridorSprite';
-import {WallSize} from '../constants/constants';
+import {WallSize} from './constants';
 
 import { Wall } from "../constants/keyUtils";
 

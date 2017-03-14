@@ -1,4 +1,4 @@
-import {WallSize} from '../constants/constants';
+import {WallSize} from './constants';
 import RoomSprite from './roomSprite';
 
 import { Wall } from "../constants/keyUtils";
