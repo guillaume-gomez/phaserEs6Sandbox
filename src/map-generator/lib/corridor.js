@@ -1,7 +1,6 @@
 import CorridorSprite from './corridorSprite';
 import {WallSize} from './constants';
-
-import { Wall } from "../constants/keyUtils";
+import Wall from "./Wall";
 
 const Directions = ["vertical", "horizontal"];
 
@@ -59,10 +58,7 @@ class Corridor extends Phaser.Group {
 }
 
   addWall(game, x, y) {
-    let wall = game.add.sprite(x, y, Wall);
-    wall.name = "colissionWall";
-    game.physics.enable(wall, Phaser.Physics.ARCADE);
-    wall.body.immovable = true;
+    let wall = new Wall(game, x, y, "colissionWall");
     return wall;
   }
 
