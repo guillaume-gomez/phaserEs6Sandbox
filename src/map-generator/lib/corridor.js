@@ -2,6 +2,8 @@ import CorridorSprite from './corridorSprite';
 import {WallSize} from './constants';
 import Wall from "./Wall";
 
+const WallName = "ColissionWall";
+const SpriteName = "CorridorSprite";
 const Directions = ["vertical", "horizontal"];
 
 class Corridor extends Phaser.Group {
@@ -58,12 +60,12 @@ class Corridor extends Phaser.Group {
 }
 
   addWall(game, x, y) {
-    let wall = new Wall(game, x, y, "colissionWall");
+    let wall = new Wall(game, x, y, WallName);
     return wall;
   }
 
   corridorSprite() {
-    const corridorSprite = this.children.find(child => child.name === "corridorSprite");
+    const corridorSprite = this.children.find(child => child.name === SpriteName);
     if(!corridorSprite) {
       //to avoid undefined attribute
       return {x: -1, y: -1, width:-1, height:-1};
@@ -72,7 +74,7 @@ class Corridor extends Phaser.Group {
   }
 
   walls() {
-    return this.children.filter(child => child.name == "colissionWall");
+    return this.children.filter(child => child.name === WallName);
   }
 
 
