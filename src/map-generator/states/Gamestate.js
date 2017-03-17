@@ -6,7 +6,7 @@ import RoomWithCarpet from 'object/roomWithCarpet';
 import RoomWithColoredCorners from "object/roomWithColoredCorners";
 
 import { WorldWitdth, WorldHeight } from "constants/constants";
-import { Character, Wall, Carpet, Corner } from "constants/keyUtils";
+import { Character, Carpet, Corner } from "constants/keyUtils";
 
 class GameState extends Phaser.State {
 
@@ -27,7 +27,6 @@ class GameState extends Phaser.State {
 
   preload() {
     this.game.load.image(Character, PATH + '/character.png');
-    this.game.load.image(Wall, PATH + '/wall.png');
     this.game.load.image(Carpet, PATH + '/carpet.png');
     this.game.load.image(Corner, PATH + '/corner.png');
   }
