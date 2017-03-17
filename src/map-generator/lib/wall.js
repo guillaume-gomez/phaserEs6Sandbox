@@ -1,4 +1,4 @@
-import {WallSize} from './constants';
+import {WallSize, WallColor} from './constants';
 
 class Wall extends Phaser.Sprite {
 
@@ -7,7 +7,7 @@ class Wall extends Phaser.Sprite {
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
     bmd.ctx.rect(0, 0, WallSize, WallSize);
-    bmd.ctx.fillStyle = "#00ff00";
+    bmd.ctx.fillStyle = WallColor;
     bmd.ctx.fill();
 
     super(game,x,y, bmd);
