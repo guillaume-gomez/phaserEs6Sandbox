@@ -1,12 +1,9 @@
 import CorridorSprite from './corridorSprite';
-import {WallSize} from './constants';
+import {WallSize, Vertical, Horizontal, Directions} from './constants';
 import Wall from "./Wall";
 
 const WallName = "ColissionWall";
 const SpriteName = "CorridorSprite";
-const Vertical = "vertical";
-const Horizontal = "horizontal"
-const Directions = [Vertical, Horizontal];
 
 class Corridor extends Phaser.Group {
 

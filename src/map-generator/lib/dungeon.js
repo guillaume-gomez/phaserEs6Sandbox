@@ -1,6 +1,6 @@
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
-import {WallSize, WorldWitdth, WorldHeight } from './constants';
+import {WallSize, WorldWitdth, WorldHeight, Horizontal, Vertical } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
@@ -87,7 +87,7 @@ class Dungeon extends Phaser.Group {
     const x2 = Math.max(prevRoom.borders().center.x, newRoom.borders().center.x);
     const y = first ? prevRoom.borders().center.y : newRoom.borders().center.y;
     const width = x2 - x1;
-    const corridor = new Corridor(game, game.world, x1, y - CorridorHeight/2, width, CorridorHeight, "horizontal");
+    const corridor = new Corridor(game, game.world, x1, y - CorridorHeight/2, width, CorridorHeight, Horizontal);
     this.add(corridor);
   }
 
@@ -96,7 +96,7 @@ class Dungeon extends Phaser.Group {
     const y2 = Math.max(prevRoom.borders().center.y, newRoom.borders().center.y);
     const x = first ? prevRoom.borders().center.x : newRoom.borders().center.x;
     const height = y2 - y1;
-    const corridor = new Corridor(game, game.world, x - CorridorWidth/2, y1, CorridorWidth, height, "vertical");
+    const corridor = new Corridor(game, game.world, x - CorridorWidth/2, y1, CorridorWidth, height, Vertical);
     this.add(corridor);
   }
 
