@@ -4,7 +4,9 @@ import Wall from "./Wall";
 
 const WallName = "ColissionWall";
 const SpriteName = "CorridorSprite";
-const Directions = ["vertical", "horizontal"];
+const Vertical = "vertical";
+const Horizontal = "horizontal"
+const Directions = [Vertical, Horizontal];
 
 class Corridor extends Phaser.Group {
 
@@ -18,7 +20,7 @@ class Corridor extends Phaser.Group {
   }
 
   addWalls(game, x,y, width, height) {
-    if(this.direction === "vertical") {
+    if(this.direction === Vertical) {
       this.addVerticalWall(game, x, y, width, height);
     } else {
       this.addHorizontalWall(game, x, y, width, height);
