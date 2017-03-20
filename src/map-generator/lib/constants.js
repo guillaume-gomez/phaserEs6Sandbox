@@ -5,6 +5,3 @@ export const WallSize = 16;
 export const Vertical = "vertical";
 export const Horizontal = "horizontal"
 export const Directions = [Vertical, Horizontal];
-
-export const WorldWitdth = 2000;
-export const WorldHeight = 2000;

@@ -14,7 +14,7 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Hero(this.game, 50, 200, Character, 0);
-    this.dungeon = new Dungeon(this.game, this.game.world, [Room, RoomWithCarpet, RoomWithColoredCorners]);
+    this.dungeon = new Dungeon(this.game, this.game.world, WorldWitdth, WorldHeight, [Room, RoomWithCarpet, RoomWithColoredCorners]);
     const roomPosition = this.dungeon.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);
