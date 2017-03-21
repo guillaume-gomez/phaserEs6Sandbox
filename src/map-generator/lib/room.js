@@ -1,6 +1,6 @@
 import {WallSize} from './constants';
 import RoomSprite from './roomSprite';
-import Wall from './Wall';
+import Wall from './wall';
 
 const WallName = "RoomWall";
 const SpriteName = "RoomSprite";
