@@ -1,6 +1,6 @@
 import CorridorSprite from './corridorSprite';
 import {WallSize, Vertical, Horizontal, Directions} from './constants';
-import Wall from "./Wall";
+import Wall from "./wall";
 
 const WallName = "ColissionWall";
 const SpriteName = "CorridorSprite";
