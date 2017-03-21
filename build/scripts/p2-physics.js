@@ -46,7 +46,53 @@ var P2Physics = function (_Phaser$Game) {
 
 new P2Physics();
 
-},{"states/GameState":3}],2:[function(require,module,exports){
+},{"states/GameState":5}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Box = function (_Phaser$Sprite) {
+  _inherits(Box, _Phaser$Sprite);
+
+  function Box(game, x, y, key, frame, material) {
+    _classCallCheck(this, Box);
+
+    var _this = _possibleConstructorReturn(this, (Box.__proto__ || Object.getPrototypeOf(Box)).call(this, game, x, y, key, frame));
+
+    game.physics.p2.enable(_this);
+    //const boxMaterial = game.physics.p2.createMaterial('worldMaterial');
+    _this.body.mass = 100;
+    _this.body.setMaterial(material);
+
+    return _this;
+  }
+
+  return Box;
+}(Phaser.Sprite);
+
+exports.default = Box;
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -84,7 +130,7 @@ function _inherits(subClass, superClass) {
 var Player = function (_Phaser$Sprite) {
     _inherits(Player, _Phaser$Sprite);
 
-    function Player(game, x, y, key, frame) {
+    function Player(game, x, y, key, frame, material) {
         _classCallCheck(this, Player);
 
         var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, game, x, y, key, frame));
@@ -97,9 +143,8 @@ var Player = function (_Phaser$Sprite) {
         _this.animations.add('right', [5, 6, 7, 8], 10, true);
 
         game.physics.p2.enable(_this);
-
         _this.body.fixedRotation = true;
-        //this.body.setMaterial(characterMaterial);
+        _this.body.setMaterial(material);
         return _this;
     }
 
@@ -136,7 +181,7 @@ var Player = function (_Phaser$Sprite) {
                 }
             }
 
-            if (jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump(game)) {
+            if ((jumpButton.isDown || cursors.up.isDown) && game.time.now > this.jumpTimer && this.checkIfCanJump(game)) {
                 this.body.moveUp(300);
                 this.jumpTimer = game.time.now + 750;
             }
@@ -166,7 +211,85 @@ var Player = function (_Phaser$Sprite) {
 
 exports.default = Player;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Rope = function (_Phaser$Group) {
+  _inherits(Rope, _Phaser$Group);
+
+  function Rope(game, xAnchor, yAnchor, key, length, frame) {
+    _classCallCheck(this, Rope);
+
+    var _this = _possibleConstructorReturn(this, (Rope.__proto__ || Object.getPrototypeOf(Rope)).call(this, game, xAnchor, yAnchor, key, frame));
+
+    var lastRect = void 0;
+    var heightBody = 20; //  Height for the physics body - your image height is 8px
+    var widthBody = 16; //  This is the width for the physics body. If too small the rectangles will get scrambled together.
+    var maxForce = 20000; //  The force that holds the rectangles together.
+
+    for (var i = 0; i <= length; i++) {
+      var x = xAnchor; //  All rects are on the same x position
+      var y = yAnchor + i * heightBody; //  Every new rect is positioned below the last
+      var newRect = null;
+
+      if (i % 2 === 0) {
+        //  Add sprite (and switch frame every 2nd time)
+        newRect = _this.create(x, y, key, 1);
+      } else {
+        newRect = _this.create(x, y, key, 0);
+        lastRect.bringToTop();
+      }
+
+      //  Enable physicsbody
+      game.physics.p2.enable(newRect, false);
+
+      //  Set custom rectangle
+      newRect.body.setRectangle(widthBody, heightBody);
+
+      if (i === 0) {
+        newRect.body.static = true;
+      } else {
+        //  Anchor the first one created
+        newRect.body.velocity.x = 400; //  Give it a push :) just for fun
+        newRect.body.mass = length / i; //  Reduce mass for evey rope element
+      }
+      //  After the first rectangle is created we can add the constraint
+      if (lastRect) {
+        game.physics.p2.createRevoluteConstraint(newRect, [0, -10], lastRect, [0, 10], maxForce);
+      }
+      lastRect = newRect;
+    }
+    return _this;
+  }
+
+  return Rope;
+}(Phaser.Group);
+
+exports.default = Rope;
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -186,6 +309,14 @@ var _createClass = function () {
 var _Player = require('objects/Player');
 
 var _Player2 = _interopRequireDefault(_Player);
+
+var _Box = require('objects/Box');
+
+var _Box2 = _interopRequireDefault(_Box);
+
+var _Rope = require('objects/Rope');
+
+var _Rope2 = _interopRequireDefault(_Rope);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -248,24 +379,41 @@ var GameState = function (_Phaser$State) {
       this.game.physics.p2.restitution = 0.5;
       this.game.physics.p2.gravity.y = 300;
 
-      this.player = new _Player2.default(this.game, 100, 200, 'dude');
+      this.createMaterials();
+      this.box = new _Box2.default(this.game, 500, 400 - 95, 'block', 0, this.boxMaterial);
+      this.game.add.existing(this.box);
+
+      this.box2 = new _Box2.default(this.game, 500, 400, 'block', 0, this.boxMaterial);
+      this.game.add.existing(this.box2);
+
+      this.rope = new _Rope2.default(this.game, 400, 32, 'chain', 10);
+      this.game.add.existing(this.rope);
+
+      this.player = new _Player2.default(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
       this.game.add.existing(this.player);
 
-      this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-      this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial', this.player.body);
-      this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+      this.music = this.game.add.audio('sfx');
+      this.music.allowMultiple = false;
+      this.music.addMarker('charm', 0, 2.7);
+      this.music.addMarker('curse', 4, 2.9);
+      this.music.play('charm');
 
-      this.box = this.game.add.sprite(500, 400, 'block');
-      this.game.physics.p2.enable(this.box);
-      this.box.body.mass = 6;
-      this.box.body.setMaterial(this.boxMaterial);
-
-      this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+      //this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+      //other materials are defined in each objects
 
       this.game.camera.follow(this.player);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
       this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      this.player.body.onBeginContact.add(this.playerHit, this);
+    }
+  }, {
+    key: 'playerHit',
+    value: function playerHit(body, bodyB, shapeA, shapeB, equation) {
+      if (body && body.sprite) {
+        this.music.play('curse');
+      }
     }
   }, {
     key: 'update',
@@ -281,11 +429,21 @@ var GameState = function (_Phaser$State) {
       this.game.load.image('tiles2', PATH + 'tiles2.png');
       this.game.load.image('block', PATH + 'block.png');
       this.game.load.spritesheet('dude', PATH + 'dude.png', 32, 48);
+      this.game.load.spritesheet('chain', PATH + 'chain.png', 16, 26);
+      this.game.load.audio('sfx', [PATH + 'magical_horror_audiosprite.mp3', PATH + 'magical_horror_audiosprite.ogg']);
     }
   }, {
     key: 'render',
     value: function render() {
-      //NOTHING TO DO RIGHT NOW
+      //this.game.debug.spriteInfo(this.player, 32, 32);
+      //this.bodyDebug = new Phaser.Physics.P2.BodyDebug(this.game, this.box);
+    }
+  }, {
+    key: 'createMaterials',
+    value: function createMaterials() {
+      this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+      this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial');
+      this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
     }
   }]);
 
@@ -294,5 +452,5 @@ var GameState = function (_Phaser$State) {
 
 exports.default = GameState;
 
-},{"objects/Player":2}]},{},[1])
+},{"objects/Box":2,"objects/Player":3,"objects/Rope":4}]},{},[1])
 //# sourceMappingURL=p2-physics.js.map
