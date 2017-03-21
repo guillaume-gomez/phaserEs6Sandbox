@@ -1,4 +1,6 @@
 import Player from 'objects/Player';
+import Box from 'objects/Box';
+import Rope from 'objects/Rope';
 
 const PATH = "res/p2-physics/";
 
@@ -30,26 +32,42 @@ class GameState extends Phaser.State {
     this.game.physics.p2.restitution = 0.5;
     this.game.physics.p2.gravity.y = 300;
 
+    this.createMaterials();
+    this.box = new Box(this.game, 500, 400-95, 'block', 0, this.boxMaterial);
+    this.game.add.existing(this.box);
 
-    this.player = new Player(this.game, 100, 200, 'dude');
+    this.box2 = new Box(this.game, 500, 400, 'block', 0, this.boxMaterial);
+    this.game.add.existing(this.box2);
+
+    this.rope = new Rope(this.game, 400, 32, 'chain', 10);
+    this.game.add.existing(this.rope);
+
+    this.player = new Player(this.game, 100, 200, 'dude', 0, this.spriteMaterial);
     this.game.add.existing(this.player);
 
-    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-    this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial', this.player.body);
-    this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    this.music = this.game.add.audio('sfx');
+    this.music.allowMultiple = false;
+    this.music.addMarker('charm', 0, 2.7);
+    this.music.addMarker('curse', 4, 2.9);
+    this.music.play('charm');
 
-    this.box = this.game.add.sprite(500, 400, 'block');
-    this.game.physics.p2.enable(this.box);
-    this.box.body.mass = 6;
-    this.box.body.setMaterial(this.boxMaterial);
 
-    this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+    //this.game.physics.p2.setWorldMaterial(this.worldMaterial, true, true, true, true);
+    //other materials are defined in each objects
 
     this.game.camera.follow(this.player);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+    this.player.body.onBeginContact.add(this.playerHit, this);
+
+  }
+
+  playerHit(body, bodyB, shapeA, shapeB, equation) {
+    if(body && body.sprite) {
+        this.music.play('curse');
+    }
   }
 
   update() {
@@ -63,11 +81,21 @@ class GameState extends Phaser.State {
     this.game.load.image('tiles2', PATH +'tiles2.png');
     this.game.load.image('block', PATH + 'block.png');
     this.game.load.spritesheet('dude', PATH + 'dude.png', 32, 48);
+    this.game.load.spritesheet('chain', PATH + 'chain.png', 16, 26);
+    this.game.load.audio('sfx', [ PATH + 'magical_horror_audiosprite.mp3', PATH + 'magical_horror_audiosprite.ogg' ]);
   }
 
   render() {
-    //NOTHING TO DO RIGHT NOW
+    //this.game.debug.spriteInfo(this.player, 32, 32);
+    //this.bodyDebug = new Phaser.Physics.P2.BodyDebug(this.game, this.box);
   }
+
+  createMaterials() {
+    this.worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+    this.spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial');
+    this.boxMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+  }
+
 }
 
 export default GameState;

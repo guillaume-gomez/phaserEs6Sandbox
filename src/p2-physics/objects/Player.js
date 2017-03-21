@@ -1,6 +1,6 @@
 class Player extends Phaser.Sprite {
 
-  constructor(game, x, y, key, frame) {
+  constructor(game, x, y, key, frame, material) {
     super(game, x, y, key, frame);
     this.facing = "left";
     this.jumpTimer = 0;
@@ -10,9 +10,8 @@ class Player extends Phaser.Sprite {
     this.animations.add('right', [5, 6, 7, 8], 10, true);
 
     game.physics.p2.enable(this);
-    
     this.body.fixedRotation = true;
-    //this.body.setMaterial(characterMaterial);
+    this.body.setMaterial(material);
   }
 
   handleMove(cursors, jumpButton, game) {
@@ -57,7 +56,7 @@ class Player extends Phaser.Sprite {
         }
     }
     
-    if (jumpButton.isDown && game.time.now > this.jumpTimer && this.checkIfCanJump(game))
+    if ((jumpButton.isDown || cursors.up.isDown) && game.time.now > this.jumpTimer && this.checkIfCanJump(game))
     {
       this.body.moveUp(300);
       this.jumpTimer = game.time.now + 750;
@@ -84,6 +83,7 @@ class Player extends Phaser.Sprite {
       return result;
 
   }
+
 }
 
 export default Player;
