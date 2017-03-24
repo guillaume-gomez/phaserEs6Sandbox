@@ -13,6 +13,21 @@ class Dungeon extends Phaser.Group {
 
   constructor(game, parent, worldWitdth, worldHeight, arrayOfRoom) {
     super(game, parent, "dungeon", false, true, Phaser.Physics.ARCADE);
+    this.worldWitdth = worldWitdth;
+    this.worldHeight = worldHeight;
+    this.arrayOfRoom = arrayOfRoom;
+    this.generateLevel(game, this.randomGeneration.bind(this));
+  }
+
+  generateLevel(game, generationFunction) {
+    generationFunction(game);
+    this.exportDebug();
+    this.removeUselessWalls(game);
+    this.sortDepth();
+    this.addAdditionalSprite(game);
+  }
+
+  randomGeneration(game) {
     for(let i = 0; i < MaxRoom; i++) {
       //FIX ME  the computation does not work well
       // TODO OFFSET WALLSIZE
@@ -20,11 +35,11 @@ class Dungeon extends Phaser.Group {
       const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
       console.log(width)
       console.log(height)
-      const x = modGrid(WallSize, Math.random() * (worldWitdth - width - 1) + 1);
-      const y = modGrid(WallSize, Math.random() * (worldHeight - height - 1) + 1);
+      const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
+      const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
 
-      const indexChosen = Math.trunc(Math.random() * arrayOfRoom.length);
-      let newRoom = Reflect.construct(arrayOfRoom[indexChosen],[game, game.world, x, y, width, height]);
+      const indexChosen = Math.trunc(Math.random() * this.arrayOfRoom.length);
+      let newRoom = Reflect.construct(this.arrayOfRoom[indexChosen],[game, game.world, x, y, width, height]);
       let failed = false;
       this.children.some(child => {
          failed = newRoom.overlapRoom(child);
@@ -49,12 +64,7 @@ class Dungeon extends Phaser.Group {
         }
       }
     }
-    this.exportDebug();
-    this.removeUselessWalls(game);
-    this.sortDepth();
-    this.addAdditionalSprite(game);
   }
-
 
   import(game, rooms, corridors) {
     rooms.forEach(room => {
