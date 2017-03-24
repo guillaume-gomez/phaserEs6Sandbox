@@ -4,7 +4,7 @@ import {WallSize, Horizontal, Vertical } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 10;
+const MaxRoom = 3;
 //each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
@@ -66,9 +66,16 @@ class Dungeon extends Phaser.Group {
     }
   }
 
+   importFromJson(game) {
+     this.import( game,
+                  [{"x":1376,"y":384,"w":128,"h":128},{"x":1376,"y":816,"w":128,"h":128}],
+                  [{"x":1424,"y":400,"w":272,"h":96,"direction":"horizontal"},{"x":1392,"y":432,"w":96,"h":464,"direction":"vertical"}]
+                );
+   }
+
   import(game, rooms, corridors) {
     rooms.forEach(room => {
-      const newRoom = new Room(game, game.world, room.x, room.y, room.w, room.h);
+      const newRoom = Reflect.construct(this.arrayOfRoom[0],[game, game.world, room.x, room.y, room.w, room.h]);
       this.createRoom(newRoom);
     });
     corridors.forEach(corridor => {
