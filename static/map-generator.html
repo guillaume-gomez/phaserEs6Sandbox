@@ -10,7 +10,7 @@
   <script type="text/javascript">
     function submitFile() {
       var text1 = document.getElementById('import').value;
-      console.error(text1)
+      this.game.importFromJson(text1);
     }
 
   </script>

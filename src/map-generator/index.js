@@ -7,6 +7,11 @@ class MapGenerator extends Phaser.Game {
     this.state.add('GameState', GameState, false);
     this.state.start('GameState');
   }
+
+  importFromJson(JSONData)
+  {
+     this.state.start('GameState',true, false, JSONData);
+  }
 }
 
-new MapGenerator();
+window.game = new MapGenerator();
