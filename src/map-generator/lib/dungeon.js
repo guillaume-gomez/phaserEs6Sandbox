@@ -87,6 +87,7 @@ class Dungeon extends Phaser.Group {
       });
       if (!roomSelected) {
         console.error(`"${roomName}" is unknonwn amoung theses classes: [${arrayOfRoom.map((t) => { return t.name;})} ]`);
+        return arrayOfRoom[0];
       }
       return roomSelected;
     };
