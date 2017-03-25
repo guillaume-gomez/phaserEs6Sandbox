@@ -82,9 +82,13 @@ class Dungeon extends Phaser.Group {
 
   import(game, rooms, corridors) {
     const findTypeOfRoom = (arrayOfRoom, roomName) => {
-      return arrayOfRoom.find(room => {
+      const roomSelected = arrayOfRoom.find(room => {
         return room.name === roomName;
       });
+      if (!roomSelected) {
+        console.error(`"${roomName}" is unknonwn amoung theses classes: [${arrayOfRoom.map((t) => { return t.name;})} ]`);
+      }
+      return roomSelected;
     };
 
     rooms.forEach(room => {
