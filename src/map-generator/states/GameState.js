@@ -10,11 +10,25 @@ import { Character, Carpet, Corner } from "constants/keyUtils";
 
 class GameState extends Phaser.State {
 
+  constructor() {
+    super();
+    this.useJsonData = false;
+    this.JSONData = null;
+  }
+
+  init(JSONData) {
+    if (JSONData !== undefined) {
+      this.useJsonData = true;
+      this.JSONData = JSONData;
+    }
+  }
+
   create() {
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Hero(this.game, 50, 200, Character, 0);
     this.dungeon = new Dungeon(this.game, this.game.world, WorldWitdth, WorldHeight, [Room, RoomWithCarpet, RoomWithColoredCorners]);
+    this.dungeon.generate(game, this.JSONData);
     const roomPosition = this.dungeon.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);
