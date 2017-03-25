@@ -33,8 +33,8 @@ class Dungeon extends Phaser.Group {
       // TODO OFFSET WALLSIZE
       const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
       const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-      console.log(width)
-      console.log(height)
+      //console.log(width)
+      //console.log(height)
       const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
 
