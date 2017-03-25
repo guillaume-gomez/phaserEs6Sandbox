@@ -13,6 +13,9 @@ class Corridor extends Phaser.Group {
       console.error(`Corridor:constructor : ${direction} is a not a value possible [${Directions}]`);
     }
     this.direction = direction;
+    //width and height less the walls size
+    this.originalWidth = width;
+    this.originalHeight = height;
     this.addWalls(game, x, y, width, height);
   }
 

@@ -217,8 +217,8 @@ class Dungeon extends Phaser.Group {
   }
 
   exportDebug() {
-    const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.width, h: m.height, klassName: m.constructor.name};});
-    const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.width, h: m.height, direction: m.direction};});
+    const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.originalWidth, h: m.originalHeight, klassName: m.constructor.name};});
+    const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.originalWidth, h: m.originalHeight, direction: m.direction};});
     console.log(JSON.stringify({rooms: roomArray, corridors: corridorArray}));
   }
 

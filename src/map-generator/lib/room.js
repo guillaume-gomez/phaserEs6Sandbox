@@ -12,6 +12,9 @@ class Room extends Phaser.Group {
     this.createRoom(game, x, y, width, height);
     this.originalX = x;
     this.originalY = y;
+    //width and height less the walls size
+    this.originalWidth = width;
+    this.originalHeight = height;
   }
 
   createRoom(game, x, y, width, height) {
