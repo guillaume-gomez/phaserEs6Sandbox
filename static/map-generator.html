@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <div >
+  <script type="text/javascript">
+    function submitFile() {
+      var text1 = document.getElementById('import').value;
+      console.error(text1)
+    }
+
+  </script>
+  <div>
     <div class="header clearfix">
       <div id="content"
            style="margin-top: 100px;">
@@ -18,8 +25,9 @@
     <footer class="footer">
       <div class="form-group">
         <label for="import">jsonFile:</label>
-        <textarea class="form-control" rows="5" id="import"></textarea>
+        <textarea class="form-control" rows="5" id="import" placeholder="Paste your json file here"></textarea>
       </div>
+      <button type="submit" class="btn btn-default" onclick=submitFile()>Submit</button>
     </footer>
   </div>
 </body>
