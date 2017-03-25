@@ -81,8 +81,14 @@ class Dungeon extends Phaser.Group {
   }
 
   import(game, rooms, corridors) {
+    const findTypeOfRoom = (arrayOfRoom, roomName) => {
+      return arrayOfRoom.find(room => {
+        return room.name === roomName;
+      });
+    };
+
     rooms.forEach(room => {
-      const newRoom = Reflect.construct(this.arrayOfRoom[0],[game, game.world, room.x, room.y, room.w, room.h]);
+      const newRoom = Reflect.construct(findTypeOfRoom(this.arrayOfRoom, room.klassName),[game, game.world, room.x, room.y, room.w, room.h]);
       this.createRoom(newRoom);
     });
     corridors.forEach(corridor => {
@@ -206,7 +212,7 @@ class Dungeon extends Phaser.Group {
   }
 
   exportDebug() {
-    const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.width, h: m.height};});
+    const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.width, h: m.height, klassName: m.constructor.name};});
     const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.width, h: m.height, direction: m.direction};});
     console.log(JSON.stringify({rooms: roomArray, corridors: corridorArray}));
   }
