@@ -16,7 +16,11 @@ class Dungeon extends Phaser.Group {
     this.worldWitdth = worldWitdth;
     this.worldHeight = worldHeight;
     this.arrayOfRoom = arrayOfRoom;
-    this.generateLevel(game, this.randomGeneration.bind(this));
+  }
+
+  generate(game, JSONData = null) {
+    const strategyFn = JSONData === null ? this.randomGeneration.bind(this) : this.importFromJson(JSONData).bind(this);
+    this.generateLevel(game, strategyFn);
   }
 
   generateLevel(game, generationFunction) {
@@ -66,12 +70,15 @@ class Dungeon extends Phaser.Group {
     }
   }
 
-   importFromJson(game) {
-     this.import( game,
-                  [{"x":1376,"y":384,"w":128,"h":128},{"x":1376,"y":816,"w":128,"h":128}],
-                  [{"x":1424,"y":400,"w":272,"h":96,"direction":"horizontal"},{"x":1392,"y":432,"w":96,"h":464,"direction":"vertical"}]
+  importFromJson(JSONData) {
+    return (game) => {
+      var data = JSON.parse(JSONData);
+      this.import( game,
+                   data.rooms,
+                   data.corridors
                 );
-   }
+    }
+  }
 
   import(game, rooms, corridors) {
     rooms.forEach(room => {
@@ -201,8 +208,7 @@ class Dungeon extends Phaser.Group {
   exportDebug() {
     const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.width, h: m.height};});
     const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.width, h: m.height, direction: m.direction};});
-    console.log(JSON.stringify(roomArray));
-    console.log(JSON.stringify(corridorArray));
+    console.log(JSON.stringify({rooms: roomArray, corridors: corridorArray}));
   }
 
 
