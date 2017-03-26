@@ -12,7 +12,7 @@ const MaxRoomSize = 5 * WallSize;
 class Maze extends Phaser.Group {
 
   constructor(game, parent, worldWitdth, worldHeight, arrayOfRoom) {
-    super(game, parent, "dungeon", false, true, Phaser.Physics.ARCADE);
+    super(game, parent, "maze", false, true, Phaser.Physics.ARCADE);
     this.worldWitdth = worldWitdth;
     this.worldHeight = worldHeight;
     this.arrayOfRoom = arrayOfRoom;
