@@ -1,5 +1,5 @@
 import CorridorSprite from './corridorSprite';
-import {WallSize, Vertical, Horizontal, Directions} from './constants';
+import {WallSize, Vertical, Horizontal, Directions, CorridorName} from './constants';
 import Wall from "./wall";
 
 const WallName = "ColissionWall";
@@ -8,7 +8,7 @@ const SpriteName = "CorridorSprite";
 class Corridor extends Phaser.Group {
 
   constructor(game, parent, x, y, width, height, direction) {
-    super(game, parent, "corridor", true, true, Phaser.Physics.ARCADE);
+    super(game, parent, CorridorName, true, true, Phaser.Physics.ARCADE);
     if(!Directions.includes(direction)) {
       console.error(`Corridor:constructor : ${direction} is a not a value possible [${Directions}]`);
     }

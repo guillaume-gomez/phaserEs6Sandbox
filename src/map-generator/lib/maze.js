@@ -1,10 +1,10 @@
 import Corridor from './corridor';
 import {isInside, modGrid} from "./utils";
-import {WallSize, Horizontal, Vertical } from './constants';
+import {WallSize, Horizontal, Vertical, RoomName, CorridorName } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 3;
+const MaxRoom = 10;
 //each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
@@ -104,7 +104,7 @@ class Maze extends Phaser.Group {
 
   rooms(newRoom = null) {
     return this.children.filter(child => {
-      return child.name === "room" && child != newRoom;
+      return child.name === RoomName && child != newRoom;
     });
   }
 
@@ -142,7 +142,7 @@ class Maze extends Phaser.Group {
   collide(character) {
     let collide = false;
     this.children.forEach(child => {
-      if(child.name === "corridor") {
+      if(child.name === CorridorName) {
         if(isInside(character, child.corridorSprite())) {
           collide = true;
         }
@@ -161,7 +161,7 @@ class Maze extends Phaser.Group {
   }
 
   corridors() {
-    return this.children.filter(child => child.name === "corridor");
+    return this.children.filter(child => child.name === CorridorName);
   }
 
   corridorSprites() {
@@ -203,13 +203,13 @@ class Maze extends Phaser.Group {
 
   sortDepth() {
     const compare = (a,b) => {
-      if(a.name === "room" && b.name === "room" || a.name === "corridor" &&  b.name === "corridor") {
+      if(a.name === RoomName && b.name === RoomName || a.name === CorridorName &&  b.name === CorridorName) {
         return 0;
       }
-      else if (a.name === "room" && b.name == "corridor") {
+      else if (a.name === RoomName && b.name == CorridorName) {
         return 1;
       }
-      else if (a.name === "corridor" && b.name == "room") {
+      else if (a.name === CorridorName && b.name == RoomName) {
         return -1;
       }
     };

@@ -5,3 +5,6 @@ export const WallSize = 16;
 export const Vertical = "vertical";
 export const Horizontal = "horizontal"
 export const Directions = [Vertical, Horizontal];
+
+export const RoomName = "room";
+export const CorridorName = "corridor"

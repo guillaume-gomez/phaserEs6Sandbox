@@ -1,4 +1,4 @@
-import {WallSize} from './constants';
+import { WallSize, RoomName } from './constants';
 import RoomSprite from './roomSprite';
 import Wall from './wall';
 
@@ -8,7 +8,7 @@ const SpriteName = "RoomSprite";
 class Room extends Phaser.Group {
 
   constructor(game, parent, x, y, width, height) {
-    super(game, parent, "room", true, true, Phaser.Physics.ARCADE);
+    super(game, parent, RoomName, true, true, Phaser.Physics.ARCADE);
     this.createRoom(game, x, y, width, height);
     this.originalX = x;
     this.originalY = y;
