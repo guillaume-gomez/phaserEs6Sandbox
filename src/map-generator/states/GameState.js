@@ -24,6 +24,7 @@ class GameState extends Phaser.State {
   }
 
   create() {
+    this.game.time.advancedTiming = true;
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Hero(this.game, 50, 200, Character, 0);
@@ -43,6 +44,10 @@ class GameState extends Phaser.State {
     this.game.load.image(Character, PATH + '/character.png');
     this.game.load.image(Carpet, PATH + '/carpet.png');
     this.game.load.image(Corner, PATH + '/corner.png');
+  }
+
+  render() {
+    this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
   }
 }
 
