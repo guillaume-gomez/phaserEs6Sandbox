@@ -4,7 +4,7 @@ import {WallSize, Horizontal, Vertical, RoomName, CorridorName } from './constan
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 10;
+const MaxRoom = 4;
 //each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
@@ -16,90 +16,6 @@ class Maze extends Phaser.Group {
     this.worldWitdth = worldWitdth;
     this.worldHeight = worldHeight;
     this.arrayOfRoom = arrayOfRoom;
-  }
-
-  generate(game, JSONData = null) {
-    const strategyFn = JSONData === null ? this.randomGeneration.bind(this) : this.importFromJson(JSONData).bind(this);
-    this.generateLevel(game, strategyFn);
-  }
-
-  generateLevel(game, generationFunction) {
-    generationFunction(game);
-    this.exportDebug();
-    this.removeUselessWalls(game);
-    this.sortDepth();
-    this.addAdditionalSprite(game);
-  }
-
-  randomGeneration(game) {
-    for(let i = 0; i < MaxRoom; i++) {
-      //FIX ME  the computation does not work well
-      // TODO OFFSET WALLSIZE
-      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-      //console.log(width)
-      //console.log(height)
-      const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
-      const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
-
-      const indexChosen = Math.trunc(Math.random() * this.arrayOfRoom.length);
-      let newRoom = Reflect.construct(this.arrayOfRoom[indexChosen],[game, game.world, x, y, width, height]);
-      let failed = false;
-      this.children.some(child => {
-         failed = newRoom.overlapRoom(child);
-         if(failed) {
-          //exit le loop
-          return true;
-         }
-      });
-      if (!failed) {
-        // local function to carve out new room
-        this.createRoom(newRoom);
-        if(this.rooms().length > 1) {
-          const prevRoom = this.findLastRoom(newRoom);
-          const rng = Math.random() * 2;
-          if(rng >= 1) {
-            this.horizontalCorridor(game, prevRoom, newRoom);
-            this.verticalCorridor(game, prevRoom, newRoom, false);
-          } else {
-            this.verticalCorridor(game, prevRoom, newRoom);
-            this.horizontalCorridor(game, prevRoom, newRoom, false);
-          }
-        }
-      }
-    }
-  }
-
-  importFromJson(JSONData) {
-    return (game) => {
-      var data = JSON.parse(JSONData);
-      this.import( game,
-                   data.rooms,
-                   data.corridors
-                );
-    }
-  }
-
-  import(game, rooms, corridors) {
-    const findTypeOfRoom = (arrayOfRoom, roomName) => {
-      const roomSelected = arrayOfRoom.find(room => {
-        return room.name === roomName;
-      });
-      if (!roomSelected) {
-        console.error(`"${roomName}" is unknonwn amoung theses classes: [${arrayOfRoom.map((t) => { return t.name;})} ]`);
-        return arrayOfRoom[0];
-      }
-      return roomSelected;
-    };
-
-    rooms.forEach(room => {
-      const newRoom = Reflect.construct(findTypeOfRoom(this.arrayOfRoom, room.klassName),[game, game.world, room.x, room.y, room.w, room.h]);
-      this.createRoom(newRoom);
-    });
-    corridors.forEach(corridor => {
-      const newCorridor = new Corridor(game, game.world, corridor.x, corridor.y, corridor.w, corridor.h, corridor.direction);
-      this.add(newCorridor);
-    });
   }
 
   rooms(newRoom = null) {
@@ -200,7 +116,6 @@ class Maze extends Phaser.Group {
     });
   }
 
-
   sortDepth() {
     const compare = (a,b) => {
       if(a.name === RoomName && b.name === RoomName || a.name === CorridorName &&  b.name === CorridorName) {
@@ -216,12 +131,95 @@ class Maze extends Phaser.Group {
     this.children.sort(compare);
   }
 
-  exportDebug() {
+  exportJSON() {
     const roomArray = this.rooms().map(m => {return {x: m.roomSprite().x, y: m.roomSprite().y, w: m.originalWidth, h: m.originalHeight, klassName: m.constructor.name};});
     const corridorArray = this.corridors().map(m => {return {x: m.corridorSprite().x, y: m.corridorSprite().y, w: m.originalWidth, h: m.originalHeight, direction: m.direction};});
-    console.log(JSON.stringify({rooms: roomArray, corridors: corridorArray}));
+    return JSON.stringify({rooms: roomArray, corridors: corridorArray});
   }
 
+  generate(game, JSONData = null) {
+    const strategyFn = JSONData === null ? this.randomGeneration.bind(this) : this.importFromJson(JSONData).bind(this);
+    this.generateLevel(game, strategyFn);
+  }
+
+  generateLevel(game, generationFunction) {
+    generationFunction(game);
+    console.log(this.exportJSON());
+    this.removeUselessWalls(game);
+    this.sortDepth();
+    this.addAdditionalSprite(game);
+  }
+
+  randomGeneration(game) {
+    for(let i = 0; i < MaxRoom; i++) {
+      //FIX ME  the computation does not work well
+      // TODO OFFSET WALLSIZE
+      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
+      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
+      //console.log(width)
+      //console.log(height)
+      const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
+      const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
+
+      const indexChosen = Math.trunc(Math.random() * this.arrayOfRoom.length);
+      let newRoom = Reflect.construct(this.arrayOfRoom[indexChosen],[game, game.world, x, y, width, height]);
+      let failed = false;
+      this.children.some(child => {
+         failed = newRoom.overlapRoom(child);
+         if(failed) {
+          //exit le loop
+          return true;
+         }
+      });
+      if (!failed) {
+        // local function to carve out new room
+        this.createRoom(newRoom);
+        if(this.rooms().length > 1) {
+          const prevRoom = this.findLastRoom(newRoom);
+          const rng = Math.random() * 2;
+          if(rng >= 1) {
+            this.horizontalCorridor(game, prevRoom, newRoom);
+            this.verticalCorridor(game, prevRoom, newRoom, false);
+          } else {
+            this.verticalCorridor(game, prevRoom, newRoom);
+            this.horizontalCorridor(game, prevRoom, newRoom, false);
+          }
+        }
+      }
+    }
+  }
+
+  importFromJson(JSONData) {
+    return (game) => {
+      var data = JSON.parse(JSONData);
+      this.import( game,
+                   data.rooms,
+                   data.corridors
+                );
+    }
+  }
+
+  import(game, rooms, corridors) {
+    const findTypeOfRoom = (arrayOfRoom, roomName) => {
+      const roomSelected = arrayOfRoom.find(room => {
+        return room.name === roomName;
+      });
+      if (!roomSelected) {
+        console.error(`"${roomName}" is unknonwn amoung theses classes: [${arrayOfRoom.map((t) => { return t.name;})} ]`);
+        return arrayOfRoom[0];
+      }
+      return roomSelected;
+    };
+
+    rooms.forEach(room => {
+      const newRoom = Reflect.construct(findTypeOfRoom(this.arrayOfRoom, room.klassName),[game, game.world, room.x, room.y, room.w, room.h]);
+      this.createRoom(newRoom);
+    });
+    corridors.forEach(corridor => {
+      const newCorridor = new Corridor(game, game.world, corridor.x, corridor.y, corridor.w, corridor.h, corridor.direction);
+      this.add(newCorridor);
+    });
+  }
 
 }
 
