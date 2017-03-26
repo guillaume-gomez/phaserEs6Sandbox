@@ -7,13 +7,6 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <script type="text/javascript">
-    function submitFile() {
-      var text1 = document.getElementById('import').value;
-      this.game.importFromJson(text1);
-    }
-
-  </script>
   <div>
     <div class="header clearfix">
       <div id="content"
@@ -22,13 +15,34 @@
       <script src="scripts/phaser.min.js"></script>
       <script src="scripts/map-generator.js"></script>
     </div>
+    <hr/>
     <footer class="footer">
       <div class="form-group">
-        <label for="import">jsonFile:</label>
+        <label for="import">export JSON data: </label>
+        <textarea class="form-control" rows="5" id="export" readonly></textarea>
+      </div>
+      <div class="form-group">
+        <label for="import">jsonFile: </label>
         <textarea class="form-control" rows="5" id="import" placeholder="Paste your json file here"></textarea>
       </div>
       <button type="submit" class="btn btn-default" onclick=submitFile()>Submit</button>
     </footer>
   </div>
+   <script type="text/javascript">
+
+    function listen() {
+      var Fn = function(val) { document.getElementById('export').value = this.getJSONData()};
+      this.game.listen(Fn);
+    }
+
+    function submitFile() {
+      var text1 = document.getElementById('import').value;
+      this.game.importFromJson(text1);
+      document.getElementById('export').value = this.game.getJSONData();
+    }
+
+    listen();
+
+  </script>
 </body>
 </html>

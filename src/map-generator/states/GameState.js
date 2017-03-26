@@ -34,6 +34,8 @@ class GameState extends Phaser.State {
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
+
+    this.game.mazeCreated.dispatch();
   }
 
   update() {
