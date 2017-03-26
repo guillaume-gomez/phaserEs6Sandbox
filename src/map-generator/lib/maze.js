@@ -9,7 +9,7 @@ const MaxRoom = 3;
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;
 
-class Dungeon extends Phaser.Group {
+class Maze extends Phaser.Group {
 
   constructor(game, parent, worldWitdth, worldHeight, arrayOfRoom) {
     super(game, parent, "dungeon", false, true, Phaser.Physics.ARCADE);
@@ -225,4 +225,4 @@ class Dungeon extends Phaser.Group {
 
 }
 
-export default Dungeon;
+export default Maze;
