@@ -1,6 +1,6 @@
 const PATH = "res/map-generator";
 import Hero from 'object/character';
-import Dungeon from 'lib/dungeon';
+import Maze from 'lib/maze';
 import Room from 'lib/room';
 import RoomWithCarpet from 'object/roomWithCarpet';
 import RoomWithColoredCorners from "object/roomWithColoredCorners";
@@ -27,16 +27,16 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Hero(this.game, 50, 200, Character, 0);
-    this.dungeon = new Dungeon(this.game, this.game.world, WorldWitdth, WorldHeight, [Room, RoomWithCarpet, RoomWithColoredCorners]);
-    this.dungeon.generate(game, this.JSONData);
-    const roomPosition = this.dungeon.getInitialRoom().borders().center;
+    this.maze = new Maze(this.game, this.game.world, WorldWitdth, WorldHeight, [Room, RoomWithCarpet, RoomWithColoredCorners]);
+    this.maze.generate(game, this.JSONData);
+    const roomPosition = this.maze.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);
     this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
   }
 
   update() {
-    this.game.physics.arcade.collide(this.character, this.dungeon.walls());
+    this.game.physics.arcade.collide(this.character, this.maze.walls());
   }
 
   preload() {
