@@ -4,7 +4,7 @@ import {WallSize, Horizontal, Vertical, RoomName, CorridorName } from './constan
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 4;
+const MaxRoom = 10;
 //each room shoud have the same size
 const MinRoomSize = 5 * WallSize;
 const MaxRoomSize = 5 * WallSize;

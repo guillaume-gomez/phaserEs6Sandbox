@@ -398,7 +398,7 @@ function _inherits(subClass, superClass) {
 
 var CorridorHeight = 4 * _constants.WallSize;
 var CorridorWidth = 4 * _constants.WallSize;
-var MaxRoom = 4;
+var MaxRoom = 10;
 //each room shoud have the same size
 var MinRoomSize = 5 * _constants.WallSize;
 var MaxRoomSize = 5 * _constants.WallSize;
