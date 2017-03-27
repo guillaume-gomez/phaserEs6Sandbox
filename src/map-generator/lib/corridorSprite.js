@@ -7,12 +7,13 @@ class CorridorSprite extends Phaser.Sprite {
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
     bmd.ctx.rect(0,0,width,height);
-    bmd.ctx.fillStyle = Color;
+    bmd.ctx.fillStyle = color;
     bmd.ctx.fill();
 
     super(game,x,y, bmd);
     this.center = { x: x + (width/2), y: y+ (height/2)};
-    this.name = "corridorSprite";
+    //add constant
+    this.name = "CorridorSprite";
   }
 
   overlapRoom(room) {

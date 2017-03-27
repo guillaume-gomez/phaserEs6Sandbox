@@ -1,11 +1,20 @@
-import {WallSize} from './constants';
+import { WallSize, RoomName } from './constants';
 import RoomSprite from './roomSprite';
+import Wall from './wall';
+
+const WallName = "RoomWall";
+const SpriteName = "RoomSprite";
 
 class Room extends Phaser.Group {
 
   constructor(game, parent, x, y, width, height) {
-    super(game, parent, "room", true, true, Phaser.Physics.ARCADE);
+    super(game, parent, RoomName, true, true, Phaser.Physics.ARCADE);
     this.createRoom(game, x, y, width, height);
+    this.originalX = x;
+    this.originalY = y;
+    //width and height less the walls size
+    this.originalWidth = width;
+    this.originalHeight = height;
   }
 
   createRoom(game, x, y, width, height) {
@@ -26,12 +35,13 @@ class Room extends Phaser.Group {
   }
 
   addWall(game, x, y) {
-    let wall = game.add.sprite(x, y, 'Wall');
-    wall.name = "RoomWall";
+    let wall = new Wall(game, x, y, WallName);
     //wall.alpha = 0.2;
-    game.physics.enable(wall, Phaser.Physics.ARCADE);
-    wall.body.immovable = true;
     return wall;
+  }
+
+  addAdditionalSprite(game) {
+    // NOTHING TO DO HERE
   }
 
   borders() {
@@ -39,11 +49,11 @@ class Room extends Phaser.Group {
   }
 
   walls() {
-    return this.children.filter(child => child.name === "RoomWall");
+    return this.children.filter(child => child.name === WallName);
   }
 
   roomSprite() {
-    return this.children.find(child => child.name === "RoomSprite");
+    return this.children.find(child => child.name === SpriteName);
   }
 
   overlapRoom(room) {

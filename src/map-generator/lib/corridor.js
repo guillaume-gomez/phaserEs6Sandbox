@@ -1,20 +1,26 @@
 import CorridorSprite from './corridorSprite';
-import {WallSize} from './constants';
+import {WallSize, Vertical, Horizontal, Directions, CorridorName} from './constants';
+import Wall from "./wall";
 
-const Directions = ["vertical", "horizontal"];
+const WallName = "ColissionWall";
+const SpriteName = "CorridorSprite";
 
 class Corridor extends Phaser.Group {
 
   constructor(game, parent, x, y, width, height, direction) {
-    super(game, parent, "corridor", true, true, Phaser.Physics.ARCADE);
+    super(game, parent, CorridorName, true, true, Phaser.Physics.ARCADE);
     if(!Directions.includes(direction)) {
       console.error(`Corridor:constructor : ${direction} is a not a value possible [${Directions}]`);
     }
-    this.addWalls(game, x, y, width, height, direction);
+    this.direction = direction;
+    //width and height less the walls size
+    this.originalWidth = width;
+    this.originalHeight = height;
+    this.addWalls(game, x, y, width, height);
   }
 
-  addWalls(game, x,y, width, height, direction) {
-    if(direction === "vertical") {
+  addWalls(game, x,y, width, height) {
+    if(this.direction === Vertical) {
       this.addVerticalWall(game, x, y, width, height);
     } else {
       this.addHorizontalWall(game, x, y, width, height);
@@ -56,16 +62,12 @@ class Corridor extends Phaser.Group {
 }
 
   addWall(game, x, y) {
-    let wall = game.add.sprite(x, y, 'Wall');
-    wall.name = "colissionWall";
-    //wall.alpha = 0.2;
-    game.physics.enable(wall, Phaser.Physics.ARCADE);
-    wall.body.immovable = true;
+    let wall = new Wall(game, x, y, WallName);
     return wall;
   }
 
   corridorSprite() {
-    const corridorSprite = this.children.find(child => child.name === "corridorSprite");
+    const corridorSprite = this.children.find(child => child.name === SpriteName);
     if(!corridorSprite) {
       //to avoid undefined attribute
       return {x: -1, y: -1, width:-1, height:-1};
@@ -74,7 +76,7 @@ class Corridor extends Phaser.Group {
   }
 
   walls() {
-    return this.children.filter(child => child.name == "colissionWall");
+    return this.children.filter(child => child.name === WallName);
   }
 
 

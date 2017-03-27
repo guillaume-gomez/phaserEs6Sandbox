@@ -12,6 +12,7 @@ class RoomSprite extends Phaser.Sprite {
 
     super(game,x,y, bmd);
     this.center = {x: x + (width/2), y: y+ (height/2)};
+    // add constant
     this.name = "RoomSprite";
   }
 
