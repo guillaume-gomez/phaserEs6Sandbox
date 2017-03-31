@@ -14,8 +14,8 @@ var CarpetHeight = exports.CarpetHeight = 40;
 var CornerWidth = exports.CornerWidth = 20;
 var CornerHeight = exports.CornerHeight = 20;
 
-var WorldWitdth = exports.WorldWitdth = 2000;
-var WorldHeight = exports.WorldHeight = 2000;
+var WorldWitdth = exports.WorldWitdth = 1500;
+var WorldHeight = exports.WorldHeight = 1500;
 
 },{"../lib/constants":4}],2:[function(require,module,exports){
 "use strict";
