@@ -8,3 +8,4 @@ export const Directions = [Vertical, Horizontal];
 
 export const RoomName = "room";
 export const CorridorName = "corridor"
+export const InvisibleWallName = "invisibleWall";

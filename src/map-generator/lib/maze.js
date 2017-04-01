@@ -1,13 +1,14 @@
 import Corridor from './corridor';
+import Wall from "./wall";
 import {isInside, modGrid} from "./utils";
-import {WallSize, Horizontal, Vertical, RoomName, CorridorName } from './constants';
+import {WallSize, Horizontal, Vertical, RoomName, CorridorName, InvisibleWallName, Color } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 10;
+const MaxRoom = 2;
 //each room shoud have the same size
 const MinRoomSize = 6;
-const MaxRoomSize = 6;
+const MaxRoomSize = 8;
 
 class Maze extends Phaser.Group {
 
@@ -93,21 +94,28 @@ class Maze extends Phaser.Group {
       wall.kill();
     }
 
-    this.rooms().forEach(room => {
-      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyFunction);
-    });
+    const destroyWallInRoom = (room) => {
+      return (wall, other) => {
+        if(!isInside(wall, other)) {
+          room.addMissingFloor(game, wall.x, wall.y);
+        }
+        wall.kill();
+      }
+    }
 
+    this.corridors().forEach(corridor => {
+      this.corridors().forEach(corridor2 => {
+        if(corridor !== corridor2) {
+          game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+        }
+      });
+    });
     this.corridors().forEach(corridor => {
       game.physics.arcade.collide(corridor.walls(), this.roomsSprites(), destroyFunction);
     });
-
-     this.corridors().forEach(corridor => {
-        this.corridors().forEach(corridor2 => {
-          if(corridor !== corridor2) {
-            game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
-          }
-        });
-     });
+    this.rooms().forEach(room => {
+      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyWallInRoom(room));
+    });
   }
 
   addAdditionalSprite(game) {
@@ -144,7 +152,6 @@ class Maze extends Phaser.Group {
 
   generateLevel(game, generationFunction) {
     generationFunction(game);
-    console.log(this.exportJSON());
     this.removeUselessWalls(game);
     this.sortDepth();
     this.addAdditionalSprite(game);
@@ -157,7 +164,7 @@ class Maze extends Phaser.Group {
       const width = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
       const height = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
       console.log(width, height)
-      //console.log(height)
+
       const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
 
