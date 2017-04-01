@@ -6,8 +6,8 @@ const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
 const MaxRoom = 10;
 //each room shoud have the same size
-const MinRoomSize = 5 * WallSize;
-const MaxRoomSize = 5 * WallSize;
+const MinRoomSize = 6;
+const MaxRoomSize = 6;
 
 class Maze extends Phaser.Group {
 
@@ -154,9 +154,9 @@ class Maze extends Phaser.Group {
     for(let i = 0; i < MaxRoom; i++) {
       //FIX ME  the computation does not work well
       // TODO OFFSET WALLSIZE
-      const width = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-      const height = modGrid(WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-      //console.log(width)
+      const width = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
+      const height = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
+      console.log(width, height)
       //console.log(height)
       const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
