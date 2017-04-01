@@ -20,7 +20,7 @@ class Room extends Phaser.Group {
   createRoom(game, x, y, width, height) {
     const room = new RoomSprite(game, x, y, width, height);
     this.add(room);
-    for(let i = x; i < x + width + WallSize; i += WallSize) {
+    for(let i = x - WallSize; i < x + width + WallSize; i += WallSize) {
       const upWall = this.addWall(game, i, y - WallSize);
       const downWall = this.addWall(game, i, y + height);
       this.add(upWall);
@@ -36,7 +36,7 @@ class Room extends Phaser.Group {
 
   addWall(game, x, y) {
     let wall = new Wall(game, x, y, WallName);
-    //wall.alpha = 0.2;
+    //wall.alpha = 0.8;
     return wall;
   }
 
