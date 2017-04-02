@@ -1,4 +1,4 @@
-import { WallSize, RoomName, InvisibleWallName } from './constants';
+import { WallSize, RoomName } from './constants';
 import RoomSprite from './roomSprite';
 import Wall from './wall';
 
@@ -32,12 +32,6 @@ class Room extends Phaser.Group {
 
   addWall(game, x, y) {
     let wall = new Wall(game, x, y, WallName);
-    //wall.alpha = 0.1;
-    this.add(wall);
-  }
-
-  addMissingFloor(game, x, y) {
-    let wall = new Wall(game, x, y, InvisibleWallName, "#00FF00");
     //wall.alpha = 0.1;
     this.add(wall);
   }
