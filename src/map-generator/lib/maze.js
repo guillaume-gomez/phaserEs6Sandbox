@@ -73,7 +73,12 @@ class Maze extends Phaser.Group {
   }
 
   walls() {
-    const arrayMultipleDim = this.children.map(child => child.walls());
+    const arrayMultipleDim = this.children.map(child => {
+      //wall class does not have walls method
+      if(typeof child.walls === "function") {
+        return child.walls();
+      }
+    }).filter(Boolean);
     return [].concat.apply([], arrayMultipleDim);
   }
 
@@ -94,13 +99,12 @@ class Maze extends Phaser.Group {
       wall.kill();
     }
 
-    const destroyWallInRoom = (room) => {
-      return (wall, other) => {
-        if(!isInside(wall, other)) {
-          room.addMissingFloor(game, wall.x, wall.y);
-        }
-        wall.kill();
+    const destroyWallAndAddMissingTile = (wall, other) => {
+      if(!isInside(wall, other)) {
+        let missing = new Wall(game, wall.x, wall.y, InvisibleWallName, "#00FF00", 16, 16);
+        this.add(missing)
       }
+      wall.kill();
     }
 
     this.corridors().forEach(corridor => {
@@ -114,7 +118,7 @@ class Maze extends Phaser.Group {
       game.physics.arcade.collide(corridor.walls(), this.roomsSprites(), destroyFunction);
     });
     this.rooms().forEach(room => {
-      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyWallInRoom(room));
+      game.physics.arcade.collide(room.walls(), this.corridorSprites(), destroyWallAndAddMissingTile);
     });
   }
 
@@ -126,15 +130,20 @@ class Maze extends Phaser.Group {
 
   sortDepth() {
     const compare = (a,b) => {
-      if(a.name === RoomName && b.name === RoomName || a.name === CorridorName &&  b.name === CorridorName) {
+      if(a.name === b.name) {
         return 0;
       }
-      else if (a.name === RoomName && b.name == CorridorName) {
+      else if (a.name === InvisibleWallName) {
+         return -1;
+      }
+      else if (a.name === RoomName && b.name === CorridorName) {
         return 1;
       }
-      else if (a.name === CorridorName && b.name == RoomName) {
+      else if (a.name === CorridorName && b.name === RoomName) {
         return -1;
       }
+      //other cases
+      return 1;
     };
     this.children.sort(compare);
   }
