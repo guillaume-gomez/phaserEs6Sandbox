@@ -1,11 +1,11 @@
 import Corridor from './corridor';
-import Wall from "./wall";
+import Block from "./block";
 import {isInside, modGrid} from "./utils";
 import {WallSize, Horizontal, Vertical, RoomName, CorridorName, InvisibleWallName, Color } from './constants';
 
 const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
-const MaxRoom = 2;
+const MaxRoom = 10;
 //each room shoud have the same size
 const MinRoomSize = 6;
 const MaxRoomSize = 8;
@@ -101,7 +101,7 @@ class Maze extends Phaser.Group {
 
     const destroyWallAndAddMissingTile = (wall, other) => {
       if(!isInside(wall, other)) {
-        let missing = new Wall(game, wall.x, wall.y, InvisibleWallName, "#00FF00", 16, 16);
+        let missing = new Block(game, wall.x, wall.y, InvisibleWallName);
         this.add(missing)
       }
       wall.kill();
@@ -110,7 +110,7 @@ class Maze extends Phaser.Group {
     this.corridors().forEach(corridor => {
       this.corridors().forEach(corridor2 => {
         if(corridor !== corridor2) {
-          game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+          game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyWallAndAddMissingTile);
         }
       });
     });
