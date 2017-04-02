@@ -2,11 +2,11 @@ import {WallSize, WallColor} from './constants';
 
 class Wall extends Phaser.Sprite {
 
-  constructor(game, x,y, name = "Wall", color = WallColor) {
-    let bmd = game.add.bitmapData(WallSize,WallSize);
+  constructor(game, x,y, name = "Wall", color = WallColor, width = WallSize, height = WallSize) {
+    let bmd = game.add.bitmapData(width, height);
     // draw to the canvas context like normal
     bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, WallSize, WallSize);
+    bmd.ctx.rect(0, 0, width, height);
     bmd.ctx.fillStyle = color;
     bmd.ctx.fill();
 
