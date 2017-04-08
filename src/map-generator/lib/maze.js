@@ -7,7 +7,7 @@ const CorridorHeight = 4 * WallSize;
 const CorridorWidth = 4 * WallSize;
 const MaxRoom = 10;
 //each room shoud have the same size
-const MinRoomSize = 6;
+const MinRoomSize = 4;
 const MaxRoomSize = 8;
 
 class Maze extends Phaser.Group {
