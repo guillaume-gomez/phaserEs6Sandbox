@@ -12,11 +12,13 @@ const MaxRoomSize = 8;
 
 class Maze extends Phaser.Group {
 
-  constructor(game, parent, worldWitdth, worldHeight, arrayOfRoom) {
+  constructor(game, parent, worldWitdth, worldHeight, nbRooms, arrayOfRoom) {
     super(game, parent, "maze", false, true, Phaser.Physics.ARCADE);
     this.worldWitdth = worldWitdth;
     this.worldHeight = worldHeight;
     this.arrayOfRoom = arrayOfRoom;
+    this.nbRooms = nbRooms || MaxRoom;
+    console.info(this.nbRooms)
   }
 
   rooms(newRoom = null) {
@@ -167,12 +169,12 @@ class Maze extends Phaser.Group {
   }
 
   randomGeneration(game) {
-    for(let i = 0; i < MaxRoom; i++) {
+    for(let i = 0; i < this.nbRooms; i++) {
       //FIX ME  the computation does not work well
       // TODO OFFSET WALLSIZE
       const width = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
       const height = Math.trunc((MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize))) * WallSize;
-      console.log(width, height)
+      //console.log(width, height)
 
       const x = modGrid(WallSize, Math.random() * (this.worldWitdth - width - 1) + 1);
       const y = modGrid(WallSize, Math.random() * (this.worldHeight - height - 1) + 1);
