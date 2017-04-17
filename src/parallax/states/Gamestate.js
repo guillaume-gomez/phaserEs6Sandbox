@@ -1,4 +1,5 @@
 import DayCycle from 'objects/DayCycle';
+import Weather from 'objects/Weather';
 
 const PATH = "res/parallax/";
 
@@ -14,10 +15,8 @@ class GameState extends Phaser.State {
     //Enable Arcade Physics
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //Set the games background colour
-    this.game.stage.backgroundColor = '#697e96';
 
-    this.dayCycle = new DayCycle(this.game, 5000);
-
+    this.dayCycle = new DayCycle(this.game, 10000);
 
     let bgBitMap = this.game.add.bitmapData(this.game.width, this.game.height);
     bgBitMap.ctx.rect(0, 0, this.game.width, this.game.height);
@@ -62,6 +61,10 @@ class GameState extends Phaser.State {
     this.dayCycle.initShading(backgroundSprites);
     this.dayCycle.initSun(this.sunSprite);
     this.dayCycle.initMoon(this.moonSprite);
+
+    this.weather = new Weather(this.game);
+    this.weather.addRain();
+
   }
 
   update() {
