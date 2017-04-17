@@ -63,6 +63,7 @@ class Corridor extends Phaser.Group {
 
   addWall(game, x, y) {
     let wall = new Wall(game, x, y, WallName);
+    //wall.alpha = 0.8
     return wall;
   }
 

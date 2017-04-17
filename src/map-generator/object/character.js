@@ -1,3 +1,5 @@
+const Velocity = 400;
+
 class Character extends Phaser.Sprite {
 
   constructor(game, x, y, key, frame) {
@@ -15,19 +17,19 @@ class Character extends Phaser.Sprite {
 
     if (this.cursors.left.isDown)
     {
-        this.body.velocity.x = -200;
+        this.body.velocity.x = -Velocity;
     }
     else if (this.cursors.right.isDown)
     {
-        this.body.velocity.x = 200;
+        this.body.velocity.x = Velocity;
     }
 
     if (this.cursors.up.isDown)
     {
-        this.body.velocity.y = -200;
+        this.body.velocity.y = -Velocity;
     }
     else if (this.cursors.down.isDown) {
-        this.body.velocity.y = 200;
+        this.body.velocity.y = Velocity;
     }
   }
 }

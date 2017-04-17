@@ -15,7 +15,7 @@ class MapGenerator extends Phaser.Game {
 
   importFromJson(JSONData)
   {
-     this.state.start('GameState',true, false, JSONData);
+     this.reload({JSONData: JSONData});
   }
 
 
@@ -26,6 +26,10 @@ class MapGenerator extends Phaser.Game {
 
   getJSONData() {
     return this.currentState().maze.exportJSON();
+  }
+
+  reload(params) {
+    this.state.start('GameState', true, false, params);
   }
 }
 

@@ -14,12 +14,18 @@ class GameState extends Phaser.State {
     super();
     this.useJsonData = false;
     this.JSONData = null;
+    this.nbRooms = null;
   }
 
-  init(JSONData) {
-    if (JSONData !== undefined) {
-      this.useJsonData = true;
-      this.JSONData = JSONData;
+  init(data) {
+    if (data !== undefined) {
+      if(data.JSONData) {
+        this.useJsonData = true;
+        this.JSONData = JSONData;
+      }
+      if(data.nbRooms) {
+        this.nbRooms = data.nbRooms;
+      }
     }
   }
 
@@ -28,7 +34,7 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = "#4488AA";
     this.game.world.setBounds(0, 0, WorldWitdth, WorldHeight);
     this.character = new Hero(this.game, 50, 200, Character, 0);
-    this.maze = new Maze(this.game, this.game.world, WorldWitdth, WorldHeight, [Room, RoomWithCarpet, RoomWithColoredCorners]);
+    this.maze = new Maze(this.game, this.game.world, WorldWitdth, WorldHeight, this.nbRooms, [Room, RoomWithCarpet, RoomWithColoredCorners]);
     this.maze.generate(game, this.JSONData);
     const roomPosition = this.maze.getInitialRoom().borders().center;
     this.character.position.setTo(roomPosition.x,roomPosition.y);

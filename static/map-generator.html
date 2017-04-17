@@ -12,6 +12,12 @@
       <div id="content"
            style="margin-top: 400px;">
       </div>
+      </br>
+      <div class="form-group">
+        <label for="male">Number of rooms :</label>
+        <input id="nbRooms" type="range" min="2" max="20">
+        <button  type="button" class="btn btn-default" onclick=reload()>Reload</button>
+      </div>
       <script src="scripts/phaser.min.js"></script>
       <script src="scripts/map-generator.js"></script>
     </div>
@@ -39,6 +45,11 @@
       var text1 = document.getElementById('import').value;
       this.game.importFromJson(text1);
       document.getElementById('export').value = this.game.getJSONData();
+    }
+
+    function reload() {
+      nbRooms = document.getElementById('nbRooms').value;
+      this.game.reload({nbRooms: nbRooms });
     }
 
     listen();
