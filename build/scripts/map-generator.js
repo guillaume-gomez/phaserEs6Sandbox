@@ -14,10 +14,10 @@ var CarpetHeight = exports.CarpetHeight = 40;
 var CornerWidth = exports.CornerWidth = 20;
 var CornerHeight = exports.CornerHeight = 20;
 
-var WorldWitdth = exports.WorldWitdth = 1500;
-var WorldHeight = exports.WorldHeight = 1500;
+var WorldWitdth = exports.WorldWitdth = 2000;
+var WorldHeight = exports.WorldHeight = 2000;
 
-},{"../lib/constants":4}],2:[function(require,module,exports){
+},{"../lib/constants":5}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -88,7 +88,7 @@ var MapGenerator = function (_Phaser$Game) {
   }, {
     key: 'importFromJson',
     value: function importFromJson(JSONData) {
-      this.state.start('GameState', true, false, JSONData);
+      this.reload({ JSONData: JSONData });
     }
   }, {
     key: 'currentState',
@@ -101,6 +101,11 @@ var MapGenerator = function (_Phaser$Game) {
     value: function getJSONData() {
       return this.currentState().maze.exportJSON();
     }
+  }, {
+    key: 'reload',
+    value: function reload(params) {
+      this.state.start('GameState', true, false, params);
+    }
   }]);
 
   return MapGenerator;
@@ -108,7 +113,65 @@ var MapGenerator = function (_Phaser$Game) {
 
 window.game = new MapGenerator();
 
-},{"states/GameState":15}],4:[function(require,module,exports){
+},{"states/GameState":16}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = require("./constants");
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Block = function (_Phaser$Sprite) {
+  _inherits(Block, _Phaser$Sprite);
+
+  function Block(game, x, y) {
+    var name = arguments.length <= 3 || arguments[3] === undefined ? "Block" : arguments[3];
+    var color = arguments.length <= 4 || arguments[4] === undefined ? _constants.Color : arguments[4];
+    var width = arguments.length <= 5 || arguments[5] === undefined ? _constants.WallSize : arguments[5];
+    var height = arguments.length <= 6 || arguments[6] === undefined ? _constants.WallSize : arguments[6];
+
+    _classCallCheck(this, Block);
+
+    var bmd = game.add.bitmapData(width, height);
+    // draw to the canvas context like normal
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, width, height);
+    bmd.ctx.fillStyle = color;
+    bmd.ctx.fill();
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Block).call(this, game, x, y, bmd));
+
+    _this.name = name;
+    game.physics.arcade.enable(_this);
+    _this.body.immovable = true;
+    return _this;
+  }
+
+  return Block;
+}(Phaser.Sprite);
+
+exports.default = Block;
+
+},{"./constants":5}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -124,8 +187,9 @@ var Directions = exports.Directions = [Vertical, Horizontal];
 
 var RoomName = exports.RoomName = "room";
 var CorridorName = exports.CorridorName = "corridor";
+var InvisibleWallName = exports.InvisibleWallName = "invisibleWall";
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -245,6 +309,7 @@ var Corridor = function (_Phaser$Group) {
     key: 'addWall',
     value: function addWall(game, x, y) {
       var wall = new _wall2.default(game, x, y, WallName);
+      //wall.alpha = 0.8
       return wall;
     }
   }, {
@@ -273,7 +338,7 @@ var Corridor = function (_Phaser$Group) {
 
 exports.default = Corridor;
 
-},{"./constants":4,"./corridorSprite":6,"./wall":11}],6:[function(require,module,exports){
+},{"./constants":5,"./corridorSprite":7,"./wall":12}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -349,8 +414,8 @@ var CorridorSprite = function (_Phaser$Sprite) {
 
 exports.default = CorridorSprite;
 
-},{"./constants.js":4}],7:[function(require,module,exports){
-'use strict';
+},{"./constants.js":5}],8:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -366,13 +431,17 @@ var _createClass = function () {
   };
 }();
 
-var _corridor = require('./corridor');
+var _corridor = require("./corridor");
 
 var _corridor2 = _interopRequireDefault(_corridor);
 
-var _utils = require('./utils');
+var _block = require("./block");
 
-var _constants = require('./constants');
+var _block2 = _interopRequireDefault(_block);
+
+var _utils = require("./utils");
+
+var _constants = require("./constants");
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -400,13 +469,13 @@ var CorridorHeight = 4 * _constants.WallSize;
 var CorridorWidth = 4 * _constants.WallSize;
 var MaxRoom = 10;
 //each room shoud have the same size
-var MinRoomSize = 5 * _constants.WallSize;
-var MaxRoomSize = 5 * _constants.WallSize;
+var MinRoomSize = 4;
+var MaxRoomSize = 8;
 
 var Maze = function (_Phaser$Group) {
   _inherits(Maze, _Phaser$Group);
 
-  function Maze(game, parent, worldWitdth, worldHeight, arrayOfRoom) {
+  function Maze(game, parent, worldWitdth, worldHeight, nbRooms, arrayOfRoom) {
     _classCallCheck(this, Maze);
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Maze).call(this, game, parent, "maze", false, true, Phaser.Physics.ARCADE));
@@ -414,11 +483,13 @@ var Maze = function (_Phaser$Group) {
     _this.worldWitdth = worldWitdth;
     _this.worldHeight = worldHeight;
     _this.arrayOfRoom = arrayOfRoom;
+    _this.nbRooms = nbRooms || MaxRoom;
+    console.info(_this.nbRooms);
     return _this;
   }
 
   _createClass(Maze, [{
-    key: 'rooms',
+    key: "rooms",
     value: function rooms() {
       var newRoom = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
@@ -427,18 +498,18 @@ var Maze = function (_Phaser$Group) {
       });
     }
   }, {
-    key: 'findLastRoom',
+    key: "findLastRoom",
     value: function findLastRoom(newRoom) {
       var rooms = this.rooms(newRoom);
       return rooms[rooms.length - 1];
     }
   }, {
-    key: 'createRoom',
+    key: "createRoom",
     value: function createRoom(room) {
       this.add(room);
     }
   }, {
-    key: 'horizontalCorridor',
+    key: "horizontalCorridor",
     value: function horizontalCorridor(game, prevRoom, newRoom) {
       var first = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
 
@@ -450,7 +521,7 @@ var Maze = function (_Phaser$Group) {
       this.add(corridor);
     }
   }, {
-    key: 'verticalCorridor',
+    key: "verticalCorridor",
     value: function verticalCorridor(game, prevRoom, newRoom) {
       var first = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
 
@@ -462,12 +533,12 @@ var Maze = function (_Phaser$Group) {
       this.add(corridor);
     }
   }, {
-    key: 'getInitialRoom',
+    key: "getInitialRoom",
     value: function getInitialRoom() {
       return this.rooms()[0];
     }
   }, {
-    key: 'collide',
+    key: "collide",
     value: function collide(character) {
       var collide = false;
       this.children.forEach(function (child) {
@@ -484,36 +555,39 @@ var Maze = function (_Phaser$Group) {
       return collide;
     }
   }, {
-    key: 'walls',
+    key: "walls",
     value: function walls() {
       var arrayMultipleDim = this.children.map(function (child) {
-        return child.walls();
-      });
+        //wall class does not have walls method
+        if (typeof child.walls === "function") {
+          return child.walls();
+        }
+      }).filter(Boolean);
       return [].concat.apply([], arrayMultipleDim);
     }
   }, {
-    key: 'corridors',
+    key: "corridors",
     value: function corridors() {
       return this.children.filter(function (child) {
         return child.name === _constants.CorridorName;
       });
     }
   }, {
-    key: 'corridorSprites',
+    key: "corridorSprites",
     value: function corridorSprites() {
       return this.corridors().map(function (child) {
         return child.corridorSprite();
       });
     }
   }, {
-    key: 'roomsSprites',
+    key: "roomsSprites",
     value: function roomsSprites() {
       return this.rooms().map(function (child) {
         return child.roomSprite();
       });
     }
   }, {
-    key: 'removeUselessWalls',
+    key: "removeUselessWalls",
     value: function removeUselessWalls(game) {
       var _this2 = this;
 
@@ -521,45 +595,55 @@ var Maze = function (_Phaser$Group) {
         wall.kill();
       };
 
-      this.rooms().forEach(function (room) {
-        game.physics.arcade.collide(room.walls(), _this2.corridorSprites(), destroyFunction);
-      });
-
-      this.corridors().forEach(function (corridor) {
-        game.physics.arcade.collide(corridor.walls(), _this2.roomsSprites(), destroyFunction);
-      });
+      var destroyWallAndAddMissingTile = function destroyWallAndAddMissingTile(wall, other) {
+        if (!(0, _utils.isInside)(wall, other)) {
+          var missing = new _block2.default(game, wall.x, wall.y, _constants.InvisibleWallName);
+          _this2.add(missing);
+        }
+        wall.kill();
+      };
 
       this.corridors().forEach(function (corridor) {
         _this2.corridors().forEach(function (corridor2) {
           if (corridor !== corridor2) {
-            game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyFunction);
+            game.physics.arcade.collide(corridor.walls(), corridor2.corridorSprite(), destroyWallAndAddMissingTile);
           }
         });
       });
+      this.corridors().forEach(function (corridor) {
+        game.physics.arcade.collide(corridor.walls(), _this2.roomsSprites(), destroyFunction);
+      });
+      this.rooms().forEach(function (room) {
+        game.physics.arcade.collide(room.walls(), _this2.corridorSprites(), destroyWallAndAddMissingTile);
+      });
     }
   }, {
-    key: 'addAdditionalSprite',
+    key: "addAdditionalSprite",
     value: function addAdditionalSprite(game) {
       this.rooms().forEach(function (room) {
         room.addAdditionalSprite(game);
       });
     }
   }, {
-    key: 'sortDepth',
+    key: "sortDepth",
     value: function sortDepth() {
       var compare = function compare(a, b) {
-        if (a.name === _constants.RoomName && b.name === _constants.RoomName || a.name === _constants.CorridorName && b.name === _constants.CorridorName) {
+        if (a.name === b.name) {
           return 0;
-        } else if (a.name === _constants.RoomName && b.name == _constants.CorridorName) {
+        } else if (a.name === _constants.InvisibleWallName) {
+          return -1;
+        } else if (a.name === _constants.RoomName && b.name === _constants.CorridorName) {
           return 1;
-        } else if (a.name === _constants.CorridorName && b.name == _constants.RoomName) {
+        } else if (a.name === _constants.CorridorName && b.name === _constants.RoomName) {
           return -1;
         }
+        //other cases
+        return 1;
       };
       this.children.sort(compare);
     }
   }, {
-    key: 'exportJSON',
+    key: "exportJSON",
     value: function exportJSON() {
       var roomArray = this.rooms().map(function (m) {
         return { x: m.roomSprite().x, y: m.roomSprite().y, w: m.originalWidth, h: m.originalHeight, klassName: m.constructor.name };
@@ -570,7 +654,7 @@ var Maze = function (_Phaser$Group) {
       return JSON.stringify({ rooms: roomArray, corridors: corridorArray });
     }
   }, {
-    key: 'generate',
+    key: "generate",
     value: function generate(game) {
       var JSONData = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
@@ -578,26 +662,25 @@ var Maze = function (_Phaser$Group) {
       this.generateLevel(game, strategyFn);
     }
   }, {
-    key: 'generateLevel',
+    key: "generateLevel",
     value: function generateLevel(game, generationFunction) {
       generationFunction(game);
-      console.log(this.exportJSON());
       this.removeUselessWalls(game);
       this.sortDepth();
       this.addAdditionalSprite(game);
     }
   }, {
-    key: 'randomGeneration',
+    key: "randomGeneration",
     value: function randomGeneration(game) {
       var _this3 = this;
 
       var _loop = function _loop(i) {
         //FIX ME  the computation does not work well
         // TODO OFFSET WALLSIZE
-        var width = (0, _utils.modGrid)(_constants.WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-        var height = (0, _utils.modGrid)(_constants.WallSize, MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize));
-        //console.log(width)
-        //console.log(height)
+        var width = Math.trunc(MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize)) * _constants.WallSize;
+        var height = Math.trunc(MinRoomSize + Math.random() * (MaxRoomSize - MinRoomSize)) * _constants.WallSize;
+        //console.log(width, height)
+
         var x = (0, _utils.modGrid)(_constants.WallSize, Math.random() * (_this3.worldWitdth - width - 1) + 1);
         var y = (0, _utils.modGrid)(_constants.WallSize, Math.random() * (_this3.worldHeight - height - 1) + 1);
 
@@ -628,12 +711,12 @@ var Maze = function (_Phaser$Group) {
         }
       };
 
-      for (var i = 0; i < MaxRoom; i++) {
+      for (var i = 0; i < this.nbRooms; i++) {
         _loop(i);
       }
     }
   }, {
-    key: 'importFromJson',
+    key: "importFromJson",
     value: function importFromJson(JSONData) {
       var _this4 = this;
 
@@ -643,7 +726,7 @@ var Maze = function (_Phaser$Group) {
       };
     }
   }, {
-    key: 'import',
+    key: "import",
     value: function _import(game, rooms, corridors) {
       var _this5 = this;
 
@@ -652,9 +735,9 @@ var Maze = function (_Phaser$Group) {
           return room.name === roomName;
         });
         if (!roomSelected) {
-          console.error('"' + roomName + '" is unknonwn amoung theses classes: [' + arrayOfRoom.map(function (t) {
+          console.error("\"" + roomName + "\" is unknonwn amoung theses classes: [" + arrayOfRoom.map(function (t) {
             return t.name;
-          }) + ' ]');
+          }) + " ]");
           return arrayOfRoom[0];
         }
         return roomSelected;
@@ -676,7 +759,7 @@ var Maze = function (_Phaser$Group) {
 
 exports.default = Maze;
 
-},{"./constants":4,"./corridor":5,"./utils":10}],8:[function(require,module,exports){
+},{"./block":4,"./constants":5,"./corridor":6,"./utils":11}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -750,25 +833,21 @@ var Room = function (_Phaser$Group) {
     value: function createRoom(game, x, y, width, height) {
       var room = new _roomSprite2.default(game, x, y, width, height);
       this.add(room);
-      for (var i = x; i < x + width + _constants.WallSize; i += _constants.WallSize) {
-        var upWall = this.addWall(game, i, y - _constants.WallSize);
-        var downWall = this.addWall(game, i, y + height);
-        this.add(upWall);
-        this.add(downWall);
+      for (var i = x - _constants.WallSize; i < x + width + _constants.WallSize; i += _constants.WallSize) {
+        this.addWall(game, i, y - _constants.WallSize);
+        this.addWall(game, i, y + height);
       }
       for (var j = y; j < y + height; j += _constants.WallSize) {
-        var leftWall = this.addWall(game, x - _constants.WallSize, j);
-        var rightWall = this.addWall(game, x + width, j);
-        this.add(leftWall);
-        this.add(rightWall);
+        this.addWall(game, x - _constants.WallSize, j);
+        this.addWall(game, x + width, j);
       }
     }
   }, {
     key: 'addWall',
     value: function addWall(game, x, y) {
       var wall = new _wall2.default(game, x, y, WallName);
-      //wall.alpha = 0.2;
-      return wall;
+      //wall.alpha = 0.1;
+      this.add(wall);
     }
   }, {
     key: 'addAdditionalSprite',
@@ -806,7 +885,7 @@ var Room = function (_Phaser$Group) {
 
 exports.default = Room;
 
-},{"./constants":4,"./roomSprite":9,"./wall":11}],9:[function(require,module,exports){
+},{"./constants":5,"./roomSprite":10,"./wall":12}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -882,7 +961,7 @@ var RoomSprite = function (_Phaser$Sprite) {
 
 exports.default = RoomSprite;
 
-},{"./constants.js":4}],10:[function(require,module,exports){
+},{"./constants.js":5}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -896,7 +975,7 @@ function isInside(compared, comparator) {
   var rectCompared = { x: compared.x, y: compared.y, x2: compared.x + compared.width, y2: compared.y + compared.height };
   var rectComparator = { x: comparator.x, y: comparator.y, x2: comparator.x + comparator.width, y2: comparator.y + comparator.height };
 
-  return rectCompared.x > rectComparator.x && rectCompared.y > rectComparator.y && rectCompared.x2 < rectComparator.x2 && rectCompared.y2 < rectComparator.y2;
+  return rectCompared.x >= rectComparator.x && rectCompared.y >= rectComparator.y && rectCompared.x2 <= rectComparator.x2 && rectCompared.y2 <= rectComparator.y2;
 }
 
 function overlap(box1, box2) {
@@ -921,7 +1000,7 @@ function modGrid(modValue, value) {
   return value + (modValue - offset);
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -929,6 +1008,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _constants = require("./constants");
+
+var _block = require("./block");
+
+var _block2 = _interopRequireDefault(_block);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -948,35 +1035,21 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var Wall = function (_Phaser$Sprite) {
-  _inherits(Wall, _Phaser$Sprite);
+var Wall = function (_Block) {
+  _inherits(Wall, _Block);
 
-  function Wall(game, x, y) {
-    var name = arguments.length <= 3 || arguments[3] === undefined ? "Wall" : arguments[3];
-
+  function Wall(game, x, y, key) {
     _classCallCheck(this, Wall);
 
-    var bmd = game.add.bitmapData(_constants.WallSize, _constants.WallSize);
-    // draw to the canvas context like normal
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, _constants.WallSize, _constants.WallSize);
-    bmd.ctx.fillStyle = _constants.WallColor;
-    bmd.ctx.fill();
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Wall).call(this, game, x, y, bmd));
-
-    _this.name = name;
-    game.physics.arcade.enable(_this);
-    _this.body.immovable = true;
-    return _this;
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Wall).call(this, game, x, y, key, _constants.WallColor, _constants.WallSize, _constants.WallSize));
   }
 
   return Wall;
-}(Phaser.Sprite);
+}(_block2.default);
 
 exports.default = Wall;
 
-},{"./constants":4}],12:[function(require,module,exports){
+},{"./block":4,"./constants":5}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1011,6 +1084,8 @@ function _inherits(subClass, superClass) {
     }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
+var Velocity = 400;
+
 var Character = function (_Phaser$Sprite) {
     _inherits(Character, _Phaser$Sprite);
 
@@ -1034,15 +1109,15 @@ var Character = function (_Phaser$Sprite) {
             this.body.velocity.y = 0;
 
             if (this.cursors.left.isDown) {
-                this.body.velocity.x = -200;
+                this.body.velocity.x = -Velocity;
             } else if (this.cursors.right.isDown) {
-                this.body.velocity.x = 200;
+                this.body.velocity.x = Velocity;
             }
 
             if (this.cursors.up.isDown) {
-                this.body.velocity.y = -200;
+                this.body.velocity.y = -Velocity;
             } else if (this.cursors.down.isDown) {
-                this.body.velocity.y = 200;
+                this.body.velocity.y = Velocity;
             }
         }
     }]);
@@ -1052,7 +1127,7 @@ var Character = function (_Phaser$Sprite) {
 
 exports.default = Character;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1126,7 +1201,7 @@ var RoomWithCarpet = function (_Room) {
 
 exports.default = RoomWithCarpet;
 
-},{"../constants/constants":1,"../constants/keyUtils":2,"../lib/room":8}],14:[function(require,module,exports){
+},{"../constants/constants":1,"../constants/keyUtils":2,"../lib/room":9}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1206,7 +1281,7 @@ var RoomWithColoredCorners = function (_Room) {
 
 exports.default = RoomWithColoredCorners;
 
-},{"../constants/constants":1,"../constants/keyUtils":2,"../lib/room":8}],15:[function(require,module,exports){
+},{"../constants/constants":1,"../constants/keyUtils":2,"../lib/room":9}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1281,15 +1356,21 @@ var GameState = function (_Phaser$State) {
 
     _this.useJsonData = false;
     _this.JSONData = null;
+    _this.nbRooms = null;
     return _this;
   }
 
   _createClass(GameState, [{
     key: 'init',
-    value: function init(JSONData) {
-      if (JSONData !== undefined) {
-        this.useJsonData = true;
-        this.JSONData = JSONData;
+    value: function init(data) {
+      if (data !== undefined) {
+        if (data.JSONData) {
+          this.useJsonData = true;
+          this.JSONData = JSONData;
+        }
+        if (data.nbRooms) {
+          this.nbRooms = data.nbRooms;
+        }
       }
     }
   }, {
@@ -1299,7 +1380,7 @@ var GameState = function (_Phaser$State) {
       this.game.stage.backgroundColor = "#4488AA";
       this.game.world.setBounds(0, 0, _constants.WorldWitdth, _constants.WorldHeight);
       this.character = new _character2.default(this.game, 50, 200, _keyUtils.Character, 0);
-      this.maze = new _maze2.default(this.game, this.game.world, _constants.WorldWitdth, _constants.WorldHeight, [_room2.default, _roomWithCarpet2.default, _roomWithColoredCorners2.default]);
+      this.maze = new _maze2.default(this.game, this.game.world, _constants.WorldWitdth, _constants.WorldHeight, this.nbRooms, [_room2.default, _roomWithCarpet2.default, _roomWithColoredCorners2.default]);
       this.maze.generate(game, this.JSONData);
       var roomPosition = this.maze.getInitialRoom().borders().center;
       this.character.position.setTo(roomPosition.x, roomPosition.y);
@@ -1332,5 +1413,5 @@ var GameState = function (_Phaser$State) {
 
 exports.default = GameState;
 
-},{"constants/constants":1,"constants/keyUtils":2,"lib/maze":7,"lib/room":8,"object/character":12,"object/roomWithCarpet":13,"object/roomWithColoredCorners":14}]},{},[3])
+},{"constants/constants":1,"constants/keyUtils":2,"lib/maze":8,"lib/room":9,"object/character":13,"object/roomWithCarpet":14,"object/roomWithColoredCorners":15}]},{},[3])
 //# sourceMappingURL=map-generator.js.map
