@@ -8,6 +8,10 @@ class Parallax extends Phaser.Game {
     this.state.add('GameState', GameState, false);
     this.state.start('GameState');
   }
+
+  weather() {
+  	return this.state.states.GameState.weather;
+  }
 }
 
-new Parallax();
+window.game = new Parallax();
