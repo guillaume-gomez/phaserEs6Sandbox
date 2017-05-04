@@ -19,7 +19,7 @@ class Weather {
   removeFog() {
     let fogTween = this.game.add.tween(this.fogSprite).to( { alpha: 0 }, 6000, null, true);
     fogTween.onComplete.add(() => {
-        this.fogSprite.kill();
+        this.fogSprite.destroy();
     }, this);
   }
 
@@ -49,7 +49,7 @@ class Weather {
   }
 
   removeRain() {
-    this.emitter.kill();
+    this.emitter.destroy();
   }
 
 }

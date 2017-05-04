@@ -5,11 +5,25 @@
   <title> Parallax</title>
   <link rel="stylesheet" href="styles/main.css">
 </head>
-<body>
-  <div id="content"></div>
-  <script src="scripts/phaser.min.js"></script>
-  <script src="scripts/parallax.js"></script>
-  <br>
-  <p>Special thanks to <a href="https://www.joshmorony.com/how-to-create-a-parallax-background-in-phaser/">  Josh Morony</a></p>
-</body>
+	<body>
+	  <div id="content"></div>
+	  <script src="scripts/phaser.min.js"></script>
+	  <script src="scripts/parallax.js"></script>
+	  <br>
+	  Fog : <input type="checkbox" id="has-fog" onclick="toggleFog(this)"></input>
+	  <br>
+	  Rain <input type="checkbox" id="has-rain" onclick="toggleRain(this)"></input>
+	  <p>Special thanks to <a href="https://www.joshmorony.com/how-to-create-a-parallax-background-in-phaser/">  Josh Morony</a></p>
+	  <br>
+	</body>
+	<script>
+		function toggleFog(e) {
+			e.checked ? window.game.weather().addFog() : window.game.weather().removeFog();
+		}
+
+		function toggleRain(e) {
+			e.checked ? window.game.weather().addRain() : window.game.weather().removeRain();
+		}
+
+	</script>
 </html>
