@@ -1,6 +1,16 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
 var _GameState = require('states/GameState');
 
 var _GameState2 = _interopRequireDefault(_GameState);
@@ -41,10 +51,17 @@ var Parallax = function (_Phaser$Game) {
     return _this;
   }
 
+  _createClass(Parallax, [{
+    key: 'weather',
+    value: function weather() {
+      return this.state.states.GameState.weather;
+    }
+  }]);
+
   return Parallax;
 }(Phaser.Game);
 
-new Parallax();
+window.game = new Parallax();
 
 },{"states/GameState":4}],2:[function(require,module,exports){
 "use strict";
@@ -212,7 +229,7 @@ var Weather = function () {
 
       var fogTween = this.game.add.tween(this.fogSprite).to({ alpha: 0 }, 6000, null, true);
       fogTween.onComplete.add(function () {
-        _this.fogSprite.kill();
+        _this.fogSprite.destroy();
       }, this);
     }
   }, {
@@ -244,7 +261,7 @@ var Weather = function () {
   }, {
     key: 'removeRain',
     value: function removeRain() {
-      this.emitter.kill();
+      this.emitter.destroy();
     }
   }]);
 
@@ -350,7 +367,6 @@ var GameState = function (_Phaser$State) {
       this.dayCycle.initMoon(this.moonSprite);
 
       this.weather = new _Weather2.default(this.game);
-      this.weather.addRain();
     }
   }, {
     key: 'update',
