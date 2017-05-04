@@ -63,8 +63,6 @@ class GameState extends Phaser.State {
     this.dayCycle.initMoon(this.moonSprite);
 
     this.weather = new Weather(this.game);
-    this.weather.addRain();
-
   }
 
   update() {
