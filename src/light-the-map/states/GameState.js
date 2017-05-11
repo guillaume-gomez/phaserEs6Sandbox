@@ -1,5 +1,7 @@
 import VisibilityPolygon from '../external/visibility_polygon_dev';
 
+const CursorRadius = 10;
+
 class GameState extends Phaser.State {
 
   constructor() {
@@ -9,6 +11,7 @@ class GameState extends Phaser.State {
     this.numBoxes = 5;
     this.polygons = [];
     this.moveIndex = null;
+    this.marker = null;
   }
 
   create() {
@@ -31,12 +34,20 @@ class GameState extends Phaser.State {
       [this.game.width + 1, this.game.height + 1],
       [- 1, this.game.height + 1]]
     );
+    //create marker
+    this.marker = this.game.add.graphics();
+    this.marker.beginFill(0xff0000);
+    this.marker.drawCircle(CursorRadius, CursorRadius, CursorRadius);
+    this.marker.endFill();
   }
 
   update() {
   }
 
   move() {
+    //update marker position
+    this.marker.x = this.game.input.activePointer.worldX - CursorRadius;
+    this.marker.y = this.game.input.activePointer.worldY - CursorRadius;
     // when the mouse is moved, we determine the new visibility polygon
     const visibility = this.createLightPolygon(this.game.input.worldX, this.game.input.worldY);
       // then we draw it
