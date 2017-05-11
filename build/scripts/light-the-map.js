@@ -537,6 +537,8 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
+var CursorRadius = 10;
+
 var GameState = function (_Phaser$State) {
   _inherits(GameState, _Phaser$State);
 
@@ -550,6 +552,7 @@ var GameState = function (_Phaser$State) {
     _this.numBoxes = 5;
     _this.polygons = [];
     _this.moveIndex = null;
+    _this.marker = null;
     return _this;
   }
 
@@ -570,6 +573,11 @@ var GameState = function (_Phaser$State) {
       }
       // placing the perimeter box
       this.polygons.push([[-1, -1], [this.game.width + 1, -1], [this.game.width + 1, this.game.height + 1], [-1, this.game.height + 1]]);
+      //create marker
+      this.marker = this.game.add.graphics();
+      this.marker.beginFill(0xff0000);
+      this.marker.drawCircle(CursorRadius, CursorRadius, CursorRadius);
+      this.marker.endFill();
     }
   }, {
     key: 'update',
@@ -577,6 +585,9 @@ var GameState = function (_Phaser$State) {
   }, {
     key: 'move',
     value: function move() {
+      //update marker position
+      this.marker.x = this.game.input.activePointer.worldX - CursorRadius;
+      this.marker.y = this.game.input.activePointer.worldY - CursorRadius;
       // when the mouse is moved, we determine the new visibility polygon
       var visibility = this.createLightPolygon(this.game.input.worldX, this.game.input.worldY);
       // then we draw it
