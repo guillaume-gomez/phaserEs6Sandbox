@@ -482,7 +482,7 @@ var Game = function (_Phaser$Game) {
   function Game() {
     _classCallCheck(this, Game);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Game).call(this, 640, 480, Phaser.AUTO, 'content', null));
+    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, 640, 480, Phaser.AUTO, 'content', null));
 
     _this.state.add('Game', _GameState2.default, false);
     _this.state.start('Game');
@@ -545,7 +545,7 @@ var GameState = function (_Phaser$State) {
   function GameState() {
     _classCallCheck(this, GameState);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).call(this));
+    var _this = _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).call(this));
 
     _this.obstaclesCanvas = null;
     _this.lightCanvas = null;

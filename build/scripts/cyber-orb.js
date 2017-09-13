@@ -61,7 +61,7 @@ var Game = function (_Phaser$Game) {
   function Game() {
     _classCallCheck(this, Game);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Game).call(this, _Constants.WIDTH, _Constants.HEIGHT, Phaser.AUTO, 'content', null));
+    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, _Constants.WIDTH, _Constants.HEIGHT, Phaser.AUTO, 'content', null));
 
     _this.state.add('Game', _GameState2.default, false);
     _this.state.add('Boot', _Boot2.default, false);
@@ -120,7 +120,7 @@ var Boot = function (_Phaser$State) {
   function Boot() {
     _classCallCheck(this, Boot);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Boot).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Boot.__proto__ || Object.getPrototypeOf(Boot)).apply(this, arguments));
   }
 
   _createClass(Boot, [{
@@ -187,7 +187,7 @@ var GameState = function (_Phaser$State) {
   function GameState() {
     _classCallCheck(this, GameState);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).apply(this, arguments));
   }
 
   _createClass(GameState, [{
@@ -417,7 +417,7 @@ var HowTo = function (_Phaser$State) {
   function HowTo() {
     _classCallCheck(this, HowTo);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(HowTo).apply(this, arguments));
+    return _possibleConstructorReturn(this, (HowTo.__proto__ || Object.getPrototypeOf(HowTo)).apply(this, arguments));
   }
 
   _createClass(HowTo, [{
@@ -480,7 +480,7 @@ var MainMenu = function (_Phaser$State) {
   function MainMenu() {
     _classCallCheck(this, MainMenu);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(MainMenu).apply(this, arguments));
+    return _possibleConstructorReturn(this, (MainMenu.__proto__ || Object.getPrototypeOf(MainMenu)).apply(this, arguments));
   }
 
   _createClass(MainMenu, [{
@@ -548,7 +548,7 @@ var Preloader = function (_Phaser$State) {
   function Preloader() {
     _classCallCheck(this, Preloader);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Preloader).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Preloader.__proto__ || Object.getPrototypeOf(Preloader)).apply(this, arguments));
   }
 
   _createClass(Preloader, [{
