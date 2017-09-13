@@ -4,7 +4,8 @@ class Car extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame);
     this.game = game;
-
+    this.anchor.x = 0.5;
+    this.anchor.y = 0.5;
     this.cursors = game.input.keyboard.createCursorKeys();
     this.angle = OFFSET;
   }
