@@ -1,4 +1,8 @@
 import Bar from 'object/Bar';
+import Ball from 'object/Ball';
+
+const WidthScreen = 800;
+const HeightScreen = 600;
 
 class GameState extends Phaser.State {
 
@@ -9,8 +13,9 @@ class GameState extends Phaser.State {
     // Add the physics engine to all game objects
     this.game.world.enableBody = true;
 
-    this.bar = new Bar(this.game, 200, 200);
-    this.bar2 = new Bar(this.game, 200, 500);
+    this.bar = new Bar(this.game, 200, 20);
+    this.bar2 = new Bar(this.game, 200, HeightScreen - 20);
+    this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2);
     this.game.add.existing(this.bar);
     this.game.add.existing(this.bar2);
 
