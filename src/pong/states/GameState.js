@@ -10,19 +10,16 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = '#3598db';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    // Add the physics engine to all game objects
-    this.game.world.enableBody = true;
 
     this.bar = new Bar(this.game, 200, 20);
     this.bar2 = new Bar(this.game, 200, HeightScreen - 20);
     this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2);
     this.game.add.existing(this.bar);
     this.game.add.existing(this.bar2);
+    this.game.add.existing(this.ball);
 
     this.bar.body.collideWorldBounds = true;
     this.bar2.body.collideWorldBounds = true;
-
-    this.ball.body.bounce.set(1);
   }
 
   update() {
