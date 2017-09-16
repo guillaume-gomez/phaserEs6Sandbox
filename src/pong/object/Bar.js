@@ -11,6 +11,7 @@ class Bar extends Phaser.Sprite {
     bmd.ctx.fill();
     super(game, x, y, bmd);
     game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.anchor.set(0.5, 0.5);
     this.body.immovable = true;
   }
 
