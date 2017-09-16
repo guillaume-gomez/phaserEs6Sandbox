@@ -1,10 +1,12 @@
 class Bar extends Phaser.Sprite {
 
-  constructor(game, x, y, color = '#ff0000') {
-    const bmd = game.add.bitmapData(100, 20);
-    // draw to the canvas context like normal
+  constructor(game, x, y, color = "green") {
+    const bmd = game.add.bitmapData(110, 30);
     bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, 100, 20);
+    bmd.ctx.lineWidth="5";
+    bmd.ctx.strokeStyle="#003300";
+    bmd.ctx.rect(5,5,100,20);
+    bmd.ctx.stroke();
     bmd.ctx.fillStyle = color;
     bmd.ctx.fill();
     super(game, x, y, bmd);
