@@ -9,17 +9,25 @@ import {
   BallVelocity
 } from "constants.js";
 
+const paddleLeft_x = 50;
+const paddleRight_x = 590;
+const paddleVelocity = 400;
+const paddleSegmentsMax = 4;
+const paddleSegmentHeight = 4;
+const paddleSegmentAngle = 15;
+
 class GameState extends Phaser.State {
 
   create() {
     this.game.stage.backgroundColor = '#182d3b';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.orientation = "horizontal";
     this.initMiddleLine();
 
     this.paddle = new Paddle(this.game, 200, 50);
     this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50);
-    this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, BallVelocity, BallVelocity);
+    this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
     this.game.add.existing(this.paddle);
     this.game.add.existing(this.paddle2);
     this.game.add.existing(this.ball);
@@ -34,10 +42,10 @@ class GameState extends Phaser.State {
     this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
   }
 
-  initMiddleLine(direction = "horizontal") {
+  initMiddleLine() {
     this.backgroundGraphics = this.game.add.graphics(0, 0);
     this.backgroundGraphics.lineStyle(2, 0xFFFFFF, 1);
-    if(direction === "horizontal") {
+    if(this.orientation === "horizontal") {
       for (var x = 0; x < WidthScreen; x += 5 * 2) {
         this.backgroundGraphics.moveTo(x, this.game.world.centerY);
         this.backgroundGraphics.lineTo(x + 5, this.game.world.centerY);
@@ -80,9 +88,39 @@ class GameState extends Phaser.State {
 
   }
 
-  updateBall(ball, _Paddle) {
-    //this.ball.body.velocity.x = this.ball.body.velocity.x + 10;
-    //this.ball.body.velocity.y = this.ball.body.velocity.y + 10;
+  updateBall(ball, paddle) {
+    let returnAngle = 0;
+    const direction = this.orientation === "vertical" ? "y" : "x";
+    let segmentHit = Math.floor( (ball[direction] - paddle[direction]) / paddleSegmentHeight);
+
+    if (segmentHit >= paddleSegmentsMax) {
+      segmentHit = paddleSegmentsMax - 1;
+    } else if (segmentHit <= -paddleSegmentsMax) {
+      segmentHit = -(paddleSegmentsMax - 1);
+    }
+
+    if(this.orientation === "vertical") {
+      //left paddle
+      if (paddle.x < WidthScreen * 0.5) {
+        returnAngle = segmentHit * paddleSegmentAngle;
+        this.game.physics.arcade.velocityFromAngle(returnAngle, BallVelocity, this.ball.body.velocity);
+      } else {
+        returnAngle = 180 - (segmentHit * paddleSegmentAngle);
+        if (returnAngle > 180) {
+            returnAngle -= 360;
+        }
+        this.game.physics.arcade.velocityFromAngle(returnAngle, BallVelocity, this.ball.body.velocity);
+      }
+    } else { // horizontal
+      // upper paddle
+      if (paddle.y < HeightScreen * 0.5) {
+        returnAngle = -90 + segmentHit * paddleSegmentAngle;
+        this.game.physics.arcade.velocityFromAngle(returnAngle, BallVelocity, this.ball.body.velocity);
+      } else {
+        returnAngle = 90 - (segmentHit * paddleSegmentAngle);
+        this.game.physics.arcade.velocityFromAngle(returnAngle, BallVelocity, this.ball.body.velocity);
+      }
+    }
   }
 
   startDemo() {
