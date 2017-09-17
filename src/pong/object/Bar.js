@@ -1,11 +1,15 @@
+const Width = 100;
+const Height = 20;
+const LineWidth = 5;
+
 class Bar extends Phaser.Sprite {
 
   constructor(game, x, y, color = "green") {
-    const bmd = game.add.bitmapData(110, 30);
+    const bmd = game.add.bitmapData(Width + 2 * LineWidth, Height + 2 * LineWidth);
     bmd.ctx.beginPath();
-    bmd.ctx.lineWidth="5";
-    bmd.ctx.strokeStyle="#003300";
-    bmd.ctx.rect(5,5,100,20);
+    bmd.ctx.lineWidth = LineWidth;
+    bmd.ctx.strokeStyle= "#FFFFFF";
+    bmd.ctx.rect(LineWidth, LineWidth, Width, Height);
     bmd.ctx.stroke();
     bmd.ctx.fillStyle = color;
     bmd.ctx.fill();
