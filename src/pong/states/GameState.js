@@ -1,12 +1,13 @@
 import Bar from 'object/Bar';
 import Ball from 'object/Ball';
-
-const WidthScreen = 800;
-const HeightScreen = 600;
-const BallStartDelay = 2;
-const BallRandomStartingAngleLeft = [-120, 120];
-const BallRandomStartingAngleRight = [-60, 60];
-const BallVelocity = -400;
+import {
+  WidthScreen,
+  HeightScreen,
+  BallStartDelay,
+  BallRandomStartingAngleLeft,
+  BallRandomStartingAngleRight,
+  BallVelocity
+} from "constants.js";
 
 class GameState extends Phaser.State {
 
