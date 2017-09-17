@@ -2,7 +2,7 @@ const Width = 100;
 const Height = 20;
 const LineWidth = 5;
 
-class Bar extends Phaser.Sprite {
+class Paddle extends Phaser.Sprite {
 
   constructor(game, x, y, color = "green") {
     const bmd = game.add.bitmapData(Width + 2 * LineWidth, Height + 2 * LineWidth);
@@ -21,4 +21,4 @@ class Bar extends Phaser.Sprite {
 
 }
 
-export default Bar;
+export default Paddle;

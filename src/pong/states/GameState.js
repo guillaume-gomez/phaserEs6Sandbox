@@ -1,4 +1,4 @@
-import Bar from 'object/Bar';
+import Paddle from 'object/Paddle';
 import Ball from 'object/Ball';
 import {
   WidthScreen,
@@ -17,15 +17,15 @@ class GameState extends Phaser.State {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.initMiddleLine();
 
-    this.bar = new Bar(this.game, 200, 50);
-    this.bar2 = new Bar(this.game, 200, HeightScreen - 50);
+    this.paddle = new Paddle(this.game, 200, 50);
+    this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50);
     this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, BallVelocity, BallVelocity);
-    this.game.add.existing(this.bar);
-    this.game.add.existing(this.bar2);
+    this.game.add.existing(this.paddle);
+    this.game.add.existing(this.paddle2);
     this.game.add.existing(this.ball);
 
-    this.bar.body.collideWorldBounds = true;
-    this.bar2.body.collideWorldBounds = true;
+    this.paddle.body.collideWorldBounds = true;
+    this.paddle2.body.collideWorldBounds = true;
 
     //this.startDemo();
 
@@ -42,23 +42,23 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.bar.body.velocity.x = 0;
-    this.bar.body.velocity.y = 0;
+    this.paddle.body.velocity.x = 0;
+    this.paddle.body.velocity.y = 0;
     if (this.cursors.left.isDown)
     {
-        this.bar.body.velocity.x = -500;
+        this.paddle.body.velocity.x = -500;
     }
     else if (this.cursors.right.isDown)
     {
-        this.bar.body.velocity.x= 500;
+        this.paddle.body.velocity.x= 500;
     }
 
-    this.game.physics.arcade.collide(this.ball, this.bar, null, this.updateBall, this);
-    this.game.physics.arcade.collide(this.ball, this.bar2, null, this.updateBall, this);
+    this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
+    this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
 
   }
 
-  updateBall(ball, _bar) {
+  updateBall(ball, _Paddle) {
     //this.ball.body.velocity.x = this.ball.body.velocity.x + 10;
     //this.ball.body.velocity.y = this.ball.body.velocity.y + 10;
   }
