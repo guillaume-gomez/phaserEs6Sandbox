@@ -1,13 +1,16 @@
+const Radius = 10;
+const LineWidth = 3;
+
 class Ball extends Phaser.Sprite {
 
   constructor(game, x, y, color = '#0000ff', velX, velY) {
-    const bmd = game.add.bitmapData(50, 50);
+    const bmd = game.add.bitmapData(Radius * 2, Radius * 2);
     bmd.ctx.beginPath();
-    bmd.ctx.arc(25, 25, 25 - 5, 0, 2 * Math.PI, false);
+    bmd.ctx.arc(Radius, Radius, Radius - LineWidth, 0, 2 * Math.PI, false);
     bmd.ctx.fillStyle = 'green';
     bmd.ctx.fill();
-    bmd.ctx.lineWidth = 5;
-    bmd.ctx.strokeStyle = '#003300';
+    bmd.ctx.lineWidth = LineWidth;
+    bmd.ctx.strokeStyle = '#FFFFFF';
     bmd.ctx.stroke();
     super(game, x, y, bmd);
     game.physics.enable(this, Phaser.Physics.ARCADE);
