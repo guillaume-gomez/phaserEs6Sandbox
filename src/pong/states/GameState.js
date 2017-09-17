@@ -6,15 +6,12 @@ import {
   BallStartDelay,
   BallRandomStartingAngleLeft,
   BallRandomStartingAngleRight,
-  BallVelocity
+  BallVelocity,
+  paddleSegmentsMax,
+  paddleSegmentHeight,
+  paddleSegmentAngle
 } from "constants.js";
 
-const paddleLeft_x = 50;
-const paddleRight_x = 590;
-const paddleVelocity = 400;
-const paddleSegmentsMax = 4;
-const paddleSegmentHeight = 4;
-const paddleSegmentAngle = 15;
 
 class GameState extends Phaser.State {
 
@@ -22,24 +19,36 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = '#182d3b';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.orientation = "horizontal";
+    this.orientation = "vertical";
     this.initMiddleLine();
 
-    this.paddle = new Paddle(this.game, 200, 50);
-    this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50);
-    this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
+    this.initPaddlesPosition();
+    //this.startDemo();
+
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    this.zKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    this.sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+  }
+
+  initPaddlesPosition() {
+    if(this.direction === "horizontal") {
+      this.paddle = new Paddle(this.game, 200, 50, this.orientation);
+      this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50, this.orientation);
+      this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
+    } else {
+      this.paddle = new Paddle(this.game, 50, 150, this.orientation);
+      this.paddle2 = new Paddle(this.game, WidthScreen - 50, 150, this.orientation);
+      this.ball = new Ball(this.game, HeightScreen / 2, WidthScreen / 2, - BallVelocity,  - BallVelocity);
+    }
+
     this.game.add.existing(this.paddle);
     this.game.add.existing(this.paddle2);
     this.game.add.existing(this.ball);
 
     this.paddle.body.collideWorldBounds = true;
     this.paddle2.body.collideWorldBounds = true;
-
-    //this.startDemo();
-
-    this.cursors = this.game.input.keyboard.createCursorKeys();
-    this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-    this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
   }
 
   initMiddleLine() {
@@ -74,13 +83,34 @@ class GameState extends Phaser.State {
         this.paddle.body.velocity.x= 500;
     }
 
+    if (this.cursors.up.isDown)
+    {
+        this.paddle.body.velocity.y = -500;
+    }
+    else if (this.cursors.down.isDown)
+    {
+        this.paddle.body.velocity.y = 500;
+    }
+    /////////////////////////////////////////
+
+    ////////////////////////////////////////
+
     if (this.qKey.isDown)
     {
         this.paddle2.body.velocity.x = -500;
     }
     else if (this.dKey.isDown)
     {
-        this.paddle2.body.velocity.x= 500;
+        this.paddle2.body.velocity.x = 500;
+    }
+
+    if (this.zKey.isDown)
+    {
+        this.paddle2.body.velocity.y = -500;
+    }
+    else if (this.sKey.isDown)
+    {
+        this.paddle2.body.velocity.y= 500;
     }
 
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
@@ -100,8 +130,9 @@ class GameState extends Phaser.State {
     }
 
     if(this.orientation === "vertical") {
-      //left paddle
-      if (paddle.x < WidthScreen * 0.5) {
+      console.log(segmentHit)
+      //right paddle
+      if (paddle.x > WidthScreen * 0.5) {
         returnAngle = segmentHit * paddleSegmentAngle;
         this.game.physics.arcade.velocityFromAngle(returnAngle, BallVelocity, this.ball.body.velocity);
       } else {
