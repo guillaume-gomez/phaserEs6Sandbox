@@ -30,6 +30,8 @@ class GameState extends Phaser.State {
     //this.startDemo();
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
   }
 
   initMiddleLine(direction = "horizontal") {
@@ -51,6 +53,10 @@ class GameState extends Phaser.State {
   update() {
     this.paddle.body.velocity.x = 0;
     this.paddle.body.velocity.y = 0;
+    this.paddle2.body.velocity.x = 0;
+    this.paddle2.body.velocity.y = 0;
+
+
     if (this.cursors.left.isDown)
     {
         this.paddle.body.velocity.x = -500;
@@ -58,6 +64,15 @@ class GameState extends Phaser.State {
     else if (this.cursors.right.isDown)
     {
         this.paddle.body.velocity.x= 500;
+    }
+
+    if (this.qKey.isDown)
+    {
+        this.paddle2.body.velocity.x = -500;
+    }
+    else if (this.dKey.isDown)
+    {
+        this.paddle2.body.velocity.x= 500;
     }
 
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
