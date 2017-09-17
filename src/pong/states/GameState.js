@@ -32,12 +32,19 @@ class GameState extends Phaser.State {
     this.cursors = this.game.input.keyboard.createCursorKeys();
   }
 
-  initMiddleLine() {
+  initMiddleLine(direction = "horizontal") {
     this.backgroundGraphics = this.game.add.graphics(0, 0);
-    this.backgroundGraphics.lineStyle(2, 0xFF00F0, 1);
-    for (var x = 0; x < WidthScreen; x += 5 * 2) {
-      this.backgroundGraphics.moveTo(x, this.game.world.centerY);
-      this.backgroundGraphics.lineTo(x + 5, this.game.world.centerY);
+    this.backgroundGraphics.lineStyle(2, 0xFFFFFF, 1);
+    if(direction === "horizontal") {
+      for (var x = 0; x < WidthScreen; x += 5 * 2) {
+        this.backgroundGraphics.moveTo(x, this.game.world.centerY);
+        this.backgroundGraphics.lineTo(x + 5, this.game.world.centerY);
+      }
+    } else {
+      for (var y = 0; y < HeightScreen; y += 5 * 2) {
+        this.backgroundGraphics.moveTo(this.game.world.centerX, y);
+        this.backgroundGraphics.lineTo(this.game.world.centerX, y + 5);
+      }
     }
   }
 
