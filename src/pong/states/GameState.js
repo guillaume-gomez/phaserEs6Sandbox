@@ -21,9 +21,10 @@ class GameState extends Phaser.State {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.orientation = "vertical";
     this.initMiddleLine();
-
     this.initPaddlesPosition();
-    //this.startDemo();
+    this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
+    this.game.add.existing(this.ball);
+    this.startDemo();
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -36,16 +37,13 @@ class GameState extends Phaser.State {
     if(this.direction === "horizontal") {
       this.paddle = new Paddle(this.game, 200, 50, this.orientation);
       this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50, this.orientation);
-      this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
     } else {
       this.paddle = new Paddle(this.game, 50, 150, this.orientation);
       this.paddle2 = new Paddle(this.game, WidthScreen - 50, 150, this.orientation);
-      this.ball = new Ball(this.game, HeightScreen / 2, WidthScreen / 2, - BallVelocity,  - BallVelocity);
     }
 
     this.game.add.existing(this.paddle);
     this.game.add.existing(this.paddle2);
-    this.game.add.existing(this.ball);
 
     this.paddle.body.collideWorldBounds = true;
     this.paddle2.body.collideWorldBounds = true;
@@ -163,6 +161,17 @@ class GameState extends Phaser.State {
     this.ball.visible = true;
     const randomAngle = this.game.rnd.pick(BallRandomStartingAngleRight.concat(BallRandomStartingAngleLeft));
     this.game.physics.arcade.velocityFromAngle(randomAngle, BallVelocity, this.ball.body.velocity);
+  }
+
+  rotate() {
+    this.paddle.kill();
+    this.paddle2.kill();
+    this.backgroundGraphics.destroy();
+    //remove old element
+
+    this.orientation = this.orientation === "horizontal" ? "vertical" : "horizontal";
+    this.initMiddleLine();
+    this.initPaddlesPosition();
   }
 
 }
