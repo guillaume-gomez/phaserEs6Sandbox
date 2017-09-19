@@ -26,6 +26,8 @@ class GameState extends Phaser.State {
     this.game.add.existing(this.ball);
     this.startDemo();
 
+    //setInterval(() => { this.rotate();}, 20000);
+
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
     this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -34,7 +36,7 @@ class GameState extends Phaser.State {
   }
 
   initPaddlesPosition() {
-    if(this.direction === "horizontal") {
+    if(this.orientation === "horizontal") {
       this.paddle = new Paddle(this.game, 200, 50, this.orientation);
       this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50, this.orientation);
     } else {
@@ -66,50 +68,7 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.paddle.body.velocity.x = 0;
-    this.paddle.body.velocity.y = 0;
-    this.paddle2.body.velocity.x = 0;
-    this.paddle2.body.velocity.y = 0;
-
-
-    if (this.cursors.left.isDown)
-    {
-        this.paddle.body.velocity.x = -500;
-    }
-    else if (this.cursors.right.isDown)
-    {
-        this.paddle.body.velocity.x= 500;
-    }
-
-    if (this.cursors.up.isDown)
-    {
-        this.paddle.body.velocity.y = -500;
-    }
-    else if (this.cursors.down.isDown)
-    {
-        this.paddle.body.velocity.y = 500;
-    }
-    /////////////////////////////////////////
-
-    ////////////////////////////////////////
-
-    if (this.qKey.isDown)
-    {
-        this.paddle2.body.velocity.x = -500;
-    }
-    else if (this.dKey.isDown)
-    {
-        this.paddle2.body.velocity.x = 500;
-    }
-
-    if (this.zKey.isDown)
-    {
-        this.paddle2.body.velocity.y = -500;
-    }
-    else if (this.sKey.isDown)
-    {
-        this.paddle2.body.velocity.y= 500;
-    }
+    this.handleInput();
 
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
     this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
@@ -172,6 +131,51 @@ class GameState extends Phaser.State {
     this.orientation = this.orientation === "horizontal" ? "vertical" : "horizontal";
     this.initMiddleLine();
     this.initPaddlesPosition();
+  }
+
+  handleInput() {
+    this.paddle.body.velocity.x = 0;
+    this.paddle.body.velocity.y = 0;
+    this.paddle2.body.velocity.x = 0;
+    this.paddle2.body.velocity.y = 0;
+
+    if(this.orientation == "horizontal") {
+      if (this.cursors.left.isDown)
+      {
+          this.paddle.body.velocity.x = -500;
+      }
+      else if (this.cursors.right.isDown)
+      {
+          this.paddle.body.velocity.x= 500;
+      }
+
+      if (this.qKey.isDown)
+      {
+          this.paddle2.body.velocity.x = -500;
+      }
+      else if (this.dKey.isDown)
+      {
+          this.paddle2.body.velocity.x = 500;
+      }
+    } else {
+      if (this.zKey.isDown)
+      {
+          this.paddle2.body.velocity.y = -500;
+      }
+      else if (this.sKey.isDown)
+      {
+          this.paddle2.body.velocity.y= 500;
+      }
+
+      if (this.cursors.up.isDown)
+      {
+          this.paddle.body.velocity.y = -500;
+      }
+      else if (this.cursors.down.isDown)
+      {
+          this.paddle.body.velocity.y = 500;
+      }
+    }
   }
 
 }
