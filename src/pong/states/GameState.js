@@ -24,9 +24,9 @@ class GameState extends Phaser.State {
     this.initMiddleLine();
     this.initPaddlesPosition();
     this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
+    this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
-    //this.startDemo();
-    this.startBall();
+    this.startDemo();
 
     //setInterval(() => { this.rotate();}, 20000);
 
@@ -133,6 +133,7 @@ class GameState extends Phaser.State {
 
   startBall() {
     this.ball.visible = true;
+    this.ball.position.set( WidthScreen / 2, HeightScreen / 2);
     const randomAngle = this.game.rnd.pick(BallRandomStartingAngleRight.concat(BallRandomStartingAngleLeft));
     this.game.physics.arcade.velocityFromAngle(randomAngle, BallVelocity, this.ball.body.velocity);
   }
@@ -192,6 +193,10 @@ class GameState extends Phaser.State {
           this.paddle.body.velocity.y = 500;
       }
     }
+  }
+
+  ballOutOfBounds() {
+    this.game.time.events.add(Phaser.Timer.SECOND * 1000, this.startBall, this);
   }
 
 }
