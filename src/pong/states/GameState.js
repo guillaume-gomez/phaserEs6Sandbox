@@ -19,12 +19,14 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = '#182d3b';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.orientation = "vertical";
+    this.orientation = "horizontal";
+    this.initBoundaries();
     this.initMiddleLine();
     this.initPaddlesPosition();
     this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
     this.game.add.existing(this.ball);
-    this.startDemo();
+    //this.startDemo();
+    this.startBall();
 
     //setInterval(() => { this.rotate();}, 20000);
 
@@ -33,6 +35,20 @@ class GameState extends Phaser.State {
     this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     this.zKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
     this.sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+  }
+
+  initBoundaries() {
+    if(this.orientation === "horizontal") {
+      this.game.physics.arcade.checkCollision.left = true;
+      this.game.physics.arcade.checkCollision.right = true;
+      this.game.physics.arcade.checkCollision.up = false;
+      this.game.physics.arcade.checkCollision.down = false;
+    } else {
+      this.game.physics.arcade.checkCollision.left = false;
+      this.game.physics.arcade.checkCollision.right = false;
+      this.game.physics.arcade.checkCollision.up = true;
+      this.game.physics.arcade.checkCollision.down = true;
+    }
   }
 
   initPaddlesPosition() {
@@ -69,7 +85,6 @@ class GameState extends Phaser.State {
 
   update() {
     this.handleInput();
-
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
     this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
 
@@ -131,6 +146,7 @@ class GameState extends Phaser.State {
     this.orientation = this.orientation === "horizontal" ? "vertical" : "horizontal";
     this.initMiddleLine();
     this.initPaddlesPosition();
+    this.initBoundaries();
   }
 
   handleInput() {
