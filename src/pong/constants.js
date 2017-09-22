@@ -7,3 +7,4 @@ export const BallVelocity = 400;
 export const paddleSegmentsMax = 4;
 export const paddleSegmentHeight = 4;
 export const paddleSegmentAngle = 15;
+export const scoreToWin = 11;

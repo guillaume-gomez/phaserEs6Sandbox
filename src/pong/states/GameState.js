@@ -9,7 +9,8 @@ import {
   BallVelocity,
   paddleSegmentsMax,
   paddleSegmentHeight,
-  paddleSegmentAngle
+  paddleSegmentAngle,
+  scoreToWin
 } from "constants.js";
 
 
@@ -19,7 +20,9 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = '#182d3b';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.orientation = "horizontal";
+    this.orientation = "vertical";
+    this.player1Score = 0;
+    this.player2Score = 0;
     this.initBoundaries();
     this.initMiddleLine();
     this.initPaddlesPosition();
@@ -156,7 +159,7 @@ class GameState extends Phaser.State {
     this.paddle2.body.velocity.x = 0;
     this.paddle2.body.velocity.y = 0;
 
-    if(this.orientation == "horizontal") {
+    if(this.orientation === "horizontal") {
       if (this.cursors.left.isDown)
       {
           this.paddle.body.velocity.x = -500;
@@ -197,6 +200,13 @@ class GameState extends Phaser.State {
 
   ballOutOfBounds() {
     this.game.time.events.add(Phaser.Timer.SECOND * 1000, this.startBall, this);
+    const axis = this.orientation === "horizontal" ? "y" : "x";
+     if (this.ball[axis] < 0) {
+      this.player2Score++;
+    } else {
+      this.player1Score++;
+    }
+    console.log(this.player1Score, ", ", this.player2Score)
   }
 
 }
