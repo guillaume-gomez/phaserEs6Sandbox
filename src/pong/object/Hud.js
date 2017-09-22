@@ -1,4 +1,4 @@
-const { WidthScreen } from "../constants.js";
+import { WidthScreen } from "../constants.js";
 const style = {font: '80px Arial', fill: '#FFFFFF', align: 'center'}
 const top = 10;
 

@@ -1,5 +1,6 @@
 import Paddle from 'object/Paddle';
 import Ball from 'object/Ball';
+import Hud from 'object/Hud';
 import {
   WidthScreen,
   HeightScreen,
@@ -30,6 +31,9 @@ class GameState extends Phaser.State {
     this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
     this.startDemo();
+
+    this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
+    this.game.add.existing(this.hud);
 
     //setInterval(() => { this.rotate();}, 20000);
 
@@ -199,13 +203,14 @@ class GameState extends Phaser.State {
   }
 
   ballOutOfBounds() {
-    this.game.time.events.add(Phaser.Timer.SECOND * 1000, this.startBall, this);
+    this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
     const axis = this.orientation === "horizontal" ? "y" : "x";
      if (this.ball[axis] < 0) {
       this.player2Score++;
     } else {
       this.player1Score++;
     }
+    this.hud.updateTexts([this.player1Score, this.player2Score]);
   }
 
 }
