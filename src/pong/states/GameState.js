@@ -206,7 +206,6 @@ class GameState extends Phaser.State {
     } else {
       this.player1Score++;
     }
-    console.log(this.player1Score, ", ", this.player2Score)
   }
 
 }
