@@ -92,10 +92,8 @@ var Car = function (_Phaser$Sprite) {
     var _this = _possibleConstructorReturn(this, (Car.__proto__ || Object.getPrototypeOf(Car)).call(this, game, x, y, key, frame));
 
     _this.game = game;
-
     _this.anchor.x = 0.5;
     _this.anchor.y = 0.5;
-
     _this.cursors = game.input.keyboard.createCursorKeys();
     _this.angle = OFFSET;
     return _this;
