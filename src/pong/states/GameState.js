@@ -11,7 +11,9 @@ import {
   paddleSegmentsMax,
   paddleSegmentHeight,
   paddleSegmentAngle,
-  scoreToWin
+  scoreToWin,
+  WidthPaddle,
+  HeightPaddle
 } from "constants.js";
 
 
@@ -35,7 +37,7 @@ class GameState extends Phaser.State {
     this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
     this.game.add.existing(this.hud);
 
-    //setInterval(() => { this.rotate();}, 20000);
+    //setInterval(() => { this.rotate();}, 5000);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -60,11 +62,11 @@ class GameState extends Phaser.State {
 
   initPaddlesPosition() {
     if(this.orientation === "horizontal") {
-      this.paddle = new Paddle(this.game, 200, 50, this.orientation);
-      this.paddle2 = new Paddle(this.game, 200, HeightScreen - 50, this.orientation);
+      this.paddle = new Paddle(this.game, WidthScreen / 2 - WidthPaddle / 2, 50, this.orientation);
+      this.paddle2 = new Paddle(this.game, WidthScreen / 2 - WidthPaddle / 2 , HeightScreen - 50, this.orientation);
     } else {
-      this.paddle = new Paddle(this.game, 50, 150, this.orientation);
-      this.paddle2 = new Paddle(this.game, WidthScreen - 50, 150, this.orientation);
+      this.paddle = new Paddle(this.game, 50, HeightScreen / 2 + HeightPaddle / 2, this.orientation);
+      this.paddle2 = new Paddle(this.game, WidthScreen - 50, HeightScreen / 2 + HeightPaddle / 2, this.orientation);
     }
 
     this.game.add.existing(this.paddle);
