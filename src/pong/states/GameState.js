@@ -1,5 +1,6 @@
 import Paddle from 'object/Paddle';
 import Ball from 'object/Ball';
+import Switch from 'object/Switch';
 import Hud from 'object/Hud';
 import {
   WidthScreen,
@@ -29,9 +30,11 @@ class GameState extends Phaser.State {
     this.initBoundaries();
     this.initMiddleLine();
     this.initPaddlesPosition();
+    this.initSwitch();
     this.ball = new Ball(this.game, WidthScreen / 2, HeightScreen / 2, - BallVelocity,  - BallVelocity);
     this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
+
     this.startDemo();
 
     this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
@@ -62,11 +65,12 @@ class GameState extends Phaser.State {
 
   initPaddlesPosition() {
     if(this.orientation === "horizontal") {
-      this.paddle = new Paddle(this.game, WidthScreen / 2 - WidthPaddle / 2, 50, this.orientation);
-      this.paddle2 = new Paddle(this.game, WidthScreen / 2 - WidthPaddle / 2 , HeightScreen - 50, this.orientation);
+      console.log(WidthScreen / 2 - WidthPaddle / 2)
+      this.paddle = new Paddle(this.game, WidthScreen / 2, 50, this.orientation);
+      this.paddle2 = new Paddle(this.game, WidthScreen / 2 , HeightScreen - 50, this.orientation);
     } else {
-      this.paddle = new Paddle(this.game, 50, HeightScreen / 2 + HeightPaddle / 2, this.orientation);
-      this.paddle2 = new Paddle(this.game, WidthScreen - 50, HeightScreen / 2 + HeightPaddle / 2, this.orientation);
+      this.paddle = new Paddle(this.game, 50, HeightScreen / 2, this.orientation);
+      this.paddle2 = new Paddle(this.game, WidthScreen - 50, HeightScreen / 2, this.orientation);
     }
 
     this.game.add.existing(this.paddle);
@@ -92,10 +96,24 @@ class GameState extends Phaser.State {
     }
   }
 
+  initSwitch() {
+    let maxX = (WidthScreen / 4) * 3;
+    let minX =  WidthScreen / 4;
+    let maxY = (HeightScreen / 4) * 3;
+    let minY = (HeightScreen / 4);
+
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
+    this.switch = new Switch(this.game, x, y);
+    this.game.add.existing(this.switch);
+  }
+
+
   update() {
     this.handleInput();
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
     this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
+    this.game.physics.arcade.collide(this.ball, this.switch, null, this.rotate, this);
 
   }
 
@@ -148,6 +166,7 @@ class GameState extends Phaser.State {
   }
 
   rotate() {
+    this.switch.kill();
     this.paddle.kill();
     this.paddle2.kill();
     this.backgroundGraphics.destroy();
@@ -157,6 +176,7 @@ class GameState extends Phaser.State {
     this.initMiddleLine();
     this.initPaddlesPosition();
     this.initBoundaries();
+    this.initSwitch();
   }
 
   handleInput() {
