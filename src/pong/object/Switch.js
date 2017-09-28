@@ -1,10 +1,12 @@
+const width = 25;
+
 class Switch extends Phaser.Sprite {
 
   constructor(game, x, y) {
-    const bmd = game.add.bitmapData(25, 25);
+    const bmd = game.add.bitmapData(width, width);
     bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, 25, 25);
-    bmd.ctx.fillStyle = 'green';
+    bmd.ctx.rect(0, 0, width, width);
+    bmd.ctx.fillStyle = 'red';
     bmd.ctx.fill();
     super(game, x, y, bmd);
     game.physics.enable(this, Phaser.Physics.ARCADE);
