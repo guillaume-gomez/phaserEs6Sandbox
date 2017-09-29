@@ -172,6 +172,8 @@ class GameState extends Phaser.State {
     this.backgroundGraphics.destroy();
     //remove old element
 
+    this.game.camera.shake(0.05, 100);
+
     this.orientation = this.orientation === "horizontal" ? "vertical" : "horizontal";
     this.initMiddleLine();
     this.initPaddlesPosition();
