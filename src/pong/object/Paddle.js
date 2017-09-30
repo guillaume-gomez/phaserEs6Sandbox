@@ -1,18 +1,17 @@
-const Width = 100;
-const Height = 20;
-const LineWidth = 5;
+import { WidthPaddle, HeightPaddle } from "../constants";
+const LineWidthPaddle = 5;
 
 function createBmp(game, direction, color) {
     const bmd = direction === "horizontal" ?
-        game.add.bitmapData(Width + 2 * LineWidth, Height + 2 * LineWidth) :
-        game.add.bitmapData(Height + 2 * LineWidth, Width + 2 * LineWidth);
+        game.add.bitmapData(WidthPaddle, HeightPaddle) :
+        game.add.bitmapData(HeightPaddle, WidthPaddle);
     bmd.ctx.beginPath();
-    bmd.ctx.lineWidth = LineWidth;
+    bmd.ctx.lineWidth = LineWidthPaddle;
     bmd.ctx.strokeStyle= "#FFFFFF";
     if (direction === "horizontal") {
-        bmd.ctx.rect(LineWidth, LineWidth, Width, Height);
+        bmd.ctx.rect(LineWidthPaddle / 2, LineWidthPaddle / 2, WidthPaddle - LineWidthPaddle, HeightPaddle - LineWidthPaddle);
     } else {
-        bmd.ctx.rect(LineWidth, LineWidth, Height, Width);
+        bmd.ctx.rect(LineWidthPaddle / 2, LineWidthPaddle / 2, HeightPaddle - LineWidthPaddle, WidthPaddle - LineWidthPaddle);
     }
     bmd.ctx.stroke();
     bmd.ctx.fillStyle = color;
