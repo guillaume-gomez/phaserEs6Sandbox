@@ -25,6 +25,7 @@ class GameState extends Phaser.State {
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.orientation = "vertical";
+    this.gameOver = false;
     this.player1Score = 0;
     this.player2Score = 0;
     this.initBoundaries();
@@ -35,12 +36,10 @@ class GameState extends Phaser.State {
     this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
 
-    this.startDemo();
-
     this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
     this.game.add.existing(this.hud);
 
-    //setInterval(() => { this.rotate();}, 5000);
+    this.start();
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -117,6 +116,14 @@ class GameState extends Phaser.State {
       this.rotate();
     }
 
+    if(this.player1Score === scoreToWin || this.player2Score === scoreToWin ) {
+      this.hud.makeWinnerVisible([this.player1Score, this.player2Score]);
+      this.player1Score = 0;
+      this.player2Score = 0;
+      this.gameOver = true;
+      this.game.time.events.add(Phaser.Timer.SECOND * 5, this.start, this);
+    }
+
   }
 
   checkOverlap(spriteA, spriteB) {
@@ -161,8 +168,11 @@ class GameState extends Phaser.State {
     }
   }
 
-  startDemo() {
+  start() {
+    this.gameOver = false;
+    this.hud.makeWinnerInvisible();
     this.ball.visible = false;
+    this.hud.updateTexts([this.player1Score, this.player2Score]);
     this.game.time.events.add(Phaser.Timer.SECOND * BallStartDelay, this.startBall, this);
   }
 
@@ -235,6 +245,9 @@ class GameState extends Phaser.State {
   }
 
   ballOutOfBounds() {
+    if(this.gameOver) {
+      return;
+    }
     this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
     const axis = this.orientation === "horizontal" ? "y" : "x";
      if (this.ball[axis] < 0) {
