@@ -113,8 +113,16 @@ class GameState extends Phaser.State {
     this.handleInput();
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
     this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
-    this.game.physics.arcade.collide(this.ball, this.switch, null, this.rotate, this);
+    if(this.checkOverlap(this.ball, this.switch)) {
+      this.rotate();
+    }
 
+  }
+
+  checkOverlap(spriteA, spriteB) {
+    const boundsA = spriteA.getBounds();
+    const boundsB = spriteB.getBounds();
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
   }
 
   updateBall(ball, paddle) {
