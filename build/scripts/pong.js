@@ -14,6 +14,8 @@ var paddleSegmentsMax = exports.paddleSegmentsMax = 4;
 var paddleSegmentHeight = exports.paddleSegmentHeight = 4;
 var paddleSegmentAngle = exports.paddleSegmentAngle = 15;
 var scoreToWin = exports.scoreToWin = 11;
+var WidthPaddle = exports.WidthPaddle = 100;
+var HeightPaddle = exports.HeightPaddle = 20;
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -62,7 +64,7 @@ var LoadTilemap = function (_Phaser$Game) {
 
 new LoadTilemap();
 
-},{"states/GameState":6}],3:[function(require,module,exports){
+},{"states/GameState":7}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -204,6 +206,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _constants = require("../constants");
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -222,19 +226,17 @@ function _inherits(subClass, superClass) {
     }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var Width = 100;
-var Height = 20;
-var LineWidth = 5;
+var LineWidthPaddle = 5;
 
 function createBmp(game, direction, color) {
-    var bmd = direction === "horizontal" ? game.add.bitmapData(Width + 2 * LineWidth, Height + 2 * LineWidth) : game.add.bitmapData(Height + 2 * LineWidth, Width + 2 * LineWidth);
+    var bmd = direction === "horizontal" ? game.add.bitmapData(_constants.WidthPaddle, _constants.HeightPaddle) : game.add.bitmapData(_constants.HeightPaddle, _constants.WidthPaddle);
     bmd.ctx.beginPath();
-    bmd.ctx.lineWidth = LineWidth;
+    bmd.ctx.lineWidth = LineWidthPaddle;
     bmd.ctx.strokeStyle = "#FFFFFF";
     if (direction === "horizontal") {
-        bmd.ctx.rect(LineWidth, LineWidth, Width, Height);
+        bmd.ctx.rect(LineWidthPaddle / 2, LineWidthPaddle / 2, _constants.WidthPaddle - LineWidthPaddle, _constants.HeightPaddle - LineWidthPaddle);
     } else {
-        bmd.ctx.rect(LineWidth, LineWidth, Height, Width);
+        bmd.ctx.rect(LineWidthPaddle / 2, LineWidthPaddle / 2, _constants.HeightPaddle - LineWidthPaddle, _constants.WidthPaddle - LineWidthPaddle);
     }
     bmd.ctx.stroke();
     bmd.ctx.fillStyle = color;
@@ -266,7 +268,58 @@ var Paddle = function (_Phaser$Sprite) {
 
 exports.default = Paddle;
 
-},{}],6:[function(require,module,exports){
+},{"../constants":1}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var width = 25;
+
+var Switch = function (_Phaser$Sprite) {
+  _inherits(Switch, _Phaser$Sprite);
+
+  function Switch(game, x, y) {
+    _classCallCheck(this, Switch);
+
+    var bmd = game.add.bitmapData(width, width);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, width, width);
+    bmd.ctx.fillStyle = 'red';
+    bmd.ctx.fill();
+
+    var _this = _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, game, x, y, bmd));
+
+    game.physics.enable(_this, Phaser.Physics.ARCADE);
+    _this.body.immovable = true;
+    return _this;
+  }
+
+  return Switch;
+}(Phaser.Sprite);
+
+exports.default = Switch;
+
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -290,6 +343,10 @@ var _Paddle2 = _interopRequireDefault(_Paddle);
 var _Ball = require('object/Ball');
 
 var _Ball2 = _interopRequireDefault(_Ball);
+
+var _Switch = require('object/Switch');
+
+var _Switch2 = _interopRequireDefault(_Switch);
 
 var _Hud = require('object/Hud');
 
@@ -340,15 +397,17 @@ var GameState = function (_Phaser$State) {
       this.initBoundaries();
       this.initMiddleLine();
       this.initPaddlesPosition();
+      this.initSwitch();
       this.ball = new _Ball2.default(this.game, _constants.WidthScreen / 2, _constants.HeightScreen / 2, -_constants.BallVelocity, -_constants.BallVelocity);
       this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
       this.game.add.existing(this.ball);
+
       this.startDemo();
 
       this.hud = new _Hud2.default(this.game, [this.player1Score, this.player2Score]);
       this.game.add.existing(this.hud);
 
-      //setInterval(() => { this.rotate();}, 20000);
+      //setInterval(() => { this.rotate();}, 5000);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
       this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -375,11 +434,12 @@ var GameState = function (_Phaser$State) {
     key: 'initPaddlesPosition',
     value: function initPaddlesPosition() {
       if (this.orientation === "horizontal") {
-        this.paddle = new _Paddle2.default(this.game, 200, 50, this.orientation);
-        this.paddle2 = new _Paddle2.default(this.game, 200, _constants.HeightScreen - 50, this.orientation);
+        console.log(_constants.WidthScreen / 2 - _constants.WidthPaddle / 2);
+        this.paddle = new _Paddle2.default(this.game, _constants.WidthScreen / 2, 50, this.orientation);
+        this.paddle2 = new _Paddle2.default(this.game, _constants.WidthScreen / 2, _constants.HeightScreen - 50, this.orientation);
       } else {
-        this.paddle = new _Paddle2.default(this.game, 50, 150, this.orientation);
-        this.paddle2 = new _Paddle2.default(this.game, _constants.WidthScreen - 50, 150, this.orientation);
+        this.paddle = new _Paddle2.default(this.game, 50, _constants.HeightScreen / 2, this.orientation);
+        this.paddle2 = new _Paddle2.default(this.game, _constants.WidthScreen - 50, _constants.HeightScreen / 2, this.orientation);
       }
 
       this.game.add.existing(this.paddle);
@@ -406,11 +466,25 @@ var GameState = function (_Phaser$State) {
       }
     }
   }, {
+    key: 'initSwitch',
+    value: function initSwitch() {
+      var maxX = _constants.WidthScreen / 4 * 3;
+      var minX = _constants.WidthScreen / 4;
+      var maxY = _constants.HeightScreen / 4 * 3;
+      var minY = _constants.HeightScreen / 4;
+
+      var x = Math.random() * (maxX - minX) + minX;
+      var y = Math.random() * (maxY - minY) + minY;
+      this.switch = new _Switch2.default(this.game, x, y);
+      this.game.add.existing(this.switch);
+    }
+  }, {
     key: 'update',
     value: function update() {
       this.handleInput();
       this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
       this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
+      this.game.physics.arcade.collide(this.ball, this.switch, null, this.rotate, this);
     }
   }, {
     key: 'updateBall',
@@ -467,15 +541,19 @@ var GameState = function (_Phaser$State) {
   }, {
     key: 'rotate',
     value: function rotate() {
+      this.switch.kill();
       this.paddle.kill();
       this.paddle2.kill();
       this.backgroundGraphics.destroy();
       //remove old element
 
+      this.game.camera.shake(0.05, 100);
+
       this.orientation = this.orientation === "horizontal" ? "vertical" : "horizontal";
       this.initMiddleLine();
       this.initPaddlesPosition();
       this.initBoundaries();
+      this.initSwitch();
     }
   }, {
     key: 'handleInput',
@@ -530,5 +608,5 @@ var GameState = function (_Phaser$State) {
 
 exports.default = GameState;
 
-},{"constants.js":1,"object/Ball":3,"object/Hud":4,"object/Paddle":5}]},{},[2])
+},{"constants.js":1,"object/Ball":3,"object/Hud":4,"object/Paddle":5,"object/Switch":6}]},{},[2])
 //# sourceMappingURL=pong.js.map
