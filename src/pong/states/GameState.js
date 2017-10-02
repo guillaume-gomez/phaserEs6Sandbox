@@ -25,7 +25,6 @@ class GameState extends Phaser.State {
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.orientation = "vertical";
-    this.gameOver = false;
     this.player1Score = 0;
     this.player2Score = 0;
     this.initBoundaries();
@@ -115,15 +114,6 @@ class GameState extends Phaser.State {
     if(this.checkOverlap(this.ball, this.switch)) {
       this.rotate();
     }
-
-    if(this.player1Score === scoreToWin || this.player2Score === scoreToWin ) {
-      this.hud.makeWinnerVisible([this.player1Score, this.player2Score]);
-      this.player1Score = 0;
-      this.player2Score = 0;
-      this.gameOver = true;
-      this.game.time.events.add(Phaser.Timer.SECOND * 5, this.start, this);
-    }
-
   }
 
   checkOverlap(spriteA, spriteB) {
@@ -169,7 +159,6 @@ class GameState extends Phaser.State {
   }
 
   start() {
-    this.gameOver = false;
     this.hud.makeWinnerInvisible();
     this.ball.visible = false;
     this.hud.updateTexts([this.player1Score, this.player2Score]);
@@ -245,10 +234,6 @@ class GameState extends Phaser.State {
   }
 
   ballOutOfBounds() {
-    if(this.gameOver) {
-      return;
-    }
-    this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
     const axis = this.orientation === "horizontal" ? "y" : "x";
      if (this.ball[axis] < 0) {
       this.player2Score++;
@@ -256,6 +241,16 @@ class GameState extends Phaser.State {
       this.player1Score++;
     }
     this.hud.updateTexts([this.player1Score, this.player2Score]);
+    //if the game is over
+    if(this.player1Score === scoreToWin  || this.player2Score === scoreToWin ) {
+      this.hud.makeWinnerVisible([this.player1Score, this.player2Score]);
+      this.player1Score = 0;
+      this.player2Score = 0;
+      this.game.time.events.add(Phaser.Timer.SECOND * 5, this.start, this);
+    } else {
+      this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
+    }
+
   }
 
 }
