@@ -35,12 +35,10 @@ class GameState extends Phaser.State {
     this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
 
-    this.startDemo();
-
     this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
     this.game.add.existing(this.hud);
 
-    //setInterval(() => { this.rotate();}, 5000);
+    this.start();
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -113,8 +111,15 @@ class GameState extends Phaser.State {
     this.handleInput();
     this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
     this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
-    this.game.physics.arcade.collide(this.ball, this.switch, null, this.rotate, this);
+    if(this.checkOverlap(this.ball, this.switch)) {
+      this.rotate();
+    }
+  }
 
+  checkOverlap(spriteA, spriteB) {
+    const boundsA = spriteA.getBounds();
+    const boundsB = spriteB.getBounds();
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
   }
 
   updateBall(ball, paddle) {
@@ -153,8 +158,10 @@ class GameState extends Phaser.State {
     }
   }
 
-  startDemo() {
+  start() {
+    this.hud.makeWinnerInvisible();
     this.ball.visible = false;
+    this.hud.updateTexts([this.player1Score, this.player2Score]);
     this.game.time.events.add(Phaser.Timer.SECOND * BallStartDelay, this.startBall, this);
   }
 
@@ -227,7 +234,6 @@ class GameState extends Phaser.State {
   }
 
   ballOutOfBounds() {
-    this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
     const axis = this.orientation === "horizontal" ? "y" : "x";
      if (this.ball[axis] < 0) {
       this.player2Score++;
@@ -235,6 +241,16 @@ class GameState extends Phaser.State {
       this.player1Score++;
     }
     this.hud.updateTexts([this.player1Score, this.player2Score]);
+    //if the game is over
+    if(this.player1Score === scoreToWin  || this.player2Score === scoreToWin ) {
+      this.hud.makeWinnerVisible([this.player1Score, this.player2Score]);
+      this.player1Score = 0;
+      this.player2Score = 0;
+      this.game.time.events.add(Phaser.Timer.SECOND * 5, this.start, this);
+    } else {
+      this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
+    }
+
   }
 
 }
