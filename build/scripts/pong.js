@@ -13,7 +13,7 @@ var BallVelocity = exports.BallVelocity = 400;
 var paddleSegmentsMax = exports.paddleSegmentsMax = 4;
 var paddleSegmentHeight = exports.paddleSegmentHeight = 4;
 var paddleSegmentAngle = exports.paddleSegmentAngle = 15;
-var scoreToWin = exports.scoreToWin = 11;
+var scoreToWin = exports.scoreToWin = 3;
 var WidthPaddle = exports.WidthPaddle = 100;
 var HeightPaddle = exports.HeightPaddle = 20;
 
@@ -165,7 +165,9 @@ function _inherits(subClass, superClass) {
 }
 
 var style = { font: '80px Arial', fill: '#FFFFFF', align: 'center' };
+var styleWinner = { font: '50px Arial', fill: '#FFFFFF', align: 'center' };
 var top = 10;
+var winnerLabel = "Winner !";
 
 var Hud = function (_Phaser$Group) {
   _inherits(Hud, _Phaser$Group);
@@ -177,9 +179,15 @@ var Hud = function (_Phaser$Group) {
 
     _this.scoreLeft = game.add.text(_constants.WidthScreen * 0.25, top, scores[0], style);
     _this.scoreLeft.anchor.set(0.5, 0);
+    _this.winnerLeft = game.add.text(_constants.WidthScreen * 0.25, top + 100, winnerLabel, styleWinner);
+    _this.winnerLeft.anchor.set(0.5, 0.5);
+    _this.winnerLeft.visible = false;
 
     _this.scoreRight = game.add.text(_constants.WidthScreen * 0.75, top, scores[1], style);
     _this.scoreRight.anchor.set(0.5, 0);
+    _this.winnerRight = game.add.text(_constants.WidthScreen * 0.75, top + 100, winnerLabel, styleWinner);
+    _this.winnerRight.anchor.set(0.5, 0.5);
+    _this.winnerRight.visible = false;
 
     _this.add(_this.scoreRight);
     _this.add(_this.scoreLeft);
@@ -191,6 +199,21 @@ var Hud = function (_Phaser$Group) {
     value: function updateTexts(scores) {
       this.scoreLeft.text = scores[0];
       this.scoreRight.text = scores[1];
+    }
+  }, {
+    key: 'makeWinnerVisible',
+    value: function makeWinnerVisible(scores) {
+      if (scores[0] === _constants.scoreToWin) {
+        this.winnerLeft.visible = true;
+      } else if (scores[1] === _constants.scoreToWin) {
+        this.winnerRight.visible = true;
+      }
+    }
+  }, {
+    key: 'makeWinnerInvisible',
+    value: function makeWinnerInvisible(scores) {
+      this.winnerLeft.visible = false;
+      this.winnerRight.visible = false;
     }
   }]);
 
@@ -402,12 +425,10 @@ var GameState = function (_Phaser$State) {
       this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
       this.game.add.existing(this.ball);
 
-      this.startDemo();
-
       this.hud = new _Hud2.default(this.game, [this.player1Score, this.player2Score]);
       this.game.add.existing(this.hud);
 
-      //setInterval(() => { this.rotate();}, 5000);
+      this.start();
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
       this.qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -484,7 +505,16 @@ var GameState = function (_Phaser$State) {
       this.handleInput();
       this.game.physics.arcade.collide(this.ball, this.paddle, null, this.updateBall, this);
       this.game.physics.arcade.collide(this.ball, this.paddle2, null, this.updateBall, this);
-      this.game.physics.arcade.collide(this.ball, this.switch, null, this.rotate, this);
+      if (this.checkOverlap(this.ball, this.switch)) {
+        this.rotate();
+      }
+    }
+  }, {
+    key: 'checkOverlap',
+    value: function checkOverlap(spriteA, spriteB) {
+      var boundsA = spriteA.getBounds();
+      var boundsB = spriteB.getBounds();
+      return Phaser.Rectangle.intersects(boundsA, boundsB);
     }
   }, {
     key: 'updateBall',
@@ -525,9 +555,11 @@ var GameState = function (_Phaser$State) {
       }
     }
   }, {
-    key: 'startDemo',
-    value: function startDemo() {
+    key: 'start',
+    value: function start() {
+      this.hud.makeWinnerInvisible();
       this.ball.visible = false;
+      this.hud.updateTexts([this.player1Score, this.player2Score]);
       this.game.time.events.add(Phaser.Timer.SECOND * _constants.BallStartDelay, this.startBall, this);
     }
   }, {
@@ -592,7 +624,6 @@ var GameState = function (_Phaser$State) {
   }, {
     key: 'ballOutOfBounds',
     value: function ballOutOfBounds() {
-      this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
       var axis = this.orientation === "horizontal" ? "y" : "x";
       if (this.ball[axis] < 0) {
         this.player2Score++;
@@ -600,6 +631,15 @@ var GameState = function (_Phaser$State) {
         this.player1Score++;
       }
       this.hud.updateTexts([this.player1Score, this.player2Score]);
+      //if the game is over
+      if (this.player1Score === _constants.scoreToWin || this.player2Score === _constants.scoreToWin) {
+        this.hud.makeWinnerVisible([this.player1Score, this.player2Score]);
+        this.player1Score = 0;
+        this.player2Score = 0;
+        this.game.time.events.add(Phaser.Timer.SECOND * 5, this.start, this);
+      } else {
+        this.game.time.events.add(Phaser.Timer.SECOND, this.startBall, this);
+      }
     }
   }]);
 
