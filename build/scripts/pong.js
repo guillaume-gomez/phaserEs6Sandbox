@@ -13,7 +13,7 @@ var BallVelocity = exports.BallVelocity = 400;
 var paddleSegmentsMax = exports.paddleSegmentsMax = 4;
 var paddleSegmentHeight = exports.paddleSegmentHeight = 4;
 var paddleSegmentAngle = exports.paddleSegmentAngle = 15;
-var scoreToWin = exports.scoreToWin = 3;
+var scoreToWin = exports.scoreToWin = 10;
 var WidthPaddle = exports.WidthPaddle = 100;
 var HeightPaddle = exports.HeightPaddle = 20;
 
