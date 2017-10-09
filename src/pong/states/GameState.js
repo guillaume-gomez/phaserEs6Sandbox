@@ -24,7 +24,7 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = '#182d3b';
     // Start the Arcade physics system (for movements and collisions)
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.orientation = "vertical";
+    this.orientation = "horizontal";
     this.player1Score = 0;
     this.player2Score = 0;
     this.initBoundaries();
@@ -35,7 +35,7 @@ class GameState extends Phaser.State {
     this.ball.events.onOutOfBounds.add(this.ballOutOfBounds, this);
     this.game.add.existing(this.ball);
 
-    this.hud = new Hud(this.game, [this.player1Score, this.player2Score]);
+    this.hud = new Hud(this.game, [this.player1Score, this.player2Score], this.orientation);
     this.game.add.existing(this.hud);
 
     this.start();
@@ -186,6 +186,7 @@ class GameState extends Phaser.State {
     this.initPaddlesPosition();
     this.initBoundaries();
     this.initSwitch();
+    this.hud.switchHub(this.game, [this.player1Score, this.player2Score], this.direction);
   }
 
   handleInput() {
