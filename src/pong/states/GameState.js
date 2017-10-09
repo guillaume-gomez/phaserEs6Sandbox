@@ -186,7 +186,7 @@ class GameState extends Phaser.State {
     this.initPaddlesPosition();
     this.initBoundaries();
     this.initSwitch();
-    this.hud.switchHub(this.game, [this.player1Score, this.player2Score], this.direction);
+    this.hud.switchHub(this.game, [this.player1Score, this.player2Score], this.orientation);
   }
 
   handleInput() {
