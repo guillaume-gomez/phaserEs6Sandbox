@@ -7,9 +7,9 @@ const winnerLabel =  "Winner !";
 
 class Hud extends Phaser.Group {
 
-  constructor(game, scores, direction = "vertical") {
+  constructor(game, scores, orientation = "vertical") {
     super(game);
-    this.switchHub(game, scores, direction);
+    this.switchHub(game, scores, orientation);
 
     this.scoreLeft.anchor.set(0.5, 0.5);
     this.winnerLeft.anchor.set(0.5, 0.5);
@@ -41,7 +41,7 @@ class Hud extends Phaser.Group {
     this.winnerRight.visible = false;
   }
 
-  switchHub(game, scores, direction) {
+  switchHub(game, scores, orientation) {
     if(this.scoreLeft || this.winnerLeft) {
       this.scoreLeft.kill();
       this.winnerLeft.kill();
@@ -52,7 +52,7 @@ class Hud extends Phaser.Group {
       this.winnerRight.kill();
     }
 
-    if(direction === "vertical") {
+    if(orientation === "vertical") {
       this.scoreLeft = game.add.text(WidthScreen * 0.25, top, scores[0], style);
       this.winnerLeft = game.add.text(WidthScreen * 0.25, top + 100, winnerLabel, styleWinner);
 
@@ -60,11 +60,19 @@ class Hud extends Phaser.Group {
       this.winnerRight = game.add.text(WidthScreen * 0.75, top + 100, winnerLabel, styleWinner);
     } else {
       this.scoreLeft = game.add.text(left, HeightScreen * 0.25, scores[0], style);
-      this.winnerLeft = game.add.text(left - 20, HeightScreen * 0.25 + 100, winnerLabel, styleWinner);
+      this.winnerLeft = game.add.text(left - 20, HeightScreen * 0.25 + 50, winnerLabel, styleWinner);
 
       this.scoreRight = game.add.text(left, HeightScreen * 0.75, scores[1], style);
-      this.winnerRight = game.add.text(left - 20, HeightScreen * 0.75 + 100, winnerLabel, styleWinner);
+      this.winnerRight = game.add.text(left - 20, HeightScreen * 0.75 + 50, winnerLabel, styleWinner);
     }
+
+    this.scoreLeft.anchor.set(0.5, 0.5);
+    this.winnerLeft.anchor.set(0.5, 0.5);
+    this.winnerLeft.visible = false;
+
+    this.scoreRight.anchor.set(0.5, 0.5);
+    this.winnerRight.anchor.set(0.5, 0.5);
+    this.winnerRight.visible = false;
 
   }
 
