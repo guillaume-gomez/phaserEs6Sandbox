@@ -42,6 +42,16 @@ class Hud extends Phaser.Group {
   }
 
   switchHub(game, scores, direction) {
+    if(this.scoreLeft || this.winnerLeft) {
+      this.scoreLeft.kill();
+      this.winnerLeft.kill();
+    }
+
+    if(this.scoreRight || this.winnerRight) {
+      this.scoreRight.kill();
+      this.winnerRight.kill();
+    }
+
     if(direction === "vertical") {
       this.scoreLeft = game.add.text(WidthScreen * 0.25, top, scores[0], style);
       this.winnerLeft = game.add.text(WidthScreen * 0.25, top + 100, winnerLabel, styleWinner);
