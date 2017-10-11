@@ -1,4 +1,4 @@
-const width = 25;
+const width = 200;
 
 class Switch extends Phaser.Sprite {
 
