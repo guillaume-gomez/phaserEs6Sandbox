@@ -21,7 +21,7 @@ function createBmp(game, direction, color) {
 
 class Paddle extends Phaser.Sprite {
 
-  constructor(game, x, y, orientation = "horizontal", color = "green") {
+  constructor(game, x, y, orientation = "horizontal", color = "#E0E0E0") {
     const bmd = createBmp(game, orientation, color);
     super(game, x, y, bmd);
     game.physics.enable(this, Phaser.Physics.ARCADE);

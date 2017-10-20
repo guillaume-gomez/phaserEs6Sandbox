@@ -1,4 +1,4 @@
-const width = 200;
+const width = 30;
 
 class Switch extends Phaser.Sprite {
 
@@ -6,7 +6,7 @@ class Switch extends Phaser.Sprite {
     const bmd = game.add.bitmapData(width, width);
     bmd.ctx.beginPath();
     bmd.ctx.rect(0, 0, width, width);
-    bmd.ctx.fillStyle = 'red';
+    bmd.ctx.fillStyle = "#FF5252";
     bmd.ctx.fill();
     super(game, x, y, bmd);
     game.physics.enable(this, Phaser.Physics.ARCADE);
