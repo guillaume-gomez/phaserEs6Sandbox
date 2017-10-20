@@ -65,7 +65,7 @@ var LoadTilemap = function (_Phaser$Game) {
 new LoadTilemap();
 
 },{"states/GameState":7}],3:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -89,26 +89,25 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var Radius = 10;
+var Radius = 7;
 var LineWidth = 3;
 
 var Ball = function (_Phaser$Sprite) {
   _inherits(Ball, _Phaser$Sprite);
 
-  function Ball(game, x, y) {
-    var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '#0000ff';
-    var velX = arguments[4];
-    var velY = arguments[5];
+  function Ball(game, x, y, velX, velY) {
+    var color = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "#FDFDFD";
 
     _classCallCheck(this, Ball);
 
     var bmd = game.add.bitmapData(Radius * 2, Radius * 2);
     bmd.ctx.beginPath();
     bmd.ctx.arc(Radius, Radius, Radius - LineWidth, 0, 2 * Math.PI, false);
-    bmd.ctx.fillStyle = 'green';
+    debugger;
+    bmd.ctx.fillStyle = color;
     bmd.ctx.fill();
     bmd.ctx.lineWidth = LineWidth;
-    bmd.ctx.strokeStyle = '#FFFFFF';
+    bmd.ctx.strokeStyle = "#BBBBBB";
     bmd.ctx.stroke();
 
     var _this = _possibleConstructorReturn(this, (Ball.__proto__ || Object.getPrototypeOf(Ball)).call(this, game, x, y, bmd));
@@ -308,7 +307,7 @@ var Paddle = function (_Phaser$Sprite) {
 
     function Paddle(game, x, y) {
         var orientation = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "horizontal";
-        var color = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "green";
+        var color = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "#E0E0E0";
 
         _classCallCheck(this, Paddle);
 
@@ -328,7 +327,7 @@ var Paddle = function (_Phaser$Sprite) {
 exports.default = Paddle;
 
 },{"../constants":1}],6:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -352,7 +351,7 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var width = 200;
+var width = 30;
 
 var Switch = function (_Phaser$Sprite) {
   _inherits(Switch, _Phaser$Sprite);
@@ -363,7 +362,7 @@ var Switch = function (_Phaser$Sprite) {
     var bmd = game.add.bitmapData(width, width);
     bmd.ctx.beginPath();
     bmd.ctx.rect(0, 0, width, width);
-    bmd.ctx.fillStyle = 'red';
+    bmd.ctx.fillStyle = "#FF5252";
     bmd.ctx.fill();
 
     var _this = _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, game, x, y, bmd));
