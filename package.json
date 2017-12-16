@@ -29,6 +29,7 @@
     "yargs": "^4.6.0"
   },
   "dependencies": {
+    "gulp-install": "^1.1.0",
     "phaser": "^2.4.7"
   }
 }
