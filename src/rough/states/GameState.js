@@ -4,13 +4,16 @@ class GameState extends Phaser.State {
 
   create() {
     this.game.stage.backgroundColor = "#4488AA";
-    const rsg = new RoughSpriteGenerator(this.game, 128, 128)
+    const rsg = new RoughSpriteGenerator(this.game);
 
-    this.sprite = rsg.getRectangleSprite(this.game, 0, 0);
+    this.sprite = rsg.getRectangleSprite(100, 20, 128, 128);
     this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 
+    this.sprite2 = rsg.getCircleSprite(200, 200, 100);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+
+    this.floor = rsg.getRectangleSprite(0, this.game.height - 30 , this.game.width, 30);
   }
 
   preload() {
