@@ -6,7 +6,6 @@ class RoughSpriteGenerator
 
   getRectangle(bmd, width, height, config) {
     let rc = rough.canvas(bmd.canvas);
-    console.log(config)
     rc.rectangle(0, 0, width, height, config);
   }
 
@@ -25,7 +24,7 @@ class RoughSpriteGenerator
 
     let bmd = this.game.add.bitmapData(realRadius, realRadius);
     this.getCircle(bmd, radius, configs);
-    return this.game.add.sprite(x, y, bmd);
+    return new Phaser.Sprite(this.game, x, y, bmd);
   }
 
   getRectangleSprite(x, y, width, height, config = {}) {
@@ -40,7 +39,7 @@ class RoughSpriteGenerator
       };
     const configs = Object.assign({}, defaultConfig, config);
     this.getRectangle(bmd, width, height, configs);
-    return this.game.add.sprite(x, y, bmd);
+    return new Phaser.Sprite(this.game, x, y, bmd);
   }
 }
 export default RoughSpriteGenerator;
