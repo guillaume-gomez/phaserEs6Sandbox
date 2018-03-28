@@ -17,7 +17,7 @@ class RoughSpriteGenerator
   getCircleSprite(x, y, radius, config = {}) {
     const defaultConfig = {
       fill: "rgb(10,150,10)",
-      fillWeight: 3 // thicker lines for hachure
+      fillWeight: 5 // thicker lines for hachure
     };
     const configs = Object.assign({}, defaultConfig, config);
     const realRadius = radius + (config.fillWeight|| 0);
