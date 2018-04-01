@@ -12,13 +12,29 @@ class GameState extends Phaser.State {
     // rough sprite generator
     const rsg = new RoughSpriteGenerator(this.game);
 
-    this.sprite = rsg.getRectangleSprite(100, 20, 128, 128);
-    this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-    this.game.add.existing(this.sprite);
+    this.character = rsg.getRectangleSprite(100, 20, 50, 50);
+    this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
+    this.game.add.existing(this.character);
 
-    this.sprite2 = rsg.getCircleSprite(300, 200, 100);
-    this.game.physics.enable(this.sprite2, Phaser.Physics.ARCADE);
-    this.game.add.existing(this.sprite2);
+    this.group = this.game.add.group();
+    for(let i=0; i< 20; i++) {
+      const rnd = Math.random();
+      const x = this.getRandomInt(0, this.game.width);
+      const y = this.getRandomInt(0, 100);
+      let sprite = null;
+      if(rnd > 0.5) {
+        const radius = this.getRandomInt(20, 50)
+        sprite = rsg.getCircleSprite(x, y, radius);
+      } else {
+        const width = this.getRandomInt(20, 50);
+        const height = this.getRandomInt(20, 50);
+        sprite = rsg.getRectangleSprite(x, y, width, height);
+      }
+      this.group.add(sprite);
+    }
+    //this.circle = rsg.getCircleSprite(300, 200, 30);
+    this.game.physics.enable(this.group, Phaser.Physics.ARCADE);
+    //this.game.add.existing(this.sprite2);
 
     this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.width, 30);
     this.game.physics.enable(this.ground, Phaser.Physics.ARCADE);
@@ -34,22 +50,26 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.sprite.body.velocity.x = 0;
+    this.character.body.velocity.x = 0;
     if (this.cursors.left.isDown)
     {
-        this.sprite.body.velocity.x = -150;
+        this.character.body.velocity.x = -150;
     }
     else if (this.cursors.right.isDown)
     {
-        this.sprite.body.velocity.x = 150;
+        this.character.body.velocity.x = 150;
     }
-    this.game.physics.arcade.collide(this.sprite, this.ground);
-    this.game.physics.arcade.collide(this.sprite2, this.ground);
+    this.game.physics.arcade.collide(this.character, this.ground);
+    this.game.physics.arcade.collide(this.group, this.ground);
   }
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
     /*this.game.debug.body(this.ground);*/
+  }
+
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 
