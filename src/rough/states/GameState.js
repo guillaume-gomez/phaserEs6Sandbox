@@ -47,12 +47,16 @@ class GameState extends Phaser.State {
     this.game.add.existing(this.ground);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   }
 
   preload() {
   }
 
   update() {
+    this.game.physics.arcade.collide(this.character, this.ground);
+    this.game.physics.arcade.collide(this.group, this.ground);
+
     this.character.body.velocity.x = 0;
     if (this.cursors.left.isDown)
     {
@@ -62,8 +66,11 @@ class GameState extends Phaser.State {
     {
         this.character.body.velocity.x = 150;
     }
-    this.game.physics.arcade.collide(this.character, this.ground);
-    this.game.physics.arcade.collide(this.group, this.ground);
+
+    if (this.jumpButton.isDown && !this.character.body.touching.none)
+    {
+        this.character.body.velocity.y = -300;
+    }
   }
 
   render() {
