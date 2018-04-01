@@ -6,6 +6,9 @@ class GameState extends Phaser.State {
     this.game.time.advancedTiming = true;
     this.game.stage.backgroundColor = "#DDDDDD";
 
+    this.game.world.setBounds(0, 0, 1600, 600);
+    console.log(this.game.world)
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
 
@@ -13,9 +16,9 @@ class GameState extends Phaser.State {
     const rsg = new RoughSpriteGenerator(this.game);
 
     this.group = this.game.add.group();
-    for(let i=0; i < 50; i++) {
+    for(let i=0; i < 200; i++) {
       const rnd = Math.random();
-      const x = this.getRandomInt(0, this.game.width);
+      const x = this.getRandomInt(0, this.game.world.bounds.width);
       const y = this.getRandomInt(0, 200);
       const config = {
         fill: this.getRandomColor(),
@@ -34,13 +37,14 @@ class GameState extends Phaser.State {
       sprite.body.bounce.y = 0.80;
       this.group.add(sprite);
     }
-    //this.game.physics.enable(this.group, Phaser.Physics.ARCADE);
 
     this.character = rsg.getRectangleSprite(100, 20, 50, 50, {fillStyle: "solid", fill: "#D84315"});
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
+    this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
+    this.game.camera.follow(this.character);
 
-    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.width, 30);
+    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.world.bounds.width, 30);
     this.game.physics.enable(this.ground, Phaser.Physics.ARCADE);
     this.ground.body.allowGravity = false;
     this.ground.body.immovable = true;
