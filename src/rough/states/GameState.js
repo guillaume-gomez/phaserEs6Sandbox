@@ -6,7 +6,7 @@ class GameState extends Phaser.State {
     this.game.time.advancedTiming = true;
     this.game.stage.backgroundColor = "#DDDDDD";
 
-    this.game.world.setBounds(0, 0, 1600, 600);
+    this.game.world.setBounds(0, 0, 2500, 600);
     console.log(this.game.world)
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -16,10 +16,10 @@ class GameState extends Phaser.State {
     const rsg = new RoughSpriteGenerator(this.game);
 
     this.group = this.game.add.group();
-    for(let i=0; i < 200; i++) {
+    for(let i=0; i < 50; i++) {
       const rnd = Math.random();
-      const x = this.getRandomInt(0, this.game.world.bounds.width);
-      const y = this.getRandomInt(0, 200);
+      const x = this.getRandomInt((i * 50), (i + 1) * 50);
+      const y = this.getRandomInt(0, 100);
       const config = {
         fill: this.getRandomColor(),
         fillWeight: this.getRandomInt(1, 5)
@@ -60,6 +60,7 @@ class GameState extends Phaser.State {
   update() {
     this.game.physics.arcade.collide(this.character, this.ground);
     this.game.physics.arcade.collide(this.group, this.ground);
+    this.game.physics.arcade.collide(this.group, this.group);
 
     this.character.body.velocity.x = 0;
     if (this.cursors.left.isDown)
