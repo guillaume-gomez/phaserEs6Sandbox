@@ -9,9 +9,9 @@ class RoughSpriteGenerator
     rc.rectangle(0, 0, width, height, config);
   }
 
-  getCircle(bmd, radius, config) {
+  getCircle(bmd, center, radius, config) {
     let rc = rough.canvas(bmd.canvas);
-    rc.circle(radius/2, radius/2, radius, config);
+    rc.circle(center.x, center.y, radius * 2, config);
   }
 
   getCircleSprite(x, y, radius, config = {}) {
@@ -21,9 +21,8 @@ class RoughSpriteGenerator
     };
     const configs = Object.assign({}, defaultConfig, config);
     const realRadius = radius + (config.fillWeight|| 0);
-
-    let bmd = this.game.add.bitmapData(realRadius, realRadius);
-    this.getCircle(bmd, radius, configs);
+    let bmd = this.game.add.bitmapData(realRadius * 2, realRadius * 2);
+    this.getCircle(bmd, {x: realRadius, y: realRadius}, radius, configs);
     return new Phaser.Sprite(this.game, x, y, bmd);
   }
 

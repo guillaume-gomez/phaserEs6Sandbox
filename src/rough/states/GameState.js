@@ -26,7 +26,7 @@ class GameState extends Phaser.State {
       }
       let sprite = null;
       if(rnd > 0.5) {
-        const radius = this.getRandomInt(20, 50)
+        const radius = this.getRandomInt(20, 40)
         sprite = rsg.getCircleSprite(x, y, radius, config);
       } else {
         const width = this.getRandomInt(20, 50);
