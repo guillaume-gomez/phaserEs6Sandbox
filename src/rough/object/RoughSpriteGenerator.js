@@ -14,6 +14,10 @@ class RoughSpriteGenerator
     rc.circle(radius/2, radius/2, radius, config);
   }
 
+  getLine(bmd, dist, config) {
+    this.getRectangle(bmd, dist, 10, config);
+  }
+
   getCircleSprite(x, y, radius, config = {}) {
     const defaultConfig = {
       fill: "rgb(10,150,10)",
@@ -40,6 +44,19 @@ class RoughSpriteGenerator
     const configs = Object.assign({}, defaultConfig, config);
     this.getRectangle(bmd, width, height, configs);
     return new Phaser.Sprite(this.game, x, y, bmd);
+  }
+
+  getLineSprite(x, y, x1, y1, x2, y2,config = {}) {
+    const dist = Math.sqrt( ((x2 - x1) * (x2 - x1)) - ((y2 - y1) * (y2 - y1)) );
+    let bmd = this.game.add.bitmapData(dist, 10);
+    this.getLine(bmd, dist, config);
+
+    const m = (y2 - y1) / (x2 - x1);
+    const angle = Math.atan(m) * (180/3.14);
+
+    let sprite = new Phaser.Sprite(this.game, x, y, bmd);
+    sprite.angle = angle;
+    return sprite;
   }
 }
 export default RoughSpriteGenerator;
