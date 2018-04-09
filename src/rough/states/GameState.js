@@ -1,4 +1,5 @@
 import RoughSpriteGenerator from 'object/RoughSpriteGenerator';
+import Sun from 'object/Sun';
 
 class GameState extends Phaser.State {
 
@@ -50,8 +51,8 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.line = rsg.getLineSprite(400,400, 0,10,10,20);
-    this.game.add.existing(this.line);
+    this.sun = new Sun(this.game, rsg, 400, 400, 80);
+    this.game.add.existing(this.sun);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -83,7 +84,7 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    this.game.debug.body(this.line);
+    this.game.debug.spriteBounds(this.sun)
   }
 
   getRandomInt(min, max) {
