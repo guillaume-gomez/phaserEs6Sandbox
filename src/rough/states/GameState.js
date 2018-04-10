@@ -51,7 +51,7 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.sun = new Sun(this.game, rsg, 400, 400, 80);
+    this.sun = new Sun(this.game, rsg, 400, 100, 100);
     this.game.add.existing(this.sun);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
