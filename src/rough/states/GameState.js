@@ -26,14 +26,17 @@ class GameState extends Phaser.State {
       }
       let sprite = null;
       if(rnd > 0.5) {
-        const radius = this.getRandomInt(20, 50)
+        const radius = this.getRandomInt(10, 25)
         sprite = rsg.getCircleSprite(x, y, radius, config);
+        this.game.physics.enable(sprite, Phaser.Physics.ARCADE);
+        const realRadius = radius + (config.fillWeight|| 0);
+        sprite.body.setCircle(realRadius);
       } else {
         const width = this.getRandomInt(20, 50);
         const height = this.getRandomInt(20, 50);
         sprite = rsg.getRectangleSprite(x, y, width, height, config);
+        this.game.physics.enable(sprite, Phaser.Physics.ARCADE);
       }
-      this.game.physics.enable(sprite, Phaser.Physics.ARCADE);
       sprite.body.bounce.y = 0.80;
       this.group.add(sprite);
     }
@@ -80,7 +83,10 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    /*this.game.debug.body(this.ground);*/
+/*    this.game.debug.body(this.ground);
+    this.group.children.forEach(child => {
+      this.game.debug.body(child);
+    });*/
   }
 
   getRandomInt(min, max) {
