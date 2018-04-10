@@ -46,7 +46,7 @@ class RoughSpriteGenerator
     return new Phaser.Sprite(this.game, x, y, bmd);
   }
 
-  getLineSprite(x, y, x1, y1, x2, y2,config = {}) {
+  getLineSprite(x, y, x1, y1, x2, y2, config = {}) {
     const dist = Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
     let bmd = this.game.add.bitmapData(dist, 2);
     this.getLine(bmd, dist, config);
