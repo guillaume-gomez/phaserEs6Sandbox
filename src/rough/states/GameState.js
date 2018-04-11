@@ -53,6 +53,16 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
+    this.test = rsg.getAnimatedRectangle(200, 100 , 50, 50, {}, 4);
+
+    const walk = this.test.animations.add('walk');
+
+    walk.enableUpdate = true;
+    walk.onUpdate.add(onUpdate, this);
+
+    this.test.animations.play('walk', 5, true);
+    this.game.add.existing(this.test);
+
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   }
