@@ -6,7 +6,6 @@ class RoughSpriteGenerator
 
   getRectangle(bmd, width, height, config, x = 0, y = 0) {
     let rc = rough.canvas(bmd.canvas);
-    console.log(x, " ", y, " ", width, " ", height)
     rc.rectangle(x, y, width, height, config);
   }
 
