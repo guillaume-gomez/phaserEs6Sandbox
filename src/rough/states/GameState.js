@@ -58,7 +58,6 @@ class GameState extends Phaser.State {
     const walk = this.test.animations.add('walk');
 
     walk.enableUpdate = true;
-    walk.onUpdate.add(onUpdate, this);
 
     this.test.animations.play('walk', 5, true);
     this.game.add.existing(this.test);
