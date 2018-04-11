@@ -4,9 +4,10 @@ class RoughSpriteGenerator
     this.game = game;
   }
 
-  getRectangle(bmd, width, height, config) {
+  getRectangle(bmd, width, height, config, x = 0, y = 0) {
     let rc = rough.canvas(bmd.canvas);
-    rc.rectangle(0, 0, width, height, config);
+    console.log(x, " ", y, " ", width, " ", height)
+    rc.rectangle(x, y, width, height, config);
   }
 
   getCircle(bmd, center, radius, config) {
@@ -38,6 +39,22 @@ class RoughSpriteGenerator
       };
     const configs = Object.assign({}, defaultConfig, config);
     this.getRectangle(bmd, width, height, configs);
+    return new Phaser.Sprite(this.game, x, y, bmd);
+  }
+
+  getAnimatedRectangle(x,y, width, height, config, nbImages) {
+    let bmd = this.game.add.bitmapData(width * nbImages, height);
+    for(let i = 0; i < nbImages; i++) {
+      const defaultConfig = {
+        fill: 'orange',
+        stroke: 'black',
+        hachureAngle: Math.random() * 60,
+        hachureGap: 10,
+        fillWeight: 5,
+        strokeWidth: 5
+      };
+      this.getRectangle(bmd, width, height, defaultConfig, (i * width), 0);
+    }
     return new Phaser.Sprite(this.game, x, y, bmd);
   }
 }
