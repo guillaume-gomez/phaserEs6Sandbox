@@ -50,9 +50,7 @@ class RoughSpriteGenerator
     const dist = Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
     let bmd = this.game.add.bitmapData(dist, 2);
     this.getLine(bmd, dist, config);
-
-    const m = (y2 - y1) / (x2 - x1);
-    const angle = Math.atan(m) * (180/3.14);
+    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
     let sprite = new Phaser.Sprite(this.game, x, y, bmd);
     sprite.angle =- angle;
     return sprite;
