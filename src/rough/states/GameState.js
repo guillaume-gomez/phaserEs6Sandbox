@@ -56,6 +56,9 @@ class GameState extends Phaser.State {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    console.log(this.sun.width)
+    console.log(this.sun.height)
   }
 
   preload() {

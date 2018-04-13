@@ -20,9 +20,9 @@ constructor(game, roughSpriteGenerator, x, y, radius) {
     this.add(line2);
     this.add(line3);
     this.add(line4);
-    this.add(line5);
+    //this.add(line5);
     //this.add(line6);
-    this.add(line7);
+    //this.add(line7);
     //this.add(line8);
   }
 }
