@@ -51,7 +51,7 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.sun = new Sun(this.game, rsg, 0, 0, 50);
+    this.sun = new Sun(this.game, rsg, 0, 0, 100);
     this.game.add.existing(this.sun);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -87,7 +87,6 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    this.game.debug.spriteBounds(this.sun)
   }
 
   getRandomInt(min, max) {
