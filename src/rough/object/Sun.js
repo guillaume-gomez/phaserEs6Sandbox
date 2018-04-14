@@ -4,7 +4,7 @@ constructor(game, roughSpriteGenerator, x, y, radius) {
     super(game);
     const offset = 5;
     const offset2 = offset + 2;
-    const core = roughSpriteGenerator.getCircleSprite(x + radius/2 , y + radius/2, radius , {fill: "rgb(255,255,102)"});
+    const core = roughSpriteGenerator.getCircleSprite(x + radius/2 , y + radius/2, radius/2 , {fill: "rgb(255,255,102)"});
     const line = roughSpriteGenerator.getLineSprite(x, y + radius, 0, 0, radius/2- offset, 0);
     const line2 = roughSpriteGenerator.getLineSprite(x + 1.5 * radius + offset, y + radius, 0, 0, radius/2 - offset, 0);
     const line3 = roughSpriteGenerator.getLineSprite(x + radius, y + radius/2 - offset, 0, 0, 0, radius/2 - offset);
