@@ -5,15 +5,15 @@ constructor(game, roughSpriteGenerator, x, y, width, height) {
     const roofHeight = height * 0.20;
     const basementHeight = height * 0.80;
     // basement
-    const basement = roughSpriteGenerator.getRectangleSprite(x, y + roofHeight, width, basementHeight);
+    const basement = roughSpriteGenerator.getRectangleSprite(x, y + roofHeight, width, basementHeight, {fill: "pink", fillStyle:"solid"});
     //roof
-    const line = roughSpriteGenerator.getLineSprite(x, y + roofHeight, 0, 0, width/2, width/2);
+    const line = roughSpriteGenerator.getLineSprite(x, y + roofHeight, 0, 0, width/2, width/2, {fill: "red"});
     const line2 = roughSpriteGenerator.getLineSprite(x + width, y + roofHeight, 0, 0, -width/2, width/2);
 
     // door
     const doorHeight = height * 0.3;
     const doorWidth = width * 0.15;
-    const door =  roughSpriteGenerator.getRectangleSprite(x + width/2 - doorWidth/2, y + height - doorHeight, doorWidth, doorHeight);
+    const door =  roughSpriteGenerator.getRectangleSprite(x + width/2 - doorWidth/2, y + height - doorHeight, doorWidth, doorHeight, { fill: "red", fillStyle: "solid"});
 
     this.add(basement);
     this.add(door);
