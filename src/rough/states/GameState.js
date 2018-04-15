@@ -50,7 +50,7 @@ class GameState extends Phaser.State {
     this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
 
-    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.world.bounds.width, 30);
+    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.world.bounds.width, 30, {fill: "#00A6A6", strokeWidth: 2});
     this.game.physics.enable(this.ground, Phaser.Physics.ARCADE);
     this.ground.body.allowGravity = false;
     this.ground.body.immovable = true;
