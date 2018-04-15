@@ -14,9 +14,14 @@ class GameState extends Phaser.State {
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
-
     // rough sprite generator
     const rsg = new RoughSpriteGenerator(this.game);
+
+    this.house = new House(this.game, rsg, 50, this.game.height - 32 - 100, 150, 100);
+    this.game.add.existing(this.house);
+
+    this.sun = new Sun(this.game, rsg, 0, 0, 75);
+    this.game.add.existing(this.sun);
 
     this.group = this.game.add.group();
     for(let i=0; i < 50; i++) {
@@ -56,11 +61,7 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.sun = new Sun(this.game, rsg, 0, 0, 75);
-    this.game.add.existing(this.sun);
 
-    this.house = new House(this.game, rsg, 0, 300, 150, 100);
-    this.game.add.existing(this.house);
 
     //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
     //this.game.add.existing(this.building);
