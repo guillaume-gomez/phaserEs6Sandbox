@@ -1,5 +1,7 @@
 import RoughSpriteGenerator from 'object/RoughSpriteGenerator';
 import Sun from 'object/Sun';
+import House from 'object/House';
+//import Building from 'object/Building';
 
 class GameState extends Phaser.State {
 
@@ -57,11 +59,14 @@ class GameState extends Phaser.State {
     this.sun = new Sun(this.game, rsg, 0, 0, 75);
     this.game.add.existing(this.sun);
 
+    this.house = new House(this.game, rsg, 0, 300, 150, 100);
+    this.game.add.existing(this.house);
+
+    //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
+    //this.game.add.existing(this.building);
+
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-    console.log(this.sun.width)
-    console.log(this.sun.height)
   }
 
   preload() {
@@ -90,7 +95,7 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    //this.game.debug.spriteBounds(this.sun)
+    //this.game.debug.spriteBounds(this.house)
   }
 
   getRandomInt(min, max) {
