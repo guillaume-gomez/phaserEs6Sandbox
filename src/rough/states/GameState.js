@@ -1,20 +1,27 @@
 import RoughSpriteGenerator from 'object/RoughSpriteGenerator';
 import Sun from 'object/Sun';
+import House from 'object/House';
+//import Building from 'object/Building';
 
 class GameState extends Phaser.State {
 
   create() {
     this.game.time.advancedTiming = true;
-    this.game.stage.backgroundColor = "#DDDDDD";
+    this.game.stage.backgroundColor = "#a9f1f6";
 
     this.game.world.setBounds(0, 0, 2500, 600);
     console.log(this.game.world)
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
-
     // rough sprite generator
     const rsg = new RoughSpriteGenerator(this.game);
+
+    this.house = new House(this.game, rsg, 50, this.game.height - 32 - 100, 150, 100);
+    this.game.add.existing(this.house);
+
+    this.sun = new Sun(this.game, rsg, 0, 0, 75);
+    this.game.add.existing(this.sun);
 
     this.group = this.game.add.group();
     for(let i=0; i < 50; i++) {
@@ -48,20 +55,19 @@ class GameState extends Phaser.State {
     this.game.add.existing(this.character);
     this.game.camera.follow(this.character);
 
-    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.world.bounds.width, 30);
+    this.ground = rsg.getRectangleSprite(0, this.game.height - 32 , this.game.world.bounds.width, 30, {fill: "#00A6A6", strokeWidth: 2});
     this.game.physics.enable(this.ground, Phaser.Physics.ARCADE);
     this.ground.body.allowGravity = false;
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.sun = new Sun(this.game, rsg, 0, 0, 75);
-    this.game.add.existing(this.sun);
+
+
+    //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
+    //this.game.add.existing(this.building);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-    console.log(this.sun.width)
-    console.log(this.sun.height)
   }
 
   preload() {
@@ -90,7 +96,7 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    //this.game.debug.spriteBounds(this.sun)
+    //this.game.debug.spriteBounds(this.house)
   }
 
   getRandomInt(min, max) {
