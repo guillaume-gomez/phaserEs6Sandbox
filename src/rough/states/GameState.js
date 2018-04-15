@@ -7,7 +7,7 @@ class GameState extends Phaser.State {
 
   create() {
     this.game.time.advancedTiming = true;
-    this.game.stage.backgroundColor = "#DDDDDD";
+    this.game.stage.backgroundColor = "#a9f1f6";
 
     this.game.world.setBounds(0, 0, 2500, 600);
     console.log(this.game.world)
