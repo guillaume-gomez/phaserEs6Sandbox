@@ -33,7 +33,7 @@ class RoughSpriteGenerator
   getRectangleSprite(x, y, width, height, config = {}) {
     let bmd = this.game.add.bitmapData(width, height);
     const defaultConfig = {
-        fill: 'orange',
+        fill: 'black',
         stroke: 'black',
         hachureAngle: 60,
         hachureGap: 10,
