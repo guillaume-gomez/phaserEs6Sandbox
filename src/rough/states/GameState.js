@@ -9,7 +9,7 @@ class GameState extends Phaser.State {
     this.game.time.advancedTiming = true;
     this.game.stage.backgroundColor = "#a9f1f6";
 
-    this.game.world.setBounds(0, 0, 2500, 600);
+    this.game.world.setBounds(0, 0, 1500, 600);
     console.log(this.game.world)
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -76,6 +76,10 @@ class GameState extends Phaser.State {
   }
 
   preload() {
+  }
+
+  followSun() {
+
   }
 
   update() {
