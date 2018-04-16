@@ -61,9 +61,9 @@ class RoughSpriteGenerator
   }
 
   getPolygonSprite(x,y, data, config) {
-    let bmd = this.game.add.bitmapData(300, 300);
+    let bmd = this.game.add.bitmapData(500, 500);
     this.getPolygon(bmd, data, config);
-    return Phaser.Sprite(this.game, x, y, bmd);
+    return new Phaser.Sprite(this.game, x, y, bmd);
   }
 
   lengthFromPoints(x1, y1, x2, y2) {
