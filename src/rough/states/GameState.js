@@ -54,7 +54,7 @@ class GameState extends Phaser.State {
       this.group.add(sprite);
     }
 
-    this.character = rsg.getRectangleSprite(150, 400, 50, 50, {fillStyle: "solid", fill: "#D84315"});
+    this.character = rsg.getRectangleSprite(150, 400, 30, 50, {fillStyle: "solid", fill: "#D84315"});
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
     this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
