@@ -20,7 +20,10 @@ class GameState extends Phaser.State {
     this.house = new House(this.game, rsg, 50, this.game.height - 32 - 100, 150, 100);
     this.game.add.existing(this.house);
 
-    this.sun = new Sun(this.game, rsg, 0, 0, 75);
+    this.house2 = new House(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 100, 150);
+    this.game.add.existing(this.house2);
+
+    this.sun = new Sun(this.game, rsg, 0, 0, 100);
     this.game.add.existing(this.sun);
 
     this.group = this.game.add.group();
