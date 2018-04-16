@@ -27,7 +27,7 @@ class GameState extends Phaser.State {
     for(let i=0; i < 50; i++) {
       const rnd = Math.random();
       const x = this.getRandomInt((i * 50), (i + 1) * 50);
-      const y = this.getRandomInt(0, 100);
+      const y = this.getRandomInt(350, 450);
       const config = {
         fill: this.getRandomColor(),
         fillWeight: this.getRandomInt(1, 5)
@@ -45,11 +45,13 @@ class GameState extends Phaser.State {
         sprite = rsg.getRectangleSprite(x, y, width, height, config);
         this.game.physics.enable(sprite, Phaser.Physics.ARCADE);
       }
-      sprite.body.bounce.y = 0.80;
+      sprite.body.bounce.setTo (0.80, 0.80);
+      sprite.body.collideWorldBounds = true;
+      sprite.body.velocity.x = this.getRandomInt(-75, 75);
       this.group.add(sprite);
     }
 
-    this.character = rsg.getRectangleSprite(100, 20, 50, 50, {fillStyle: "solid", fill: "#D84315"});
+    this.character = rsg.getRectangleSprite(150, 400, 50, 50, {fillStyle: "solid", fill: "#D84315"});
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
     this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
@@ -76,7 +78,6 @@ class GameState extends Phaser.State {
   update() {
     this.game.physics.arcade.collide(this.character, this.ground);
     this.game.physics.arcade.collide(this.group, this.ground);
-    this.game.physics.arcade.collide(this.group, this.group);
 
     this.character.body.velocity.x = 0;
     if (this.cursors.left.isDown)
