@@ -24,6 +24,7 @@ class GameState extends Phaser.State {
     this.game.add.existing(this.house2);
 
     this.sun = new Sun(this.game, rsg, 0, 0, 100);
+    this.sun.fixedToCamera = true;
     this.game.add.existing(this.sun);
 
     this.group = this.game.add.group();
@@ -76,10 +77,6 @@ class GameState extends Phaser.State {
   }
 
   preload() {
-  }
-
-  followSun() {
-
   }
 
   update() {
