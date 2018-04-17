@@ -10,7 +10,6 @@ class GameState extends Phaser.State {
     this.game.stage.backgroundColor = "#a9f1f6";
 
     this.game.world.setBounds(0, 0, 1500, 600);
-    console.log(this.game.world)
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
@@ -23,9 +22,26 @@ class GameState extends Phaser.State {
     this.house2 = new House(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 100, 150);
     this.game.add.existing(this.house2);
 
-    this.sun = new Sun(this.game, rsg, 0, 0, 100);
+    this.sun = new Sun(this.game, rsg, 0, 0, 75);
     this.sun.fixedToCamera = true;
     this.game.add.existing(this.sun);
+
+    this.cloud = rsg.getPolygonSprite(500, 30, 'M406.1 227.63c-8.23-103.65-144.71-137.8-200.49-49.05 -36.18-20.46-82.33 3.61-85.22 45.9C80.73 229.34 50 263.12 50 304.1c0 44.32 35.93 80.25 80.25 80.25h251.51c44.32 0 80.25-35.93 80.25-80.25C462 268.28 438.52 237.94 406.1 227.63z', 512, 512,{fill: 'white', strokeWidth: 3, fillWeight: 5});
+    this.cloud.scale.setTo(0.45,0.45);
+    // add my own attribute
+    this.cloud.vel = -0.05;
+    this.game.add.existing(this.cloud);
+
+    this.cloud2 = rsg.getPolygonSprite(0, 50, 'M406.1 227.63c-8.23-103.65-144.71-137.8-200.49-49.05 -36.18-20.46-82.33 3.61-85.22 45.9C80.73 229.34 50 263.12 50 304.1c0 44.32 35.93 80.25 80.25 80.25h251.51c44.32 0 80.25-35.93 80.25-80.25C462 268.28 438.52 237.94 406.1 227.63z', 512, 512,{fill: 'white',  strokeWidth: 3, fillWeight: 5});
+    this.cloud2.scale.setTo(0.5,0.5);
+    this.cloud2.vel = 0.08;
+    this.game.add.existing(this.cloud2);
+
+    this.cloud3 = rsg.getPolygonSprite(700, 10, 'M406.1 227.63c-8.23-103.65-144.71-137.8-200.49-49.05 -36.18-20.46-82.33 3.61-85.22 45.9C80.73 229.34 50 263.12 50 304.1c0 44.32 35.93 80.25 80.25 80.25h251.51c44.32 0 80.25-35.93 80.25-80.25C462 268.28 438.52 237.94 406.1 227.63z', 512, 512,{fill: 'white',  strokeWidth: 3, fillWeight: 5});
+    this.cloud3.scale.setTo(0.35,0.35);
+    this.cloud3.vel = 0.1;
+    this.game.add.existing(this.cloud3);
+
 
     this.group = this.game.add.group();
     for(let i=0; i < 50; i++) {
@@ -67,9 +83,6 @@ class GameState extends Phaser.State {
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
 
-    this.cloud = rsg.getPolygonSprite(300, -100, 'M406.1 227.63c-8.23-103.65-144.71-137.8-200.49-49.05 -36.18-20.46-82.33 3.61-85.22 45.9C80.73 229.34 50 263.12 50 304.1c0 44.32 35.93 80.25 80.25 80.25h251.51c44.32 0 80.25-35.93 80.25-80.25C462 268.28 438.52 237.94 406.1 227.63z', {fill: 'green'});
-    this.game.add.existing(this.cloud);
-
     //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
     //this.game.add.existing(this.building);
 
@@ -78,6 +91,18 @@ class GameState extends Phaser.State {
   }
 
   preload() {
+  }
+
+  cloudManagement() {
+    [this.cloud, this.cloud2, this.cloud3].forEach(cloud => {
+      if(cloud.x + cloud.width > this.game.world.bounds.width) {
+        cloud.x = 0;
+      } else if(cloud.x + cloud.width < 0) {
+        cloud.x = this.game.world.bounds.width - cloud.width;
+      } else {
+        cloud.x += cloud.vel;
+      }
+    });
   }
 
   update() {
@@ -98,6 +123,8 @@ class GameState extends Phaser.State {
     {
         this.character.body.velocity.y = -300;
     }
+
+    this.cloudManagement();
   }
 
   render() {
