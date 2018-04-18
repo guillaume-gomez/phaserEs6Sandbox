@@ -133,7 +133,7 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    this.game.debug.spriteBounds(this.tree)
+    //this.game.debug.spriteBounds(this.tree)
   }
 
   getRandomInt(min, max) {

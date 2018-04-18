@@ -9,13 +9,13 @@ constructor(game, roughSpriteGenerator, x, y, width, height) {
   // <circle cx="50" cy="80" r="30" fill="red" />
   // <circle cx="70" cy="90" r="30" fill="red" />
     // leaf
-    const circle  = roughSpriteGenerator.getCircleSprite(x + 45 - 40, y + 50, 30, {fill: "pink", fillStyle:"solid"});
-    const circle2 = roughSpriteGenerator.getCircleSprite(x + 80 - 40, y + 50, 30, {fill: "pink", fillStyle:"solid"});
-    const circle3 = roughSpriteGenerator.getCircleSprite(x + 90 - 40, y + 80, 30, {fill: "pink", fillStyle:"solid"});
-    const circle4 = roughSpriteGenerator.getCircleSprite(x + 50 - 40 , y + 80, 30, {fill: "pink", fillStyle:"solid"});
-    const circle5 = roughSpriteGenerator.getCircleSprite(x + 70 - 40, y + 90, 30, {fill: "pink", fillStyle:"solid"});
+    const circle  = roughSpriteGenerator.getCircleSprite(x + 30, y + 50, 30, { stroke: 'green'});
+    const circle2 = roughSpriteGenerator.getCircleSprite(x, y + 50, 30, { stroke: 'green'});
+    const circle3 = roughSpriteGenerator.getCircleSprite(x + 40, y + 80, 30, { stroke: 'green'});
+    const circle4 = roughSpriteGenerator.getCircleSprite(x, y + 80, 30, { stroke: 'green'});
+    const circle5 = roughSpriteGenerator.getCircleSprite(x + 30, y + 90, 30, { stroke: 'green'});
     //trunk
-    const trunk = roughSpriteGenerator.getRectangleSprite(x + 30, y + 90, 50, 110, {fill: "red"});
+    const trunk = roughSpriteGenerator.getRectangleSprite(x + 20, y + 90, 50, 110, {fill: "red"});
 
     this.add(trunk);
     this.add(circle);
