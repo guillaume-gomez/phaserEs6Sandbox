@@ -1,6 +1,7 @@
 import RoughSpriteGenerator from 'object/RoughSpriteGenerator';
 import Sun from 'object/Sun';
 import House from 'object/House';
+import Tree from 'object/Tree';
 //import Building from 'object/Building';
 
 class GameState extends Phaser.State {
@@ -41,6 +42,9 @@ class GameState extends Phaser.State {
     this.cloud3.scale.setTo(0.35,0.35);
     this.cloud3.vel = 0.1;
     this.game.add.existing(this.cloud3);
+
+    this.tree = new Tree(this.game, rsg, 0, 0);
+    this.game.add.existing(this.tree);
 
 
     this.group = this.game.add.group();
@@ -129,7 +133,7 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-    //this.game.debug.spriteBounds(this.house)
+    this.game.debug.spriteBounds(this.tree)
   }
 
   getRandomInt(min, max) {
