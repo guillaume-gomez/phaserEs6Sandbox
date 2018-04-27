@@ -18,6 +18,11 @@ class RoughSpriteGenerator
     this.getRectangle(bmd, dist, 2, config);
   }
 
+  getPolygon(bmd, data, config) {
+    let rc = rough.canvas(bmd.canvas);
+    rc.path(data, config);
+  }
+
   getCircleSprite(x, y, radius, config = {}) {
     const defaultConfig = {
       fill: "rgb(10,150,10)",
@@ -33,7 +38,7 @@ class RoughSpriteGenerator
   getRectangleSprite(x, y, width, height, config = {}) {
     let bmd = this.game.add.bitmapData(width, height);
     const defaultConfig = {
-        fill: 'orange',
+        fill: 'black',
         stroke: 'black',
         hachureAngle: 60,
         hachureGap: 10,
@@ -46,7 +51,7 @@ class RoughSpriteGenerator
   }
 
   getLineSprite(x, y, x1, y1, x2, y2, config = {}) {
-    const dist = Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
+    const dist = this.lengthFromPoints(x1, y1, x2, y2);
     let bmd = this.game.add.bitmapData(dist, 2);
     this.getLine(bmd, dist, config);
     const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
@@ -54,5 +59,16 @@ class RoughSpriteGenerator
     sprite.angle =- angle;
     return sprite;
   }
+
+  getPolygonSprite(x,y, data, width, height, config) {
+    let bmd = this.game.add.bitmapData(width, height);
+    this.getPolygon(bmd, data, config);
+    return new Phaser.Sprite(this.game, x, y, bmd);
+  }
+
+  lengthFromPoints(x1, y1, x2, y2) {
+     return Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
+  }
+
 }
 export default RoughSpriteGenerator;
