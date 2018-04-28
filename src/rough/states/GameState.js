@@ -1,7 +1,7 @@
 import RoughSpriteGenerator from 'object/RoughSpriteGenerator';
 import Sun from 'object/Sun';
 import House from 'object/House';
-//import Building from 'object/Building';
+import Building from 'object/Building';
 
 class GameState extends Phaser.State {
 
@@ -19,8 +19,39 @@ class GameState extends Phaser.State {
     this.house = new House(this.game, rsg, 50, this.game.height - 32 - 100, 150, 100);
     this.game.add.existing(this.house);
 
-    this.house2 = new House(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 100, 150);
+    this.house2 = new House(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 150, 150);
     this.game.add.existing(this.house2);
+
+    this.building = new Building(
+      this.game,
+      rsg,
+      250,
+      this.game.height - 32 - 400,
+      200,
+      400,
+      {wallConfig: { fill: "rgba(226, 78, 46, 1.0)"}}
+    );
+    this.game.add.existing(this.building);
+
+    this.building2 = new Building(
+      this.game,
+      rsg,
+      500,
+      this.game.height - 32 - 300,
+      250,
+      300,
+      {wallConfig: { fill: "rgba(204, 179, 151, 1.0)"}}
+    );
+    this.game.add.existing(this.building2);
+
+    this.building3 = new Building(
+      this.game,
+      rsg,
+      this.game.world.bounds.width - 400,
+      this.game.height - 32 - 500,
+      200,
+      500);
+    this.game.add.existing(this.building3);
 
     this.sun = new Sun(this.game, rsg, 0, 0, 75);
     this.sun.fixedToCamera = true;
@@ -71,7 +102,7 @@ class GameState extends Phaser.State {
       this.group.add(sprite);
     }
 
-    this.character = rsg.getRectangleSprite(150, 400, 30, 50, {fillStyle: "solid", fill: "#D84315"});
+    this.character = rsg.getRectangleSprite(150, 400, 30, 50, {fillStyle: "solid", fill: "#3846ae"});
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
     this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
@@ -82,9 +113,6 @@ class GameState extends Phaser.State {
     this.ground.body.allowGravity = false;
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
-
-    //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
-    //this.game.add.existing(this.building);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
