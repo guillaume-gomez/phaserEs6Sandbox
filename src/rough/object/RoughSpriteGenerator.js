@@ -52,18 +52,26 @@ class RoughSpriteGenerator
 
   getAnimatedRectangle(x,y, width, height, config, nbImages) {
     let bmd = this.game.add.bitmapData(width * nbImages, height);
+    const defaultConfig = {
+      fill: 'orange',
+      stroke: 'black',
+      hachureAngle: 60,
+      hachureGap: 10,
+      fillWeight: 5,
+      strokeWidth: 5
+    };
+    const configs = Object.assign({}, defaultConfig, config);
     for(let i = 0; i < nbImages; i++) {
-      const defaultConfig = {
-        fill: 'orange',
-        stroke: 'black',
-        hachureAngle: Math.random() * 60,
-        hachureGap: 10,
-        fillWeight: 5,
-        strokeWidth: 5
-      };
-      this.getRectangle(bmd, width, height, defaultConfig, (i * width), 0);
+      this.getRectangle(bmd, width, height, configs, (i * width), 0);
     }
-    return new Phaser.Sprite(this.game, x, y, bmd);
+    const key = `${x}_${y}_${width}_${height}`;
+    this.game.cache.addSpriteSheet(key, null, bmd.canvas, width, height);
+
+    let sprite = new Phaser.Sprite(this.game, x, y, key);
+    const walk = sprite.animations.add('sketch');
+    walk.enableUpdate = true;
+    sprite.animations.play('sketch', 10, true);
+    return sprite;
   }
 
   getLineSprite(x, y, x1, y1, x2, y2, config = {}) {

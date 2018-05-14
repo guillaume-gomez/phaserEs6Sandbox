@@ -102,7 +102,7 @@ class GameState extends Phaser.State {
       this.group.add(sprite);
     }
 
-    this.character = rsg.getRectangleSprite(150, 400, 30, 50, {fillStyle: "solid", fill: "#3846ae"});
+    this.character = rsg.getAnimatedRectangle(100, 20, 50, 50, {fillStyle: "solid", fill: "#D84315"}, 4);
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
     this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
@@ -113,15 +113,6 @@ class GameState extends Phaser.State {
     this.ground.body.allowGravity = false;
     this.ground.body.immovable = true;
     this.game.add.existing(this.ground);
-
-    this.test = rsg.getAnimatedRectangle(200, 100 , 50, 50, {}, 4);
-
-    const walk = this.test.animations.add('walk');
-
-    walk.enableUpdate = true;
-
-    this.test.animations.play('walk', 5, true);
-    this.game.add.existing(this.test);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
