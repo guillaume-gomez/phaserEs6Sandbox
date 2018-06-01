@@ -4,9 +4,9 @@ class RoughSpriteGenerator
     this.game = game;
   }
 
-  getRectangle(bmd, width, height, config) {
+  getRectangle(bmd, width, height, config, x = 0, y = 0) {
     let rc = rough.canvas(bmd.canvas);
-    rc.rectangle(0, 0, width, height, config);
+    rc.rectangle(x, y, width, height, config);
   }
 
   getCircle(bmd, center, radius, config) {
@@ -48,6 +48,21 @@ class RoughSpriteGenerator
     const configs = Object.assign({}, defaultConfig, config);
     this.getRectangle(bmd, width, height, configs);
     return new Phaser.Sprite(this.game, x, y, bmd);
+  }
+
+  getAnimatedRectangle(x,y, width, height, config, nbImages) {
+    let bmd = this.game.add.bitmapData(width * nbImages, height);
+    for(let i = 0; i < nbImages; i++) {
+      this.getRectangle(bmd, width, height, config, (i * width), 0);
+    }
+    const key = `${x}_${y}_${width}_${height}`;
+    this.game.cache.addSpriteSheet(key, null, bmd.canvas, width, height);
+
+    let sprite = new Phaser.Sprite(this.game, x, y, key);
+    const walk = sprite.animations.add('sketch');
+    walk.enableUpdate = true;
+    sprite.animations.play('sketch', 10, true);
+    return sprite;
   }
 
   getLineSprite(x, y, x1, y1, x2, y2, config = {}) {
