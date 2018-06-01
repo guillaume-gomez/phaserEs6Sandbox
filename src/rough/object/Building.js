@@ -1,20 +1,19 @@
 class Building extends Phaser.Group {
 
-  constructor(game, roughSpriteGenerator, x, y, width, height, config = {doorConfig: {}, windowConfig: {}, wallConfig: {}}) {
+  constructor(game, roughSpriteGenerator, x, y, width, height, config = {doorConfig: {}, windowConfig: {}, wallConfig: {}}, animated = false) {
     super(game);
     // basement
     const defaultWallConfig = {
-        fill: 'rgba(200,200,200,0.8)',
-        fillStyle: 'solid'
+      fill: 'rgba(200,200,200,0.8)',
+      fillStyle: 'solid'
     };
-    const base = roughSpriteGenerator.getRectangleSprite(
-        x,
-        y,
-        width,
-        height,
-        Object.assign({}, defaultWallConfig, config.wallConfig)
-    );
-
+    console.log(animated);
+    let base = null;
+    if (animated) {
+      base = roughSpriteGenerator.getAnimatedRectangle( x, y, width, height, Object.assign({}, defaultWallConfig, config.wallConfig), 4);
+    } else {
+      base = roughSpriteGenerator.getRectangleSprite( x, y, width, height, Object.assign({}, defaultWallConfig, config.wallConfig));
+    }
     // door
     const doorHeight = height * 0.1;
     const doorWidth = width * 0.15;
@@ -48,13 +47,23 @@ class Building extends Phaser.Group {
     };
     for(let i = 0; i < nbFloors; ++i) {
       for(let j = 0; j < nbWindowsByFloor; ++j) {
-        const newWindow = roughSpriteGenerator.getRectangleSprite(
+        let newWindow = null;
+        if (animated) {
+          newWindow = roughSpriteGenerator.getAnimatedRectangle(
             x + offsetWidth + j * ( windowWidth + spaces),
             y + offsetHeight + i * (windowHeight + spaces),
             windowWidth,
             windowHeight,
-            Object.assign({}, defaultWindowConfig, config.windowConfig)
-        );
+            Object.assign({}, defaultWindowConfig, config.windowConfig),
+            4);
+        } else {
+          newWindow = roughSpriteGenerator.getRectangleSprite(
+            x + offsetWidth + j * ( windowWidth + spaces),
+            y + offsetHeight + i * (windowHeight + spaces),
+            windowWidth,
+            windowHeight,
+            Object.assign({}, defaultWindowConfig, config.windowConfig));
+        }
         this.add(newWindow);
       }
     }
