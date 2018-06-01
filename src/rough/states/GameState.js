@@ -29,7 +29,8 @@ class GameState extends Phaser.State {
       this.game.height - 32 - 400,
       200,
       400,
-      {wallConfig: { fill: "rgba(226, 78, 46, 1.0)"}}
+      {wallConfig: { fill: "rgba(226, 78, 46, 1.0)"}},
+      true
     );
     this.game.add.existing(this.building);
 
@@ -75,7 +76,7 @@ class GameState extends Phaser.State {
 
 
     this.group = this.game.add.group();
-    for(let i=0; i < 50; i++) {
+    for(let i=0; i < 25; i++) {
       const rnd = Math.random();
       const x = this.getRandomInt((i * 50), (i + 1) * 50);
       const y = this.getRandomInt(350, 450);
@@ -102,7 +103,15 @@ class GameState extends Phaser.State {
       this.group.add(sprite);
     }
 
-    this.character = rsg.getAnimatedRectangle(100, 20, 50, 50, {fillStyle: "solid", fill: "#D84315"}, 4);
+    this.character = rsg.getAnimatedRectangle(100, 450, 50, 75, {
+        fill: "#00B0FF",
+        roughness: 1.5,
+        strokeWidth: 10,
+        hachureAngle: 90,
+        hachureGap: 5,
+        fillWeight: 5,
+        strokeWidth: 5
+      }, 4);
     this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
     this.character.body.collideWorldBounds = true;
     this.game.add.existing(this.character);
