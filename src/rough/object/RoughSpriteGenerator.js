@@ -52,17 +52,8 @@ class RoughSpriteGenerator
 
   getAnimatedRectangle(x,y, width, height, config, nbImages) {
     let bmd = this.game.add.bitmapData(width * nbImages, height);
-    const defaultConfig = {
-      fill: 'orange',
-      stroke: 'black',
-      hachureAngle: 60,
-      hachureGap: 10,
-      fillWeight: 5,
-      strokeWidth: 5
-    };
-    const configs = Object.assign({}, defaultConfig, config);
     for(let i = 0; i < nbImages; i++) {
-      this.getRectangle(bmd, width, height, configs, (i * width), 0);
+      this.getRectangle(bmd, width, height, config, (i * width), 0);
     }
     const key = `${x}_${y}_${width}_${height}`;
     this.game.cache.addSpriteSheet(key, null, bmd.canvas, width, height);
