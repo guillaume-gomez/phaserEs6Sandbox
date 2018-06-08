@@ -45,7 +45,99 @@ var RoughExample = function (_Phaser$Game) {
 
 new RoughExample();
 
-},{"states/GameState":5}],2:[function(require,module,exports){
+},{"states/GameState":6}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Building = function (_Phaser$Group) {
+  _inherits(Building, _Phaser$Group);
+
+  function Building(game, roughSpriteGenerator, x, y, width, height) {
+    var config = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : { doorConfig: {}, windowConfig: {}, wallConfig: {} };
+    var animated = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : false;
+
+    _classCallCheck(this, Building);
+
+    // basement
+    var _this = _possibleConstructorReturn(this, (Building.__proto__ || Object.getPrototypeOf(Building)).call(this, game));
+
+    var defaultWallConfig = {
+      fill: 'rgba(200,200,200,0.8)',
+      fillStyle: 'solid'
+    };
+    console.log(animated);
+    var base = null;
+    if (animated) {
+      base = roughSpriteGenerator.getAnimatedRectangle(x, y, width, height, Object.assign({}, defaultWallConfig, config.wallConfig), 4);
+    } else {
+      base = roughSpriteGenerator.getRectangleSprite(x, y, width, height, Object.assign({}, defaultWallConfig, config.wallConfig));
+    }
+    // door
+    var doorHeight = height * 0.1;
+    var doorWidth = width * 0.15;
+    var defaultDoorConfig = {
+      fill: 'rgba(0,0,0,0.8)',
+      fillStyle: 'solid'
+    };
+    var door = roughSpriteGenerator.getRectangleSprite(x + width / 2 - doorWidth / 2, y + height - doorHeight, doorWidth, doorHeight, Object.assign({}, defaultDoorConfig, config.doorConfig));
+    _this.add(base);
+    _this.add(door);
+
+    //windows
+    var windowWidth = 40;
+    var windowHeight = 60;
+    var spaces = 5;
+    var nbFloors = Math.floor((height - doorHeight - 10) / (windowHeight + spaces));
+    var nbWindowsByFloor = Math.floor((width - 10) / (windowWidth + spaces));
+
+    var offsetHeight = (height - doorHeight - nbFloors * (windowHeight + spaces) + spaces) / 2;
+    var offsetWidth = (width - nbWindowsByFloor * (windowWidth + spaces) + spaces) / 2;
+
+    var defaultWindowConfig = {
+      fill: 'rgba(182,211,223,1)',
+      fillStyle: 'solid'
+    };
+    for (var i = 0; i < nbFloors; ++i) {
+      for (var j = 0; j < nbWindowsByFloor; ++j) {
+        var newWindow = null;
+        if (animated) {
+          newWindow = roughSpriteGenerator.getAnimatedRectangle(x + offsetWidth + j * (windowWidth + spaces), y + offsetHeight + i * (windowHeight + spaces), windowWidth, windowHeight, Object.assign({}, defaultWindowConfig, config.windowConfig), 4);
+        } else {
+          newWindow = roughSpriteGenerator.getRectangleSprite(x + offsetWidth + j * (windowWidth + spaces), y + offsetHeight + i * (windowHeight + spaces), windowWidth, windowHeight, Object.assign({}, defaultWindowConfig, config.windowConfig));
+        }
+        _this.add(newWindow);
+      }
+    }
+    return _this;
+  }
+
+  return Building;
+}(Phaser.Group);
+
+exports.default = Building;
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -111,7 +203,7 @@ var House = function (_Phaser$Group) {
 
 exports.default = House;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -144,8 +236,11 @@ var RoughSpriteGenerator = function () {
   _createClass(RoughSpriteGenerator, [{
     key: 'getRectangle',
     value: function getRectangle(bmd, width, height, config) {
+      var x = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+      var y = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+
       var rc = rough.canvas(bmd.canvas);
-      rc.rectangle(0, 0, width, height, config);
+      rc.rectangle(x, y, width, height, config);
     }
   }, {
     key: 'getCircle',
@@ -198,6 +293,22 @@ var RoughSpriteGenerator = function () {
       return new Phaser.Sprite(this.game, x, y, bmd);
     }
   }, {
+    key: 'getAnimatedRectangle',
+    value: function getAnimatedRectangle(x, y, width, height, config, nbImages) {
+      var bmd = this.game.add.bitmapData(width * nbImages, height);
+      for (var i = 0; i < nbImages; i++) {
+        this.getRectangle(bmd, width, height, config, i * width, 0);
+      }
+      var key = x + '_' + y + '_' + width + '_' + height;
+      this.game.cache.addSpriteSheet(key, null, bmd.canvas, width, height);
+
+      var sprite = new Phaser.Sprite(this.game, x, y, key);
+      var walk = sprite.animations.add('sketch');
+      walk.enableUpdate = true;
+      sprite.animations.play('sketch', 10, true);
+      return sprite;
+    }
+  }, {
     key: 'getLineSprite',
     value: function getLineSprite(x, y, x1, y1, x2, y2) {
       var config = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
@@ -229,7 +340,7 @@ var RoughSpriteGenerator = function () {
 
 exports.default = RoughSpriteGenerator;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -292,7 +403,7 @@ var Sun = function (_Phaser$Group) {
 
 exports.default = Sun;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -321,8 +432,20 @@ var _House = require('object/House');
 
 var _House2 = _interopRequireDefault(_House);
 
+var _Building = require('object/Building');
+
+var _Building2 = _interopRequireDefault(_Building);
+
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+  } else {
+    obj[key] = value;
+  }return obj;
 }
 
 function _classCallCheck(instance, Constructor) {
@@ -342,8 +465,6 @@ function _inherits(subClass, superClass) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
-
-//import Building from 'object/Building';
 
 var GameState = function (_Phaser$State) {
   _inherits(GameState, _Phaser$State);
@@ -370,8 +491,17 @@ var GameState = function (_Phaser$State) {
       this.house = new _House2.default(this.game, rsg, 50, this.game.height - 32 - 100, 150, 100);
       this.game.add.existing(this.house);
 
-      this.house2 = new _House2.default(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 100, 150);
+      this.house2 = new _House2.default(this.game, rsg, this.game.width - 20, this.game.height - 32 - 150, 150, 150);
       this.game.add.existing(this.house2);
+
+      this.building = new _Building2.default(this.game, rsg, 250, this.game.height - 32 - 400, 200, 400, { wallConfig: { fill: "rgba(226, 78, 46, 1.0)" } }, true);
+      this.game.add.existing(this.building);
+
+      this.building2 = new _Building2.default(this.game, rsg, 500, this.game.height - 32 - 300, 250, 300, { wallConfig: { fill: "rgba(204, 179, 151, 1.0)" } });
+      this.game.add.existing(this.building2);
+
+      this.building3 = new _Building2.default(this.game, rsg, this.game.world.bounds.width - 400, this.game.height - 32 - 500, 200, 500);
+      this.game.add.existing(this.building3);
 
       this.sun = new _Sun2.default(this.game, rsg, 0, 0, 75);
       this.sun.fixedToCamera = true;
@@ -394,7 +524,7 @@ var GameState = function (_Phaser$State) {
       this.game.add.existing(this.cloud3);
 
       this.group = this.game.add.group();
-      for (var i = 0; i < 50; i++) {
+      for (var i = 0; i < 25; i++) {
         var rnd = Math.random();
         var x = this.getRandomInt(i * 50, (i + 1) * 50);
         var y = this.getRandomInt(350, 450);
@@ -421,7 +551,14 @@ var GameState = function (_Phaser$State) {
         this.group.add(sprite);
       }
 
-      this.character = rsg.getRectangleSprite(150, 400, 30, 50, { fillStyle: "solid", fill: "#D84315" });
+      this.character = rsg.getAnimatedRectangle(100, 450, 50, 75, _defineProperty({
+        fill: "#00B0FF",
+        roughness: 1.5,
+        strokeWidth: 10,
+        hachureAngle: 90,
+        hachureGap: 5,
+        fillWeight: 5
+      }, 'strokeWidth', 5), 4);
       this.game.physics.enable(this.character, Phaser.Physics.ARCADE);
       this.character.body.collideWorldBounds = true;
       this.game.add.existing(this.character);
@@ -432,9 +569,6 @@ var GameState = function (_Phaser$State) {
       this.ground.body.allowGravity = false;
       this.ground.body.immovable = true;
       this.game.add.existing(this.ground);
-
-      //this.building = new Building(this.game, rsg, 400, 200, 200, 400);
-      //this.game.add.existing(this.building);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
       this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -504,5 +638,5 @@ var GameState = function (_Phaser$State) {
 
 exports.default = GameState;
 
-},{"object/House":2,"object/RoughSpriteGenerator":3,"object/Sun":4}]},{},[1])
+},{"object/Building":2,"object/House":3,"object/RoughSpriteGenerator":4,"object/Sun":5}]},{},[1])
 //# sourceMappingURL=rough.js.map
