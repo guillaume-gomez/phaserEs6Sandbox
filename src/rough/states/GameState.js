@@ -156,7 +156,7 @@ class GameState extends Phaser.State {
         this.character.body.velocity.x = 150;
     }
 
-    if (this.jumpButton.isDown && !this.character.body.touching.none)
+    if ((this.cursors.up.isDown || this.jumpButton.isDown) && !this.character.body.touching.none)
     {
         this.character.body.velocity.y = -300;
     }
