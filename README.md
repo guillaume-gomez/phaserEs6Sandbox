@@ -1,6 +1,6 @@
-# phaserEs6Tutorials
+# phaserEs6Sandbox
 
-[Test Online](https://guillaume-gomez.github.io/phaserEs6Tutorials/build/)
+[Test Online](https://guillaume-gomez.github.io/phaserEs6Sandbox/build/)
 
 ## Install
 `npm start`
