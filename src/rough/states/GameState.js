@@ -51,11 +51,12 @@ class GameState extends Phaser.State {
       this.game.world.bounds.width - 400,
       this.game.height - 32 - 500,
       200,
-      500);
+      500,
+      {},
+      true);
     this.game.add.existing(this.building3);
 
     this.sun = new Sun(this.game, rsg, 0, 0, 75);
-    this.sun.fixedToCamera = true;
     this.game.add.existing(this.sun);
 
     this.cloud = rsg.getPolygonSprite(500, 30, 'M406.1 227.63c-8.23-103.65-144.71-137.8-200.49-49.05 -36.18-20.46-82.33 3.61-85.22 45.9C80.73 229.34 50 263.12 50 304.1c0 44.32 35.93 80.25 80.25 80.25h251.51c44.32 0 80.25-35.93 80.25-80.25C462 268.28 438.52 237.94 406.1 227.63z', 512, 512,{fill: 'white', strokeWidth: 3, fillWeight: 5});
