@@ -1,4 +1,4 @@
-# phaserEs6Sandbox
+# Phaser Es6 Sandbox
 
 [Test Online](https://guillaume-gomez.github.io/phaserEs6Sandbox/build/)
 
